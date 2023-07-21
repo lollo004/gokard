@@ -1,0 +1,80 @@
+[gd_scene load_steps=2 format=3 uid="uid://d252ftuaio4r8"]
+
+[ext_resource type="Script" path="res://Scripts/GameController.gd" id="1_pfy42"]
+
+[node name="Game Controller" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 960.0
+offset_bottom = 537.0
+script = ExtResource("1_pfy42")
+
+[node name="GUI" type="Node" parent="."]
+
+[node name="Management" type="Node" parent="GUI"]
+
+[node name="Lymph Text" type="Label" parent="GUI/Management"]
+offset_left = 844.0
+offset_top = 53.0
+offset_right = 924.0
+offset_bottom = 79.0
+text = "Lymph: 10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Stress Text" type="Label" parent="GUI/Management"]
+offset_left = 842.0
+offset_top = 115.0
+offset_right = 922.0
+offset_bottom = 141.0
+text = "Stress: 5
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Turn Button" type="Button" parent="GUI/Management"]
+offset_left = 835.0
+offset_top = 242.0
+offset_right = 937.0
+offset_bottom = 291.0
+text = "End Turn"
+
+[node name="Player" type="Node" parent="GUI"]
+
+[node name="Player Name" type="Label" parent="GUI/Player"]
+offset_left = -3.0
+offset_top = 467.0
+offset_right = 149.0
+offset_bottom = 522.0
+text = "SimoMine"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player Life" type="Label" parent="GUI/Player"]
+offset_left = 143.0
+offset_top = 484.0
+offset_right = 183.0
+offset_bottom = 507.0
+text = "30"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Enemy" type="Node" parent="GUI"]
+
+[node name="Enemy Name" type="Label" parent="GUI/Enemy"]
+offset_left = 23.0
+offset_top = 15.0
+offset_right = 126.0
+offset_bottom = 69.0
+text = "lollobor"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Enemy Life" type="Label" parent="GUI/Enemy"]
+offset_left = 148.0
+offset_top = 33.0
+offset_right = 188.0
+offset_bottom = 59.0
+text = "30"
+horizontal_alignment = 1
+vertical_alignment = 1

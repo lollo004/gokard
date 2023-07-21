@@ -11,6 +11,13 @@ config_version=5
 [application]
 
 config/name="gokard"
-run/main_scene="res://node_2d.tscn"
+run/main_scene="res://Scenes/GameController.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=960
+window/size/viewport_height=540
+window/size/resizable=false
+window/stretch/mode="canvas_items"
