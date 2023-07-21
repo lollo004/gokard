@@ -1,15 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://d252ftuaio4r8"]
+[gd_scene load_steps=6 format=3 uid="uid://d252ftuaio4r8"]
 
 [ext_resource type="Script" path="res://Scripts/GameController.gd" id="1_pfy42"]
 [ext_resource type="PackedScene" uid="uid://haworbi8gah1" path="res://Scenes/Positioner.tscn" id="2_m0e23"]
+[ext_resource type="Script" path="res://Scripts/LymphText.gd" id="3_smsdr"]
+[ext_resource type="Script" path="res://Scripts/StressText.gd" id="4_by3xp"]
+[ext_resource type="Script" path="res://Scripts/TurnButton.gd" id="5_rxfln"]
 
-[node name="Game Controller" type="Control"]
+[node name="Game Controller" type="Control" groups=["GameManager"]]
 layout_mode = 3
 anchor_right = 1.002
 anchor_bottom = 0.989
 offset_right = 0.079895
 offset_bottom = -0.0599976
 script = ExtResource("1_pfy42")
+lymph = 5
+stress = 2
 
 [node name="Card Position" type="Node" parent="."]
 
@@ -46,31 +51,32 @@ position = Vector2(755, 450)
 
 [node name="Management" type="Node" parent="GUI"]
 
-[node name="Lymph Text" type="Label" parent="GUI/Management"]
-offset_left = 870.0
-offset_top = 60.0
-offset_right = 950.0
-offset_bottom = 90.0
+[node name="Lymph Text" type="Label" parent="GUI/Management" groups=["Lymph"]]
+offset_left = 30.0
+offset_top = 220.0
+offset_right = 110.0
+offset_bottom = 250.0
 text = "Lymph: 10"
-horizontal_alignment = 1
 vertical_alignment = 1
+script = ExtResource("3_smsdr")
 
-[node name="Stress Text" type="Label" parent="GUI/Management"]
-offset_left = 863.0
-offset_top = 120.0
-offset_right = 943.0
-offset_bottom = 150.0
+[node name="Stress Text" type="Label" parent="GUI/Management" groups=["Stress"]]
+offset_left = 30.0
+offset_top = 280.0
+offset_right = 110.0
+offset_bottom = 310.0
 text = "Stress: 5
 "
-horizontal_alignment = 1
 vertical_alignment = 1
+script = ExtResource("4_by3xp")
 
-[node name="Turn Button" type="Button" parent="GUI/Management"]
-offset_left = 865.0
+[node name="Turn Button" type="Button" parent="GUI/Management" groups=["Turn"]]
+offset_left = 820.0
 offset_top = 240.0
-offset_right = 945.0
+offset_right = 948.0
 offset_bottom = 280.0
-text = "End Turn"
+text = "Opponent Turn"
+script = ExtResource("5_rxfln")
 
 [node name="Player" type="Node" parent="GUI"]
 
@@ -111,3 +117,5 @@ offset_bottom = 59.0
 text = "30"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[connection signal="pressed" from="GUI/Management/Turn Button" to="GUI/Management/Turn Button" method="_on_pressed"]

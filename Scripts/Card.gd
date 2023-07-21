@@ -51,12 +51,13 @@ func _ready(): # Function called only on start
 
 
 func _process(delta): # Function called every frame	
-	if Input.is_action_just_pressed("click") and isMouseOver:
+	if Input.is_action_just_pressed("click") and isMouseOver: # Click over a card with mouse
 		if isCardSelected: # Dropping the card
-			if currentPos == 0:
+			if currentPos == 0: # Wrong position
 				global_position = old_position
-			else:
+			elif GameController.lymph >= Cost: # Right position and enough lymph
 				global_position = new_position
+				GameController.lymph -= Cost		## DA FIXARE TOGLIE IL DOPPIO DEL MANA !!!!
 			isCardSelected = false
 		else: # Taking the card
 			old_position = global_position

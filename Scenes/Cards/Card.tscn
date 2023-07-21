@@ -35,6 +35,7 @@ size = Vector2(769, 1024)
 top_level = true
 scale = Vector2(0.06, 0.06)
 script = ExtResource("1_oo0sj")
+Cost = 1
 metadata/_edit_vertical_guides_ = [-222.0]
 metadata/_edit_group_ = true
 
