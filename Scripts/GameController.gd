@@ -19,10 +19,9 @@ func _ready():
 	
 	for i in 10: #da sistemare posizionamento nella mano
 		scene = load("res://Scenes/Cards/Card.tscn")
-		scene = preload("res://Scenes/Cards/Card.tscn")
 		var instance = scene.instantiate()
 		add_child(instance)
-		instance.position = Vector2(240 + (75*i), 520)
+		instance.position = Vector2(350 + (45*i), 520)
 
 
 func _process(delta):

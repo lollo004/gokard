@@ -1,42 +1,75 @@
-[gd_scene load_steps=2 format=3 uid="uid://d252ftuaio4r8"]
+[gd_scene load_steps=3 format=3 uid="uid://d252ftuaio4r8"]
 
 [ext_resource type="Script" path="res://Scripts/GameController.gd" id="1_pfy42"]
+[ext_resource type="PackedScene" uid="uid://haworbi8gah1" path="res://Scenes/Positioner.tscn" id="2_m0e23"]
 
 [node name="Game Controller" type="Control"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 960.0
-offset_bottom = 537.0
+anchor_right = 1.002
+anchor_bottom = 0.989
+offset_right = 0.079895
+offset_bottom = -0.0599976
 script = ExtResource("1_pfy42")
+
+[node name="Card Position" type="Node" parent="."]
+
+[node name="Player" type="Node" parent="Card Position"]
+
+[node name="Player Positioner 1" parent="Card Position/Player" groups=["1"] instance=ExtResource("2_m0e23")]
+position = Vector2(300, 350)
+
+[node name="Player Positioner 2" parent="Card Position/Player" groups=["2"] instance=ExtResource("2_m0e23")]
+position = Vector2(430, 350)
+
+[node name="Player Positioner 3" parent="Card Position/Player" groups=["3"] instance=ExtResource("2_m0e23")]
+position = Vector2(560, 350)
+
+[node name="Player Positioner 4" parent="Card Position/Player" groups=["4"] instance=ExtResource("2_m0e23")]
+position = Vector2(690, 350)
+
+[node name="Player Positioner 5" parent="Card Position/Player" groups=["5"] instance=ExtResource("2_m0e23")]
+position = Vector2(820, 350)
+
+[node name="Player Positioner 6" parent="Card Position/Player" groups=["6"] instance=ExtResource("2_m0e23")]
+position = Vector2(365, 450)
+
+[node name="Player Positioner 7" parent="Card Position/Player" groups=["7"] instance=ExtResource("2_m0e23")]
+position = Vector2(495, 450)
+
+[node name="Player Positioner 8" parent="Card Position/Player" groups=["8"] instance=ExtResource("2_m0e23")]
+position = Vector2(625, 450)
+
+[node name="Player Positioner 9" parent="Card Position/Player" groups=["9"] instance=ExtResource("2_m0e23")]
+position = Vector2(755, 450)
 
 [node name="GUI" type="Node" parent="."]
 
 [node name="Management" type="Node" parent="GUI"]
 
 [node name="Lymph Text" type="Label" parent="GUI/Management"]
-offset_left = 844.0
-offset_top = 53.0
-offset_right = 924.0
-offset_bottom = 79.0
+offset_left = 870.0
+offset_top = 60.0
+offset_right = 950.0
+offset_bottom = 90.0
 text = "Lymph: 10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Stress Text" type="Label" parent="GUI/Management"]
-offset_left = 842.0
-offset_top = 115.0
-offset_right = 922.0
-offset_bottom = 141.0
+offset_left = 863.0
+offset_top = 120.0
+offset_right = 943.0
+offset_bottom = 150.0
 text = "Stress: 5
 "
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Turn Button" type="Button" parent="GUI/Management"]
-offset_left = 835.0
-offset_top = 242.0
-offset_right = 937.0
-offset_bottom = 291.0
+offset_left = 865.0
+offset_top = 240.0
+offset_right = 945.0
+offset_bottom = 280.0
 text = "End Turn"
 
 [node name="Player" type="Node" parent="GUI"]
