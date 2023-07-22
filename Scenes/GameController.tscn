@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://d252ftuaio4r8"]
+[gd_scene load_steps=5 format=3 uid="uid://d252ftuaio4r8"]
 
 [ext_resource type="Script" path="res://Scripts/GameController.gd" id="1_pfy42"]
 [ext_resource type="PackedScene" uid="uid://haworbi8gah1" path="res://Scenes/Positioner.tscn" id="2_m0e23"]
-[ext_resource type="Script" path="res://Scripts/LymphText.gd" id="3_smsdr"]
-[ext_resource type="Script" path="res://Scripts/StressText.gd" id="4_by3xp"]
-[ext_resource type="Script" path="res://Scripts/TurnButton.gd" id="5_rxfln"]
+[ext_resource type="Script" path="res://Scripts/GUIManagement.gd" id="3_ows3f"]
+[ext_resource type="PackedScene" uid="uid://c3ccrckpghnpv" path="res://Scenes/TurnSelecter.tscn" id="6_uxtal"]
 
 [node name="Game Controller" type="Control" groups=["GameManager"]]
 layout_mode = 3
@@ -48,6 +47,7 @@ position = Vector2(755, 450)
 [node name="GUI" type="Node" parent="."]
 
 [node name="Management" type="Node" parent="GUI"]
+script = ExtResource("3_ows3f")
 
 [node name="Lymph Text" type="Label" parent="GUI/Management" groups=["Lymph"]]
 offset_left = 30.0
@@ -56,7 +56,6 @@ offset_right = 110.0
 offset_bottom = 250.0
 text = "Lymph: 10"
 vertical_alignment = 1
-script = ExtResource("3_smsdr")
 
 [node name="Stress Text" type="Label" parent="GUI/Management" groups=["Stress"]]
 offset_left = 30.0
@@ -66,7 +65,6 @@ offset_bottom = 310.0
 text = "Stress: 5
 "
 vertical_alignment = 1
-script = ExtResource("4_by3xp")
 
 [node name="Turn Button" type="Button" parent="GUI/Management" groups=["Turn"]]
 offset_left = 820.0
@@ -74,7 +72,10 @@ offset_top = 240.0
 offset_right = 948.0
 offset_bottom = 280.0
 text = "Opponent Turn"
-script = ExtResource("5_rxfln")
+
+[node name="TurnSelector" parent="GUI/Management" instance=ExtResource("6_uxtal")]
+visibility_layer = 7
+position = Vector2(500, 280)
 
 [node name="Player" type="Node" parent="GUI"]
 
@@ -116,4 +117,4 @@ text = "30"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="pressed" from="GUI/Management/Turn Button" to="GUI/Management/Turn Button" method="_on_pressed"]
+[connection signal="pressed" from="GUI/Management/Turn Button" to="GUI/Management" method="_on_turn_button_pressed"]

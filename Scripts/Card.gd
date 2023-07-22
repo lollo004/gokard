@@ -58,6 +58,7 @@ func _process(delta): # Function called every frame
 				and GameController.lymph >= Cost # Enough lymph 
 				and GameController.turn == "player" # Right turn
 				and GameController.phase == "attack" # Right phase
+				and GameController.turnType == "play" # RIght turn type
 				and Location == "hand" # Right card
 				and (Type == currentLoc or Type == "Versatile") # Right type
 				and GameController.stress > GameController.player_current_stress # Enough stress

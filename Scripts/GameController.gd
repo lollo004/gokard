@@ -9,15 +9,19 @@ extends Control
 @export var turn : String = "player"
 @export var phase : String = "defense"
 
+var current_max_lymph : int = 0
+
 var player_current_stress : int = 0
 var enemy_current_stress : int = 0
 
-var max_lymph : int = 0
-var max_stress : int = 0
+var max_lymph : int = 10
+var max_stress : int = 9
 
 var turnType : String = "" # Action to do in current turn (play, draw, lymph, stress)
 
 var player_hand = []
+
+var player_deck = []
 
 ### MAIN EVENTS ###
 
@@ -37,6 +41,9 @@ func _ready():
 		player_hand.append(instance)
 		
 	UpdateHand()
+	
+	get_tree().get_first_node_in_group("TurnManager").visible = true
+	current_max_lymph = lymph
 
 
 func _process(delta):
@@ -55,23 +62,28 @@ func TurnButtonPressed():
 			turn = "enemy"
 		else:
 			turn = "player"
+			get_tree().get_first_node_in_group("TurnManager").visible = true
+			lymph = current_max_lymph
 
 
 ### TURN MANAGEMEN FUNCTIONS ###
 
 
 func PlayCard():
-	turnType = "play"
-	pass #gioca una carta
+	if len(player_hand) > 0:
+		turnType = "play"
+		TurnButtonPressed()
 
 func DrawCard():
-	turnType = "draw"
-	DrawOneCard()
+	if len(player_deck) > 0:
+		turnType = "draw"
+		DrawOneCard()
 
 func AddLymph():
 	if lymph < max_lymph:
 		turnType = "lymph"
 		lymph += 1
+		current_max_lymph += 1
 
 func AddStress():
 	if stress < max_stress:
@@ -82,7 +94,9 @@ func AddStress():
 ### OTHER FUNCTIONS ###
 
 func DrawOneCard():
-	pass
+	if len(player_deck) > 0:
+		player_hand.append(player_deck[0])
+		player_deck.remove_at(0)
 
 func UpdateHand():
 	var i : int = 0
@@ -93,3 +107,6 @@ func UpdateHand():
 			item.global_position = Vector2((540 - ((len(player_hand) / 2) * 46)) + (46*i), 520)
 		else:
 			item.global_position = Vector2((520 - (((len(player_hand) - 1) / 2) * 46)) + (46*i), 520)
+
+func ShuffleDeck():
+	player_deck.shuffle()
