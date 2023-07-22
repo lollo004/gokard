@@ -53,11 +53,24 @@ func _ready(): # Function called only on start
 func _process(delta): # Function called every frame
 	if Input.is_action_just_pressed("click") and isMouseOver: # Click over a card with mouse
 		if isCardSelected: # Dropping the card
-			if currentPos != 0 and GameController.lymph >= Cost and GameController.turn == "player" and GameController.phase == "attack" and Location == "hand" and (Type == currentLoc or Type == "Versatile") and GameController.stress > GameController.player_current_stress: # Right position, right turn-phase and enough lymph
+			if (
+				currentPos != 0 # Right position
+				and GameController.lymph >= Cost # Enough lymph 
+				and GameController.turn == "player" # Right turn
+				and GameController.phase == "attack" # Right phase
+				and Location == "hand" # Right card
+				and (Type == currentLoc or Type == "Versatile") # Right type
+				and GameController.stress > GameController.player_current_stress # Enough stress
+				):
+				
 				Location = "field"
 				global_position = new_position
+				
 				GameController.lymph -= Cost
 				GameController.player_current_stress += 1
+				
+				GameController.player_hand.remove_at(GameController.player_hand.find(self))
+				GameController.UpdateHand()
 			else:
 				global_position = old_position
 			isCardSelected = false

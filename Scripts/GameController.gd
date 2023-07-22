@@ -17,6 +17,8 @@ var max_stress : int = 0
 
 var turnType : String = "" # Action to do in current turn (play, draw, lymph, stress)
 
+var player_hand = []
+
 ### MAIN EVENTS ###
 
 
@@ -24,11 +26,17 @@ func _ready():
 	var scene
 	var instance
 	
-	for i in 10: #da sistemare posizionamento nella mano
+	var number_of_cards = 10
+	
+	for i in number_of_cards:
 		scene = load("res://Scenes/Cards/Card.tscn")
+		
 		instance = scene.instantiate()
 		add_child(instance)
-		instance.global_position = Vector2(350 + (46*i), 520)
+		
+		player_hand.append(instance)
+		
+	UpdateHand()
 
 
 func _process(delta):
@@ -75,3 +83,13 @@ func AddStress():
 
 func DrawOneCard():
 	pass
+
+func UpdateHand():
+	var i : int = 0
+	
+	for item in player_hand:
+		i += 1
+		if len(player_hand) % 2 == 0:
+			item.global_position = Vector2((540 - ((len(player_hand) / 2) * 46)) + (46*i), 520)
+		else:
+			item.global_position = Vector2((520 - (((len(player_hand) - 1) / 2) * 46)) + (46*i), 520)
