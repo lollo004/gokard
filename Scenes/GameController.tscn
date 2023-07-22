@@ -20,31 +20,31 @@ stress = 2
 
 [node name="Player" type="Node" parent="Card Position"]
 
-[node name="Player Positioner 1" parent="Card Position/Player" groups=["1"] instance=ExtResource("2_m0e23")]
+[node name="Player Positioner 1" parent="Card Position/Player" groups=["1", "Attack"] instance=ExtResource("2_m0e23")]
 position = Vector2(300, 350)
 
-[node name="Player Positioner 2" parent="Card Position/Player" groups=["2"] instance=ExtResource("2_m0e23")]
+[node name="Player Positioner 2" parent="Card Position/Player" groups=["2", "Attack"] instance=ExtResource("2_m0e23")]
 position = Vector2(430, 350)
 
-[node name="Player Positioner 3" parent="Card Position/Player" groups=["3"] instance=ExtResource("2_m0e23")]
+[node name="Player Positioner 3" parent="Card Position/Player" groups=["3", "Attack"] instance=ExtResource("2_m0e23")]
 position = Vector2(560, 350)
 
-[node name="Player Positioner 4" parent="Card Position/Player" groups=["4"] instance=ExtResource("2_m0e23")]
+[node name="Player Positioner 4" parent="Card Position/Player" groups=["4", "Attack"] instance=ExtResource("2_m0e23")]
 position = Vector2(690, 350)
 
-[node name="Player Positioner 5" parent="Card Position/Player" groups=["5"] instance=ExtResource("2_m0e23")]
+[node name="Player Positioner 5" parent="Card Position/Player" groups=["5", "Attack"] instance=ExtResource("2_m0e23")]
 position = Vector2(820, 350)
 
-[node name="Player Positioner 6" parent="Card Position/Player" groups=["6"] instance=ExtResource("2_m0e23")]
+[node name="Player Positioner 6" parent="Card Position/Player" groups=["6", "Defense"] instance=ExtResource("2_m0e23")]
 position = Vector2(365, 450)
 
-[node name="Player Positioner 7" parent="Card Position/Player" groups=["7"] instance=ExtResource("2_m0e23")]
+[node name="Player Positioner 7" parent="Card Position/Player" groups=["7", "Defense"] instance=ExtResource("2_m0e23")]
 position = Vector2(495, 450)
 
-[node name="Player Positioner 8" parent="Card Position/Player" groups=["8"] instance=ExtResource("2_m0e23")]
+[node name="Player Positioner 8" parent="Card Position/Player" groups=["8", "Defense"] instance=ExtResource("2_m0e23")]
 position = Vector2(625, 450)
 
-[node name="Player Positioner 9" parent="Card Position/Player" groups=["9"] instance=ExtResource("2_m0e23")]
+[node name="Player Positioner 9" parent="Card Position/Player" groups=["9", "Defense"] instance=ExtResource("2_m0e23")]
 position = Vector2(755, 450)
 
 [node name="GUI" type="Node" parent="."]

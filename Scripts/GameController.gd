@@ -1,7 +1,7 @@
 extends Control
 
-
 ### GAME VALUES ###
+
 @export var player_healt : int = 30
 @export var enemy_healt : int = 30
 @export var lymph : int = 0
@@ -10,22 +10,19 @@ extends Control
 @export var phase : String = "defense"
 
 
-### OTHER VALUES ###
-var test = null
-
-
 func _ready():
 	var scene
+	var instance
 	
 	for i in 10: #da sistemare posizionamento nella mano
 		scene = load("res://Scenes/Cards/Card.tscn")
-		var instance = scene.instantiate()
+		instance = scene.instantiate()
 		add_child(instance)
 		instance.global_position = Vector2(350 + (45*i), 520)
 
 
 func _process(delta):
-	get_tree().get_first_node_in_group("Lymph")
+	pass
 
 
 ### PUBLIC FUNCTION ###

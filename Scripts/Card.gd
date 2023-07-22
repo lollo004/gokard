@@ -1,5 +1,4 @@
 extends Area2D
-#get_tree().call_group("Card", "babeje") promemoria utile per i gruppi
 
 ## Card Variables ##
 
@@ -19,12 +18,12 @@ extends Area2D
 @export var Effect : String = "" # Effect in game
 @export var Desription : String = "" # Lore
 
-@export var Type : String = "" # Type (attack - defense - all)
+@export var Type : String = "" # Type (attack - defense - versatile)
 
 ## Management Variables ##
 
 var Position : String = "" # Position on the field (1-9)
-var Location : String = "" # Location of the card (deck - hand - field - waste)
+var Location : String = "hand" # Location of the card (deck - hand - field - waste)
 
 ## Scale Variables ##
 
@@ -40,6 +39,7 @@ var isCardSelected : bool = false
 var currentPos : int = 0 # Current position on the field (0 => Invalid)
 var old_position # First position of the card
 var new_position # New position of the card
+var currentLoc : String = ""
 
 ### MAIN EVENTS ###
 
@@ -50,14 +50,15 @@ func _ready(): # Function called only on start
 	maxScale = sprite.scale * 2
 
 
-func _process(delta): # Function called every frame	
+func _process(delta): # Function called every frame
 	if Input.is_action_just_pressed("click") and isMouseOver: # Click over a card with mouse
 		if isCardSelected: # Dropping the card
-			if currentPos == 0: # Wrong position
-				global_position = old_position
-			elif GameController.lymph >= Cost: # Right position and enough lymph
+			if currentPos != 0 and GameController.lymph >= Cost and GameController.turn == "player" and GameController.phase == "attack" and Location == "hand" and (Type == currentLoc or Type == "Versatile"): # Right position, right turn-phase and enough lymph
+				Location = "field"
 				global_position = new_position
-				GameController.lymph -= Cost		## DA FIXARE TOGLIE IL DOPPIO DEL MANA !!!!
+				GameController.lymph -= Cost
+			else:
+				global_position = old_position
 			isCardSelected = false
 		else: # Taking the card
 			old_position = global_position
@@ -87,6 +88,7 @@ func _on_mouse_exited(): # Stop override with mouse
 func _on_area_entered(area):
 	if area.get_groups()[0] == "Positioner":
 		currentPos = int(String(area.get_groups()[1]))
+		currentLoc = String(area.get_groups()[2])
 		new_position = area.global_position
 
 
