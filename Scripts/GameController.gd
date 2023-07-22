@@ -9,6 +9,16 @@ extends Control
 @export var turn : String = "player"
 @export var phase : String = "defense"
 
+var player_current_stress : int = 0
+var enemy_current_stress : int = 0
+
+var max_lymph : int = 0
+var max_stress : int = 0
+
+var turnType : String = "" # Action to do in current turn (play, draw, lymph, stress)
+
+### MAIN EVENTS ###
+
 
 func _ready():
 	var scene
@@ -18,7 +28,7 @@ func _ready():
 		scene = load("res://Scenes/Cards/Card.tscn")
 		instance = scene.instantiate()
 		add_child(instance)
-		instance.global_position = Vector2(350 + (45*i), 520)
+		instance.global_position = Vector2(350 + (46*i), 520)
 
 
 func _process(delta):
@@ -39,4 +49,29 @@ func TurnButtonPressed():
 			turn = "player"
 
 
-### OTHER ### !
+### TURN MANAGEMEN FUNCTIONS ###
+
+
+func PlayCard():
+	turnType = "play"
+	pass #gioca una carta
+
+func DrawCard():
+	turnType = "draw"
+	DrawOneCard()
+
+func AddLymph():
+	if lymph < max_lymph:
+		turnType = "lymph"
+		lymph += 1
+
+func AddStress():
+	if stress < max_stress:
+		turnType = "stress"
+		stress += 1
+
+
+### OTHER FUNCTIONS ###
+
+func DrawOneCard():
+	pass
