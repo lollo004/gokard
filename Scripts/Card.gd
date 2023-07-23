@@ -20,6 +20,8 @@ extends Area2D
 
 @export var Type : String = "" # Type (attack - defense - versatile)
 
+@export var Team : String = "" # Team (player - enemy)
+
 ## Management Variables ##
 
 var Position : String = "" # Position on the field (1-9)
@@ -41,6 +43,12 @@ var old_position # First position of the card
 var new_position # New position of the card
 var currentLoc : String = ""
 
+## Attack Variables ##
+
+var isTargetSelected : bool = false
+var isEnemySelected : bool = false
+var isSearchingForEnemy : bool = false
+
 ### MAIN EVENTS ###
 
 
@@ -52,33 +60,45 @@ func _ready(): # Function called only on start
 
 func _process(delta): # Function called every frame
 	if Input.is_action_just_pressed("click") and isMouseOver: # Click over a card with mouse
-		if isCardSelected: # Dropping the card
-			if (
-				currentPos != 0 # Right position
-				and GameController.lymph >= Cost # Enough lymph 
-				and GameController.turn == "player" # Right turn
-				and GameController.phase == "attack" # Right phase
-				and GameController.turnType == "play" # RIght turn type
-				and Location == "hand" # Right card
-				and (Type == currentLoc or Type == "Versatile") # Right type
-				and GameController.stress > GameController.player_current_stress # Enough stress
-				):
-				
-				Location = "field"
-				global_position = new_position
-				
-				GameController.lymph -= Cost
-				GameController.player_current_stress += 1
-				
-				GameController.player_hand.remove_at(GameController.player_hand.find(self))
-				GameController.UpdateHand()
+		if Team == "player":
+			if isCardSelected: # Dropping the card
+				if (
+					currentPos != 0 # Right position
+					and GameController.lymph >= Cost # Enough lymph 
+					and GameController.turn == "player" # Right turn
+					and GameController.phase == "attack" # Right phase
+					and GameController.turnType == "play" # RIght turn type
+					and Location == "hand" # Right card
+					and (Type == currentLoc or Type == "Versatile") # Right type
+					and GameController.stress > GameController.player_current_stress # Enough stress
+					):
+					
+					Location = "field"
+					global_position = new_position
+					
+					GameController.lymph -= Cost
+					GameController.player_current_stress += 1
+					
+					GameController.player_hand.remove_at(GameController.player_hand.find(self))
+					GameController.UpdateHand()
+				else:
+					global_position = old_position
+				isCardSelected = false
 			else:
-				global_position = old_position
-			isCardSelected = false
-		else: # Taking the card
-			old_position = global_position
-			isCardSelected = true
-		
+				if Location == "hand": # Taking the card
+					old_position = global_position
+					isCardSelected = true
+				if Location == "field" and not isTargetSelected and not isSearchingForEnemy: # Selecting the card to attack
+					GameController.started_attack_card = self
+					isSearchingForEnemy = true
+					
+					var scene = load("res://Scenes/EnemyPointer.tscn")
+					var instance = scene.instantiate()
+					add_child(instance)
+				if Location == "field" and isTargetSelected and not isSearchingForEnemy: # Deselecting the card to attack
+					GameController.player_attacks.erase(self)
+					isTargetSelected = false
+	
 	if isCardSelected: # Drag
 		global_position = lerp(global_position, get_global_mouse_position(), 25 * delta)
 		sprite.scale = minScale
@@ -101,12 +121,33 @@ func _on_mouse_exited(): # Stop override with mouse
 
 
 func _on_area_entered(area):
-	if area.get_groups()[0] == "Positioner":
+	if area.get_groups()[0] == "Positioner" and not isSearchingForEnemy: # Dropping the card on a valid position
 		currentPos = int(String(area.get_groups()[1]))
 		currentLoc = String(area.get_groups()[2])
 		new_position = area.global_position
+	
+	if area.get_groups()[0] == "Pointer": # Getting selected by the pointer
+		if Team == "enemy":
+			GameController.selected_card_to_attack = self
 
 
 func _on_area_exited(area):
-	if area.get_groups()[0] == "Positioner":
+	if area.get_groups()[0] == "Positioner" and not isSearchingForEnemy: # Exiting by dropping the card on a valid position
 		currentPos = 0
+		
+	if area.get_groups()[0] == "Pointer": # Exiting by getting selected by the pointer
+		if Team == "enemy":
+			GameController.selected_card_to_attack = null
+
+
+### GROUP RELATED ASYNC SIGNALS ###
+
+
+func isAttackOk(flag, who): # Fuction called when a pointer is going to be deleted
+	if who == self:
+		if flag:
+			isTargetSelected = true
+		else:
+			isTargetSelected = false
+		isSearchingForEnemy = false
+
