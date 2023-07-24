@@ -27,6 +27,9 @@ extends Area2D
 var Position : String = "" # Position on the field (1-9)
 var Location : String = "hand" # Location of the card (deck - hand - field - waste)
 
+var isFirstTurn : bool = true # Variable used to disable the card on the first turn you play it
+var isEnabled : bool = false # Variable to check if a card is enabled and you can interact with it
+
 ## Scale Variables ##
 
 var minScale
@@ -41,13 +44,20 @@ var isCardSelected : bool = false
 var currentPos : int = 0 # Current position on the field (0 => Invalid)
 var old_position # First position of the card
 var new_position # New position of the card
-var currentLoc : String = ""
+var currentLoc : String = "" # Type on the field (attack - defense)
 
 ## Attack Variables ##
 
 var isTargetSelected : bool = false
-var isEnemySelected : bool = false
 var isSearchingForEnemy : bool = false
+
+## Defense Variables ##
+
+var isChooseDone : bool = false
+var isChoosingToDefend : bool = false
+
+var actionDuringDefense : String = "" # The action that has been choosen to do when the defending turn is finished (defende - special)
+var isBlockedByAbility : bool = false # Variable to check if the card defended or uses special
 
 ### MAIN EVENTS ###
 
@@ -59,8 +69,8 @@ func _ready(): # Function called only on start
 
 
 func _process(delta): # Function called every frame
-	if Input.is_action_just_pressed("click") and isMouseOver: # Click over a card with mouse
-		if Team == "player":
+	if Input.is_action_just_pressed("click") and isMouseOver and isEnabled: # Click over a card with mouse
+		if Team == "player" and GameController.turn == "player":
 			if isCardSelected: # Dropping the card
 				if (
 					currentPos != 0 # Right position
@@ -88,18 +98,34 @@ func _process(delta): # Function called every frame
 				if Location == "hand": # Taking the card
 					old_position = global_position
 					isCardSelected = true
-				if Location == "field" and not isTargetSelected and not isSearchingForEnemy: # Selecting the card to attack
+				if Location == "field" and not isTargetSelected and not isSearchingForEnemy and GameController.phase == "attack" and currentLoc == "Attack" and not isFirstTurn: # Selecting the card to attack
 					GameController.started_attack_card = self
 					isSearchingForEnemy = true
 					
-					var scene = load("res://Scenes/EnemyPointer.tscn")
+					var scene = load("res://Scenes/RuntimeScenes/EnemyPointer.tscn")
 					var instance = scene.instantiate()
 					add_child(instance)
-				if Location == "field" and isTargetSelected and not isSearchingForEnemy: # Deselecting the card to attack
+					
+					get_tree().call_group("Deactivable", "Enable", false)
+				if Location == "field" and isTargetSelected and not isSearchingForEnemy and GameController.phase == "attack" and currentLoc == "Attack" and not isFirstTurn: # Deselecting the card to attack
 					GameController.player_attacks.erase(self)
 					isTargetSelected = false
+				if Location == "field" and not isChooseDone and not isChoosingToDefend and GameController.phase == "defense" and currentLoc == "Defense" and not isFirstTurn: # Choosing what to do with the card
+					GameController.started_defende_card = self
+					isChoosingToDefend = true
+					
+					var scene = load("res://Scenes/RuntimeScenes/DefenseChoosing.tscn")
+					var instance = scene.instantiate()
+					add_child(instance)
+					
+					get_tree().call_group("Deactivable", "Enable", false)
+					instance.global_position = global_position
+				if Location == "field" and isChooseDone and not isChoosingToDefend and GameController.phase == "defense" and currentLoc == "Defense" and not isFirstTurn: # Cancel choose on the card
+					GameController.player_defends.erase(self)
+					isChooseDone = false
+				
 	
-	if isCardSelected: # Drag
+	if isCardSelected and isEnabled: # Drag
 		global_position = lerp(global_position, get_global_mouse_position(), 25 * delta)
 		sprite.scale = minScale
 
@@ -121,33 +147,64 @@ func _on_mouse_exited(): # Stop override with mouse
 
 
 func _on_area_entered(area):
-	if area.get_groups()[0] == "Positioner" and not isSearchingForEnemy: # Dropping the card on a valid position
-		currentPos = int(String(area.get_groups()[1]))
-		currentLoc = String(area.get_groups()[2])
-		new_position = area.global_position
-	
-	if area.get_groups()[0] == "Pointer": # Getting selected by the pointer
-		if Team == "enemy":
-			GameController.selected_card_to_attack = self
+	if area.get_groups():
+		if area.get_groups()[0] == "Positioner" and not isSearchingForEnemy and not isChoosingToDefend: # Dropping the card on a valid position
+			currentPos = int(String(area.get_groups()[1]))
+			currentLoc = String(area.get_groups()[2])
+			new_position = area.global_position
+		
+		if area.get_groups()[0] == "Pointer": # Getting selected by the pointer
+			if Team == "enemy":
+				GameController.selected_card_to_attack = self
 
 
 func _on_area_exited(area):
-	if area.get_groups()[0] == "Positioner" and not isSearchingForEnemy: # Exiting by dropping the card on a valid position
-		currentPos = 0
-		
-	if area.get_groups()[0] == "Pointer": # Exiting by getting selected by the pointer
-		if Team == "enemy":
-			GameController.selected_card_to_attack = null
+	if area.get_groups():
+		if area.get_groups()[0] == "Positioner" and not isSearchingForEnemy and not isChoosingToDefend: # Exiting by dropping the card on a valid position
+			currentPos = 0
+			
+		if area.get_groups()[0] == "Pointer": # Exiting by getting selected by the pointer
+			if Team == "enemy":
+				GameController.selected_card_to_attack = null
 
 
 ### GROUP RELATED ASYNC SIGNALS ###
 
 
-func isAttackOk(flag, who): # Fuction called when a pointer is going to be deleted
+func Enable(flag : bool): # Function called when a menu is appearing or disappearing
+	isEnabled = flag
+
+
+func isAttackOk(flag : bool, who): # Fuction called when a pointer is going to be deleted
 	if who == self:
 		if flag:
 			isTargetSelected = true
 		else:
 			isTargetSelected = false
 		isSearchingForEnemy = false
+
+
+func isDefenseOk(who, what : String): # Fuction called when you choose what to do with a defender card
+	if who == self:
+		if what != "":
+			isChooseDone = true
+			actionDuringDefense = what
+		else:
+			isChooseDone = false
+		isChoosingToDefend = false
+
+
+func onTurnBegin(who): # Function called on turn start (who = player / enemy)
+	if Team == who:
+		if Location == "field":
+			isFirstTurn = false
+		
+		if actionDuringDefense == "defende": #Toggle the block on turn start
+			isBlockedByAbility = false
+
+
+func onPhaseBegin(who): # Function called on attack phase start (who = player / enemy)
+	if Team == who:
+		if actionDuringDefense == "special": #Toggle the block on phase start
+			isBlockedByAbility = false
 

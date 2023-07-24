@@ -31,7 +31,7 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yvtci"]
 size = Vector2(769, 1024)
 
-[node name="Card" type="Area2D" groups=["Card"]]
+[node name="Card" type="Area2D" groups=["Card", "Deactivable"]]
 top_level = true
 visibility_layer = 3
 z_index = 1

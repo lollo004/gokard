@@ -22,6 +22,8 @@ var turnType : String = "" # Action to do in current turn (play, draw, lymph, st
 var player_hand = []
 var player_deck = []
 
+var isScreenTaken = true # Variable to check if you can interact with buttons
+
 ## Attack Variables ##
 
 var started_attack_card # the card that is attacing
@@ -30,6 +32,13 @@ var selected_card_to_attack # the card that is selected by the pointer
 var player_attacks = {} # Dict with who is attacing who (attacker_pos : defender_pos)
 var enemy_attacks = {} # Dict with who is attacing who (attacker_pos : defender_pos)
 
+## Defende Variables ##
+
+var started_defende_card # the card that is choosing to defende or not
+
+var player_defends = [] # List with who is defending
+var enemy_defends = [] # List with who is defending
+
 ### MAIN EVENTS ###
 
 
@@ -37,17 +46,19 @@ func _ready():
 	var scene
 	var instance
 	
-	var number_of_cards = 10
-	
-	for i in number_of_cards:
+	for i in 30:
 		scene = load("res://Scenes/Cards/Card.tscn")
 		instance = scene.instantiate()
-		
-		add_child(instance)
-		
 		instance.Team = "player"
 		
-		player_hand.append(instance)
+		player_deck.append(instance)
+	
+	var number_of_cards = 9
+	
+	for i in number_of_cards:
+		add_child(player_deck[i])
+		player_hand.append(player_deck[i])
+		player_deck.remove_at(i)
 		
 	UpdateHand()
 	
@@ -63,16 +74,28 @@ func _process(delta):
 
 
 func TurnButtonPressed():
-	if phase == "defense":
-		phase = "attack"
-	else:
+	if turn == "enemy" and phase == "attack":
+		turn = "player"
 		phase = "defense"
-		if turn == "player":
-			turn = "enemy"
-		else:
-			turn = "player"
-			get_tree().get_first_node_in_group("TurnManager").visible = true
-			lymph = current_max_lymph
+		get_tree().call_group("Card", "onTurnBegin", "player")
+		
+		get_tree().get_first_node_in_group("TurnManager").visible = true
+		get_tree().call_group("Deactivable", "Enable", false)
+		
+		lymph = current_max_lymph
+	
+	elif turn == "player" and phase == "defense":
+		phase = "attack"
+		get_tree().call_group("Card", "onPhaseBegin", "player")
+	
+	elif turn == "player" and phase == "attack":
+		turn = "enemy"
+		phase = "defense"
+		get_tree().call_group("Card", "onTurnBegin", "enemy")
+	
+	elif turn == "enemy" and phase == "defense":
+		phase = "attack"
+		get_tree().call_group("Card", "onPhaseBegin", "enemy")
 
 
 ### TURN MANAGEMEN FUNCTIONS ###
@@ -81,12 +104,12 @@ func TurnButtonPressed():
 func PlayCard():
 	if len(player_hand) > 0:
 		turnType = "play"
-		TurnButtonPressed()
 
 func DrawCard():
-	if len(player_deck) > 0:
+	if len(player_deck) > 0 and len(player_hand) < 10:
 		turnType = "draw"
 		DrawOneCard()
+		UpdateHand()
 
 func AddLymph():
 	if lymph < max_lymph:
@@ -103,9 +126,10 @@ func AddStress():
 ### OTHER FUNCTIONS ###
 
 func DrawOneCard():
-	if len(player_deck) > 0:
-		player_hand.append(player_deck[0])
-		player_deck.remove_at(0)
+	if len(player_deck) > 0 and len(player_hand) < 10:
+		player_hand.append(player_deck[-1])
+		add_child(player_deck[-1])
+		player_deck.remove_at(player_deck.size() - 1)
 
 func UpdateHand():
 	var i : int = 0
@@ -119,3 +143,7 @@ func UpdateHand():
 
 func ShuffleDeck():
 	player_deck.shuffle()
+
+func Enable(flag : bool): # Function called when a menu is appearing or disappearing
+	isScreenTaken = not flag
+

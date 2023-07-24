@@ -8,6 +8,8 @@ func _process(delta):
 			get_tree().call_group("Card", "isAttackOk", true, GameController.started_attack_card)
 		else: # Otherwise deselect the target
 			get_tree().call_group("Card", "isAttackOk", false, GameController.started_attack_card)
+		get_tree().call_group("Deactivable", "Enable", true)
 		queue_free() # Delete the object at the end of selection or deselection
 		
 	global_position = lerp(global_position, get_global_mouse_position(), 25 * delta) # Move pointer with mouse
+

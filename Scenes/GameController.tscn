@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bp6kelnxloeu" path="res://Scenes/Cards/Card.tscn" id="5_h3syu"]
 [ext_resource type="PackedScene" uid="uid://c3ccrckpghnpv" path="res://Scenes/TurnSelecter.tscn" id="6_uxtal"]
 
-[node name="Game Controller" type="Control" groups=["GameManager"]]
+[node name="Game Controller" type="Control" groups=["Deactivable", "GameManager"]]
 layout_mode = 3
 anchor_right = 1.002
 anchor_bottom = 0.989
@@ -69,7 +69,7 @@ text = "Stress: 5
 "
 vertical_alignment = 1
 
-[node name="Turn Button" type="Button" parent="GUI/Management" groups=["Turn"]]
+[node name="Turn Button" type="Button" parent="GUI/Management" groups=["Deactivable", "Turn"]]
 offset_left = 820.0
 offset_top = 240.0
 offset_right = 948.0

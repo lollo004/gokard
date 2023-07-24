@@ -18,4 +18,6 @@ func _process(delta):
 
 
 func _on_turn_button_pressed():
-	GameController.TurnButtonPressed()
+	if not GameController.isScreenTaken:
+		GameController.TurnButtonPressed()
+

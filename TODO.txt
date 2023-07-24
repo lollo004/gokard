@@ -1,3 +1,6 @@
-Deck creation !!
-Screen based card positioning
-Animations
+Deck creation
+Screen size based card positioning
+Animations and feedbacks
+
+
+"personal script in a new node made properly, and with determinates groups"
