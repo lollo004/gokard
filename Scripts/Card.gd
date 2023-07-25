@@ -7,7 +7,7 @@ extends Area2D
 @export var Speed : int = 0
 @export var Weight : int = 0
 
-@export var Cost : int = 0
+@export var Cost : int = 0 # Lymph cost
 
 @export var id : int = 0 # Univoc id to represent the card
 
@@ -16,7 +16,7 @@ extends Area2D
 @export var Nature : String = "" # Nature (aggressive - normal - pacifist)
 
 @export var Effect : String = "" # Effect in game
-@export var Desription : String = "" # Lore
+@export var Description : String = "" # Lore
 
 @export var Type : String = "" # Type (attack - defense - versatile)
 
@@ -63,12 +63,16 @@ var isBlockedByAbility : bool = false # Variable to check if the card defended o
 
 
 func _ready(): # Function called only on start
-	sprite = $AnimatedSprite2D
+	for x in self.get_children():
+		if "Border" in x.get_groups():
+			sprite = x
+	
 	minScale = sprite.scale
 	maxScale = sprite.scale * 2
 
 
 func _process(delta): # Function called every frame
+	## Click Related Functions
 	if Input.is_action_just_pressed("click") and isMouseOver and isEnabled: # Click over a card with mouse
 		if Team == "player" and GameController.turn == "player":
 			if isCardSelected: # Dropping the card
@@ -123,11 +127,38 @@ func _process(delta): # Function called every frame
 				if Location == "field" and isChooseDone and not isChoosingToDefend and GameController.phase == "defense" and currentLoc == "Defense" and not isFirstTurn: # Cancel choose on the card
 					GameController.player_defends.erase(self)
 					isChooseDone = false
-				
 	
+	## Move Card With Mouse
 	if isCardSelected and isEnabled: # Drag
 		global_position = lerp(global_position, get_global_mouse_position(), 25 * delta)
 		sprite.scale = minScale
+	
+	## Update Card GUI
+	var all_children = get_all_children(self)
+	
+	for i in all_children:
+		if "Health" in i.get_groups():
+			i.text = str(Health)
+		if "Attack" in i.get_groups():
+			i.text = str(Attack)
+		if "Speed" in i.get_groups():
+			i.text = str(Speed)
+		if "Weight" in i.get_groups():
+			i.text = str(Weight)
+		if "Cost" in i.get_groups():
+			i.text = str(Cost)
+		if "Name" in i.get_groups():
+			i.text = Name
+		if "Race" in i.get_groups():
+			i.text = Race
+		if "Nature" in i.get_groups():
+			i.text = Nature
+		if "Effect" in i.get_groups():
+			i.text = Effect
+		if "Description" in i.get_groups():
+			i.text = Description
+		if "Type" in i.get_groups():
+			i.text = Type
 
 
 ### MOUSE EVENTS ###
@@ -166,6 +197,16 @@ func _on_area_exited(area):
 		if area.get_groups()[0] == "Pointer": # Exiting by getting selected by the pointer
 			if Team == "enemy":
 				GameController.selected_card_to_attack = null
+
+
+### OTHER FUNCTIONS ###
+
+
+func get_all_children(in_node, arr:=[]):
+	arr.push_back(in_node)
+	for child in in_node.get_children():
+		arr = get_all_children(child,arr)
+	return arr
 
 
 ### GROUP RELATED ASYNC SIGNALS ###

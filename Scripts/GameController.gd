@@ -43,11 +43,14 @@ var enemy_defends = [] # List with who is defending
 
 
 func _ready():
+	## RANDOM HAND GEN ##
 	var scene
 	var instance
 	
 	for i in 30:
-		scene = load("res://Scenes/Cards/Card.tscn")
+		var rng = RandomNumberGenerator.new()
+		var number = rng.randf_range(1, 4)
+		scene = load("res://Scenes/Cards/Card"+str(int(number))+".tscn")
 		instance = scene.instantiate()
 		instance.Team = "player"
 		
@@ -61,6 +64,7 @@ func _ready():
 		player_deck.remove_at(i)
 		
 	UpdateHand()
+	## RANDOM HAND GEN ##
 	
 	get_tree().get_first_node_in_group("TurnManager").visible = true
 	current_max_lymph = lymph
@@ -137,9 +141,9 @@ func UpdateHand():
 	for item in player_hand:
 		i += 1
 		if len(player_hand) % 2 == 0:
-			item.global_position = Vector2((540 - ((len(player_hand) / 2) * 46)) + (46*i), 520)
+			item.global_position = Vector2((540 - ((len(player_hand) / 2) * 47)) + (46*i), 520)
 		else:
-			item.global_position = Vector2((520 - (((len(player_hand) - 1) / 2) * 46)) + (46*i), 520)
+			item.global_position = Vector2((520 - (((len(player_hand) - 1) / 2) * 47)) + (46*i), 520)
 
 func ShuffleDeck():
 	player_deck.shuffle()

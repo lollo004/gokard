@@ -1,0 +1,4 @@
+Id	Name			Race		Attack/Health/Speed/Weight	Cost	Type		Effect
+#1	golden knight	human		1	2	4	72		1	attack	*
+#2	tower's guardian	human		2	2	3	56		1	defense	*
+#3	angry barbarian	human		2	1	3	86		1	versatile	*
