@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://c3ccrckpghnpv"]
 
-[ext_resource type="Texture2D" uid="uid://c0u7glixghqkr" path="res://Resources/TurnSelector.png" id="1_ie0c4"]
+[ext_resource type="Texture2D" uid="uid://dbu1lpx484grs" path="res://Resources/TurnSelector.png" id="1_ie0c4"]
 [ext_resource type="Script" path="res://Scripts/TurnSelecter.gd" id="1_vmxut"]
 [ext_resource type="Script" path="res://Scripts/TurnButtonGUIManager.gd" id="1_y8oyk"]
 

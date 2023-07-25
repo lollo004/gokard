@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://c2cunjvpu6uoa"]
 
-[ext_resource type="Texture2D" uid="uid://c0u7glixghqkr" path="res://Resources/TurnSelector.png" id="1_hl62r"]
+[ext_resource type="Texture2D" uid="uid://8ifvl8oyqb3u" path="res://Resources/TurnSelector.png" id="1_hl62r"]
 [ext_resource type="Script" path="res://Scripts/ChooseDefense.gd" id="1_rhbr8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_umrwd"]

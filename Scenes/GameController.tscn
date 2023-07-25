@@ -130,7 +130,12 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Enemy Test Card" parent="." instance=ExtResource("5_h3syu")]
-position = Vector2(383, 167)
+position = Vector2(379, 163)
+Health = 1
+Attack = 1
+Speed = 1
+Weight = 1
+Name = "Test"
 Team = "enemy"
 
 [connection signal="pressed" from="GUI/Management/Turn Button" to="GUI/Management" method="_on_turn_button_pressed"]

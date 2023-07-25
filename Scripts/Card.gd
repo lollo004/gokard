@@ -112,9 +112,9 @@ func _process(delta): # Function called every frame
 					
 					get_tree().call_group("Deactivable", "Enable", false)
 				if Location == "field" and isTargetSelected and not isSearchingForEnemy and GameController.phase == "attack" and currentLoc == "Attack" and not isFirstTurn: # Deselecting the card to attack
-					GameController.player_attacks.erase(self)
+					GameController.CancelAttack(self)
 					isTargetSelected = false
-				if Location == "field" and not isChooseDone and not isChoosingToDefend and GameController.phase == "defense" and currentLoc == "Defense" and not isFirstTurn: # Choosing what to do with the card
+				if Location == "field" and not isChooseDone and not isChoosingToDefend and GameController.phase == "defense" and currentLoc == "Defense" and not isFirstTurn and not isBlockedByAbility: # Choosing what to do with the card
 					GameController.started_defende_card = self
 					isChoosingToDefend = true
 					
@@ -124,8 +124,8 @@ func _process(delta): # Function called every frame
 					
 					get_tree().call_group("Deactivable", "Enable", false)
 					instance.global_position = global_position
-				if Location == "field" and isChooseDone and not isChoosingToDefend and GameController.phase == "defense" and currentLoc == "Defense" and not isFirstTurn: # Cancel choose on the card
-					GameController.player_defends.erase(self)
+				if Location == "field" and isChooseDone and not isChoosingToDefend and GameController.phase == "defense" and currentLoc == "Defense" and not isFirstTurn and not isBlockedByAbility: # Cancel choose on the card
+					GameController.CancelDefense(self)
 					isChooseDone = false
 	
 	## Move Card With Mouse
@@ -216,7 +216,7 @@ func Enable(flag : bool): # Function called when a menu is appearing or disappea
 	isEnabled = flag
 
 
-func isAttackOk(flag : bool, who): # Fuction called when a pointer is going to be deleted
+func isAttackOk(who, flag : bool): # Fuction called when a pointer is going to be deleted
 	if who == self:
 		if flag:
 			isTargetSelected = true
@@ -233,6 +233,11 @@ func isDefenseOk(who, what : String): # Fuction called when you choose what to d
 		else:
 			isChooseDone = false
 		isChoosingToDefend = false
+
+
+func DefenseDone(who, flag : bool): # Function used to communicate with the card if he defended or not
+	if who == self:
+		pass
 
 
 func onTurnBegin(who): # Function called on turn start (who = player / enemy)

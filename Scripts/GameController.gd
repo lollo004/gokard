@@ -91,6 +91,8 @@ func TurnButtonPressed():
 	elif turn == "player" and phase == "defense":
 		phase = "attack"
 		get_tree().call_group("Card", "onPhaseBegin", "player")
+		
+		ManagePlayerDefense()
 	
 	elif turn == "player" and phase == "attack":
 		turn = "enemy"
@@ -100,6 +102,8 @@ func TurnButtonPressed():
 	elif turn == "enemy" and phase == "defense":
 		phase = "attack"
 		get_tree().call_group("Card", "onPhaseBegin", "enemy")
+		
+		ManageEnemyDefense()
 
 
 ### TURN MANAGEMEN FUNCTIONS ###
@@ -129,6 +133,8 @@ func AddStress():
 
 ### OTHER FUNCTIONS ###
 
+# Deck #
+
 func DrawOneCard():
 	if len(player_deck) > 0 and len(player_hand) < 10:
 		player_hand.append(player_deck[-1])
@@ -147,6 +153,119 @@ func UpdateHand():
 
 func ShuffleDeck():
 	player_deck.shuffle()
+
+# Attack and Defense #
+
+func AttackResult(flag : bool): # Function called when an attack is confirmed or not setted
+	if flag:
+		player_attacks[started_attack_card] = selected_card_to_attack
+		started_attack_card = null
+		selected_card_to_attack = null
+	else:
+		started_attack_card = null
+		selected_card_to_attack = null
+
+func CancelAttack(who): # Function called when an attack is cancelled
+	player_attacks.erase(who)
+
+func DefenseResult(flag : bool): # Function called when a defense is confirmed or not setted
+	if flag:
+		player_defends.append(started_defende_card)
+		started_defende_card = null
+	else:
+		started_defende_card = null
+
+func CancelDefense(who): # Function called when a defense is cancelled
+	player_defends.erase(who)
+
+func ManagePlayerDefense(): # Function that contains player defense system
+	pass
+
+func ManageEnemyDefense(): # Function that contains player defense system
+	if player_attacks.size() > 0:
+		if player_attacks.size() > enemy_defends.size():
+			var slowests = []
+			var targets = []
+			
+			while player_attacks.size() > enemy_defends.size():
+				var first_obj = true
+				for i in player_attacks: #iterate all the attackers
+					if first_obj:
+						slowests.append(i)
+					elif i.Speed <= slowests[-1].Speed:
+						if i.Speed == slowests[-1].Speed:
+							if i.Weight > slowests[-1].Weight:
+								slowests[-1] = i
+						else:
+							slowests[-1] = i
+					first_obj = false
+				
+				targets.append(player_attacks[slowests[-1]]) #remember his target
+				player_attacks.erase(slowests) #remove the slowest (it will be the last attacker)
+				
+			EnemyDefense()
+			
+			var x = 0
+			while x < len(slowests):
+				Fight(slowests[x], targets[x])
+				x += 1
+			
+		elif enemy_defends.size() > player_attacks.size(): # if there are more defenders that attackers then remove the slowest
+			while enemy_defends.size() > player_attacks.size():
+				var slowest = null
+				
+				for i in enemy_defends: #iterate all the defenders
+					if not slowest:
+						slowest = i
+					elif i.Speed <= slowest.Speed:
+						if i.Speed == slowest.Speed:
+							if i.Weight > slowest.Weight:
+								slowest = i
+						else:
+							slowest = i
+				
+				enemy_defends.erase(slowest) #remove the slowest
+				
+			EnemyDefense()
+		else:
+			EnemyDefense()
+
+func EnemyDefense():
+	var n_times = player_attacks.size()
+	
+	for n in n_times: # used only to make this operation for every attacker
+		var quicker_attacker
+		var quicker_defender
+		
+		for i in player_attacks: #iterate all the attackers
+			if not quicker_attacker:
+				quicker_attacker = i
+			elif i.Speed >= quicker_attacker.Speed:
+				if i.Speed == quicker_attacker.Speed:
+					if i.Weight < quicker_attacker.Weight:
+						quicker_attacker = i
+				else:
+					quicker_attacker = i
+		
+		for i in enemy_defends: #iterate all the defenders
+			if not quicker_defender:
+				quicker_defender = i
+			elif i.Speed >= quicker_defender.Speed:
+				if i.Speed == quicker_defender.Speed:
+					if i.Weight < quicker_defender.Weight:
+						quicker_defender = i
+				else:
+					quicker_defender = i
+		
+		player_attacks.erase(quicker_attacker) #remove faster from the attackers
+		player_defends.erase(quicker_defender) #remove faster from the defenders
+		
+		Fight(quicker_attacker, quicker_defender) #let's fight
+
+func Fight(attacker, defender):
+	print("Fight --> " + attacker.Name + " vs " + defender.Name)
+
+# Management #
 
 func Enable(flag : bool): # Function called when a menu is appearing or disappearing
 	isScreenTaken = not flag
