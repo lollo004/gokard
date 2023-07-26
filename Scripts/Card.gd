@@ -160,6 +160,10 @@ func _process(delta): # Function called every frame
 			i.text = Description
 		if "Type" in i.get_groups():
 			i.text = Type
+	
+	# Check Card Health
+	if Health <= 0:
+		queue_free()
 
 
 ### MOUSE EVENTS ###
@@ -262,8 +266,8 @@ func onPhaseBegin(team): # Function called on attack phase start (team = player 
 
 
 func AttackEnemy(enemy): # Function called when the card has to attack another one
-	pass
+	enemy.Health -= Attack
 
 
 func ProtectByEnemy(enemy): # Function called when the card has to defende by another one
-	pass
+	enemy.Health -= Attack

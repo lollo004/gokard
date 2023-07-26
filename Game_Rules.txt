@@ -1,0 +1,16 @@
+When the turn starts you can choose between 4 different choices:
+ - play a card
+ - draw a card
+ - add 1 of lymph
+ - add 1 of stress
+
+Then the turn will be divided in two phases, defense and attack.
+
+During the defense phase you can select which of your defensive card will be used to defende, to use their special power or to don't do nothing.
+If you use the special power it will be activated when the attack phase starts and you will not be able to do nothing on your next turn.
+
+During the attack phase you can select which of your attacker card will be used to attack the enemy and every attacker will select an enemy that will be attacked when the enemy defense phase ends.
+
+When you choose to defende with a card you will change the target of the enemy attackers and the fastest attacker will fight your fastest defender, but if you don't use enought defender to defend from the attack the attacker will attack their originary target.
+ 
+The faster card is the one that have the higher stat of speed and in case of parity it will be considered the lower weight.

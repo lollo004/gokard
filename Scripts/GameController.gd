@@ -210,8 +210,8 @@ func ManageEnemyDefense(): # Function that contains player defense system
 			slowests.reverse()
 			targets.reverse()
 			
-			while x < len(slowests):
-				Fight(slowests[x], targets[x])
+			while x < len(slowests): #attackers attack the desired target
+				Fight(slowests[x], targets[x], false)
 				x += 1
 			
 		elif enemy_defends.size() > player_attacks.size(): # if there are more defenders that attackers then remove the slowest
@@ -264,12 +264,16 @@ func EnemyDefense():
 		player_attacks.erase(quicker_attacker) #remove faster from the attackers
 		player_defends.erase(quicker_defender) #remove faster from the defenders
 		
-		Fight(quicker_attacker, quicker_defender) #let's fight
+		Fight(quicker_attacker, quicker_defender, true) #let's fight
 
-func Fight(attacker, defender):
-	print("Fight --> " + attacker.Name + " vs " + defender.Name)
-	attacker.AttackEnemy(defender)
-	defender.ProtectByEnemy(attacker)
+func Fight(attacker, defender, canDefend : bool):
+	attacker.AttackEnemy(defender) #attacker attack the defender
+	
+	if canDefend:
+		print("Fight --> " + attacker.Name + " vs " + defender.Name + " (defending himself)")
+		defender.ProtectByEnemy(attacker) #defender protect himself only if the proprietary decided to defend
+	else:
+		print("Fight --> " + attacker.Name + " vs " + defender.Name + " (without defending himself)")
 
 # Management #
 
