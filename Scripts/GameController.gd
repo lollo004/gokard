@@ -147,9 +147,9 @@ func UpdateHand():
 	for item in player_hand:
 		i += 1
 		if len(player_hand) % 2 == 0:
-			item.global_position = Vector2((540 - ((len(player_hand) / 2) * 47)) + (46*i), 520)
+			item.global_position = Vector2((540 - ((len(player_hand) / 2) * 48)) + (46*i), 520)
 		else:
-			item.global_position = Vector2((520 - (((len(player_hand) - 1) / 2) * 47)) + (46*i), 520)
+			item.global_position = Vector2((520 - (((len(player_hand) - 1) / 2) * 48)) + (46*i), 520)
 
 func ShuffleDeck():
 	player_deck.shuffle()
@@ -189,6 +189,7 @@ func ManageEnemyDefense(): # Function that contains player defense system
 			
 			while player_attacks.size() > enemy_defends.size():
 				var first_obj = true
+				
 				for i in player_attacks: #iterate all the attackers
 					if first_obj:
 						slowests.append(i)
@@ -201,11 +202,14 @@ func ManageEnemyDefense(): # Function that contains player defense system
 					first_obj = false
 				
 				targets.append(player_attacks[slowests[-1]]) #remember his target
-				player_attacks.erase(slowests) #remove the slowest (it will be the last attacker)
-				
+				player_attacks.erase(slowests[-1]) #remove the slowest (it will be the last attacker)
+			
 			EnemyDefense()
 			
 			var x = 0
+			slowests.reverse()
+			targets.reverse()
+			
 			while x < len(slowests):
 				Fight(slowests[x], targets[x])
 				x += 1
@@ -264,6 +268,8 @@ func EnemyDefense():
 
 func Fight(attacker, defender):
 	print("Fight --> " + attacker.Name + " vs " + defender.Name)
+	attacker.AttackEnemy(defender)
+	defender.ProtectByEnemy(attacker)
 
 # Management #
 

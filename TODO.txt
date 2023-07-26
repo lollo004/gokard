@@ -1,9 +1,7 @@
-attack and defense system !!
-
 Deck creation
 Screen size based card positioning
 Animations and feedbacks
 
-Nature ideas working
+Nature ideas working ?
 
 "personal script in a new node made properly, and with determinates groups"

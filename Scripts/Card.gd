@@ -58,6 +58,7 @@ var isChoosingToDefend : bool = false
 
 var actionDuringDefense : String = "" # The action that has been choosen to do when the defending turn is finished (defende - special)
 var isBlockedByAbility : bool = false # Variable to check if the card defended or uses special
+var hasAbilityBeenUsedThisTurn : bool = false # Variable to check if the card defended or uses special
 
 ### MAIN EVENTS ###
 
@@ -227,30 +228,42 @@ func isAttackOk(who, flag : bool): # Fuction called when a pointer is going to b
 
 func isDefenseOk(who, what : String): # Fuction called when you choose what to do with a defender card
 	if who == self:
-		if what != "":
+		if what == "defende" or what == "special":
 			isChooseDone = true
+			hasAbilityBeenUsedThisTurn = true
 			actionDuringDefense = what
 		else:
 			isChooseDone = false
+			hasAbilityBeenUsedThisTurn = false
+			actionDuringDefense = ""
 		isChoosingToDefend = false
 
 
-func DefenseDone(who, flag : bool): # Function used to communicate with the card if he defended or not
-	if who == self:
-		pass
-
-
-func onTurnBegin(who): # Function called on turn start (who = player / enemy)
-	if Team == who:
+func onTurnBegin(team): # Function called on turn start (team = player / enemy)
+	if Team == team:
 		if Location == "field":
 			isFirstTurn = false
+			isTargetSelected = false #attack
+			isChooseDone = false #defense
 		
 		if actionDuringDefense == "defende": #Toggle the block on turn start
 			isBlockedByAbility = false
+			hasAbilityBeenUsedThisTurn = false
 
 
-func onPhaseBegin(who): # Function called on attack phase start (who = player / enemy)
-	if Team == who:
-		if actionDuringDefense == "special": #Toggle the block on phase start
+func onPhaseBegin(team): # Function called on attack phase start (team = player / enemy)
+	if Team == team:
+		if actionDuringDefense == "special" and not hasAbilityBeenUsedThisTurn: #Toggle the block on phase start
 			isBlockedByAbility = false
+		if actionDuringDefense == "special" and hasAbilityBeenUsedThisTurn: #Use special ability
+			isBlockedByAbility = true
+			hasAbilityBeenUsedThisTurn = false
+			print("special") # use special
 
+
+func AttackEnemy(enemy): # Function called when the card has to attack another one
+	pass
+
+
+func ProtectByEnemy(enemy): # Function called when the card has to defende by another one
+	pass
