@@ -67,6 +67,8 @@ animation = &"idle"
 [node name="Sprite" type="AnimatedSprite2D" parent="Border" groups=["Sprite"]]
 visibility_layer = 3
 z_index = -1
+position = Vector2(-6.10352e-05, -433.333)
+scale = Vector2(0.694444, 0.846354)
 sprite_frames = SubResource("SpriteFrames_fqy1g")
 animation = &"idle"
 

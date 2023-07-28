@@ -70,100 +70,69 @@ func _ready(): # Function called only on start
 	
 	minScale = sprite.scale
 	maxScale = sprite.scale * 2
+	
+	UpdateStats(self)
 
 
 func _process(delta): # Function called every frame
-	## Click Related Functions
 	if Input.is_action_just_pressed("click") and isMouseOver and isEnabled: # Click over a card with mouse
-		if Team == "player" and GameController.turn == "player":
-			if isCardSelected: # Dropping the card
-				if (
-					currentPos != 0 # Right position
-					and GameController.lymph >= Cost # Enough lymph 
-					and GameController.turn == "player" # Right turn
-					and GameController.phase == "attack" # Right phase
-					and GameController.turnType == "play" # RIght turn type
-					and Location == "hand" # Right card
-					and (Type == currentLoc or Type == "Versatile") # Right type
-					and GameController.stress > GameController.player_current_stress # Enough stress
-					):
-					
-					Location = "field"
-					global_position = new_position
-					
-					GameController.lymph -= Cost
-					GameController.player_current_stress += 1
-					
-					GameController.player_hand.remove_at(GameController.player_hand.find(self))
-					GameController.UpdateHand()
+			if Team == "player" and GameController.turn == "player":
+				if isCardSelected: # Dropping the card
+					if (
+						currentPos != 0 # Right position
+						and GameController.lymph >= Cost # Enough lymph 
+						and GameController.turn == "player" # Right turn
+						and GameController.phase == "attack" # Right phase
+						and GameController.turnType == "play" # RIght turn type
+						and Location == "hand" # Right card
+						and (Type == currentLoc or Type == "Versatile") # Right type
+						and GameController.stress > GameController.player_current_stress # Enough stress
+						):
+						
+						Location = "field"
+						global_position = new_position
+						
+						GameController.lymph -= Cost
+						GameController.player_current_stress += 1
+						
+						GameController.player_hand.remove_at(GameController.player_hand.find(self))
+						GameController.UpdateHand()
+					else:
+						global_position = old_position
+					isCardSelected = false
 				else:
-					global_position = old_position
-				isCardSelected = false
-			else:
-				if Location == "hand": # Taking the card
-					old_position = global_position
-					isCardSelected = true
-				if Location == "field" and not isTargetSelected and not isSearchingForEnemy and GameController.phase == "attack" and currentLoc == "Attack" and not isFirstTurn: # Selecting the card to attack
-					GameController.started_attack_card = self
-					isSearchingForEnemy = true
-					
-					var scene = load("res://Scenes/RuntimeScenes/EnemyPointer.tscn")
-					var instance = scene.instantiate()
-					add_child(instance)
-					
-					get_tree().call_group("Deactivable", "Enable", false)
-				if Location == "field" and isTargetSelected and not isSearchingForEnemy and GameController.phase == "attack" and currentLoc == "Attack" and not isFirstTurn: # Deselecting the card to attack
-					GameController.CancelAttack(self)
-					isTargetSelected = false
-				if Location == "field" and not isChooseDone and not isChoosingToDefend and GameController.phase == "defense" and currentLoc == "Defense" and not isFirstTurn and not isBlockedByAbility: # Choosing what to do with the card
-					GameController.started_defende_card = self
-					isChoosingToDefend = true
-					
-					var scene = load("res://Scenes/RuntimeScenes/DefenseChoosing.tscn")
-					var instance = scene.instantiate()
-					add_child(instance)
-					
-					get_tree().call_group("Deactivable", "Enable", false)
-					instance.global_position = global_position
-				if Location == "field" and isChooseDone and not isChoosingToDefend and GameController.phase == "defense" and currentLoc == "Defense" and not isFirstTurn and not isBlockedByAbility: # Cancel choose on the card
-					GameController.CancelDefense(self)
-					isChooseDone = false
+					if Location == "hand": # Taking the card
+						old_position = global_position
+						isCardSelected = true
+					if Location == "field" and not isTargetSelected and not isSearchingForEnemy and GameController.phase == "attack" and currentLoc == "Attack" and not isFirstTurn: # Selecting the card to attack
+						GameController.started_attack_card = self
+						isSearchingForEnemy = true
+						
+						var scene = load("res://Scenes/RuntimeScenes/EnemyPointer.tscn")
+						var instance = scene.instantiate()
+						add_child(instance)
+						
+						get_tree().call_group("Deactivable", "Enable", false)
+					if Location == "field" and isTargetSelected and not isSearchingForEnemy and GameController.phase == "attack" and currentLoc == "Attack" and not isFirstTurn: # Deselecting the card to attack
+						GameController.CancelAttack(self)
+						isTargetSelected = false
+					if Location == "field" and not isChooseDone and not isChoosingToDefend and GameController.phase == "defense" and currentLoc == "Defense" and not isFirstTurn and not isBlockedByAbility: # Choosing what to do with the card
+						GameController.started_defende_card = self
+						isChoosingToDefend = true
+						
+						var scene = load("res://Scenes/RuntimeScenes/DefenseChoosing.tscn")
+						var instance = scene.instantiate()
+						add_child(instance)
+						
+						get_tree().call_group("Deactivable", "Enable", false)
+						instance.global_position = global_position
+					if Location == "field" and isChooseDone and not isChoosingToDefend and GameController.phase == "defense" and currentLoc == "Defense" and not isFirstTurn and not isBlockedByAbility: # Cancel choose on the card
+						GameController.CancelDefense(self)
+						isChooseDone = false
 	
-	## Move Card With Mouse
-	if isCardSelected and isEnabled: # Drag
+	if isCardSelected and isEnabled: # Drag card with mouse
 		global_position = lerp(global_position, get_global_mouse_position(), 25 * delta)
 		sprite.scale = minScale
-	
-	## Update Card GUI
-	var all_children = get_all_children(self)
-	
-	for i in all_children:
-		if "Health" in i.get_groups():
-			i.text = str(Health)
-		if "Attack" in i.get_groups():
-			i.text = str(Attack)
-		if "Speed" in i.get_groups():
-			i.text = str(Speed)
-		if "Weight" in i.get_groups():
-			i.text = str(Weight)
-		if "Cost" in i.get_groups():
-			i.text = str(Cost)
-		if "Name" in i.get_groups():
-			i.text = Name
-		if "Race" in i.get_groups():
-			i.text = Race
-		if "Nature" in i.get_groups():
-			i.text = Nature
-		if "Effect" in i.get_groups():
-			i.text = Effect
-		if "Description" in i.get_groups():
-			i.text = Description
-		if "Type" in i.get_groups():
-			i.text = Type
-	
-	# Check Card Health
-	if Health <= 0:
-		queue_free()
 
 
 ### MOUSE EVENTS ###
@@ -243,6 +212,36 @@ func isDefenseOk(who, what : String): # Fuction called when you choose what to d
 		isChoosingToDefend = false
 
 
+func UpdateStats(who): # Function called when card's stats change
+	if who == self:
+		if Health <= 0: # Check Card Health
+			queue_free()
+		
+		for i in get_all_children(self): # Update GUI
+			if "Health" in i.get_groups():
+				i.text = str(Health)
+			if "Attack" in i.get_groups():
+				i.text = str(Attack)
+			if "Speed" in i.get_groups():
+				i.text = str(Speed)
+			if "Weight" in i.get_groups():
+				i.text = str(Weight)
+			if "Cost" in i.get_groups():
+				i.text = str(Cost)
+			if "Name" in i.get_groups():
+				i.text = Name
+			if "Race" in i.get_groups():
+				i.text = Race
+			if "Nature" in i.get_groups():
+				i.text = Nature
+			if "Effect" in i.get_groups():
+				i.text = Effect
+			if "Description" in i.get_groups():
+				i.text = Description
+			if "Type" in i.get_groups():
+				i.text = Type
+
+
 func onTurnBegin(team): # Function called on turn start (team = player / enemy)
 	if Team == team:
 		if Location == "field":
@@ -267,7 +266,10 @@ func onPhaseBegin(team): # Function called on attack phase start (team = player 
 
 func AttackEnemy(enemy): # Function called when the card has to attack another one
 	enemy.Health -= Attack
+	get_tree().call_group("Card", "UpdateStats", enemy)
 
 
 func ProtectByEnemy(enemy): # Function called when the card has to defende by another one
 	enemy.Health -= Attack
+	get_tree().call_group("Card", "UpdateStats", enemy)
+

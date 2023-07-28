@@ -76,10 +76,6 @@ func _ready():
 	get_tree().get_first_node_in_group("Enemy_Name").text = enemy_name
 
 
-func _process(delta):
-	pass
-
-
 ### PUBLIC FUNCTION ###
 
 
@@ -378,4 +374,7 @@ func Enable(flag : bool): # Function called when a menu is appearing or disappea
 # Game Result #
 
 func GameEnds(looser): # Function called when someone dies (looser = who died)
-	print(looser.Name + " died!")
+	if looser == "player":
+		print(str(player_name) + " died!")
+	if looser == "enemy":
+		print(str(enemy_name) + " died!")
