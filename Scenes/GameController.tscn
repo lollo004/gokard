@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://d252ftuaio4r8"]
+[gd_scene load_steps=7 format=3 uid="uid://d252ftuaio4r8"]
 
 [ext_resource type="Script" path="res://Scripts/GameController.gd" id="1_pfy42"]
 [ext_resource type="PackedScene" uid="uid://haworbi8gah1" path="res://Scenes/Positioner.tscn" id="2_m0e23"]
 [ext_resource type="Script" path="res://Scripts/GUIManagement.gd" id="3_ows3f"]
 [ext_resource type="PackedScene" uid="uid://bp6kelnxloeu" path="res://Scenes/Cards/Card.tscn" id="5_h3syu"]
+[ext_resource type="PackedScene" uid="uid://bc04oldvebs2w" path="res://Scenes/Hero.tscn" id="5_oher5"]
 [ext_resource type="PackedScene" uid="uid://c3ccrckpghnpv" path="res://Scenes/TurnSelecter.tscn" id="6_uxtal"]
 
 [node name="Game Controller" type="Control" groups=["Deactivable", "GameManager"]]
@@ -17,6 +18,8 @@ lymph = 5
 stress = 5
 turn = "player"
 phase = "defense"
+player_name = "SimoMine"
+enemy_name = "lollobor"
 
 [node name="Card Position" type="Node" parent="."]
 
@@ -91,47 +94,65 @@ position = Vector2(500, 280)
 
 [node name="Player" type="Node" parent="GUI"]
 
-[node name="Player Name" type="Label" parent="GUI/Player"]
-offset_left = -3.0
-offset_top = 467.0
-offset_right = 149.0
-offset_bottom = 522.0
-text = "SimoMine"
+[node name="Player" parent="GUI/Player" groups=["PLAYER"] instance=ExtResource("5_oher5")]
+position = Vector2(75, 490)
+Team = "player"
+
+[node name="Player Name" type="Label" parent="GUI/Player" groups=["Player_Name"]]
+offset_top = 385.0
+offset_right = 150.0
+offset_bottom = 440.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "player name"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Player Life" type="Label" parent="GUI/Player"]
-offset_left = 143.0
-offset_top = 484.0
-offset_right = 183.0
-offset_bottom = 507.0
-text = "30"
+[node name="Player Life" type="Label" parent="GUI/Player" groups=["Player_Life"]]
+offset_left = 55.0
+offset_top = 475.0
+offset_right = 95.0
+offset_bottom = 505.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Enemy" type="Node" parent="GUI"]
 
-[node name="Enemy Name" type="Label" parent="GUI/Enemy"]
-offset_left = 23.0
-offset_top = 15.0
-offset_right = 126.0
-offset_bottom = 69.0
-text = "lollobor"
+[node name="Enemy" parent="GUI/Enemy" groups=["ENEMY"] instance=ExtResource("5_oher5")]
+position = Vector2(75, 50)
+Team = "enemy"
+
+[node name="Enemy Name" type="Label" parent="GUI/Enemy" groups=["Enemy_Name"]]
+offset_top = 100.0
+offset_right = 150.0
+offset_bottom = 155.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "enemy name"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Enemy Life" type="Label" parent="GUI/Enemy"]
-offset_left = 148.0
-offset_top = 33.0
-offset_right = 188.0
-offset_bottom = 59.0
-text = "30"
+[node name="Enemy Life" type="Label" parent="GUI/Enemy" groups=["Enemy_Life"]]
+offset_left = 55.0
+offset_top = 35.0
+offset_right = 95.0
+offset_bottom = 65.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Enemy Test Card" parent="." instance=ExtResource("5_h3syu")]
 position = Vector2(379, 163)
-Health = 1
+Health = 3
 Attack = 1
 Speed = 1
 Weight = 1

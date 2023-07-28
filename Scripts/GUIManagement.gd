@@ -15,9 +15,11 @@ func _process(delta):
 	get_tree().get_first_node_in_group("Lymph").text = "Lymph: " + str(GameController.lymph)
 	
 	get_tree().get_first_node_in_group("Stress").text = "Stress: " + str(GameController.stress)
+	
+	get_tree().get_first_node_in_group("Player_Life").text = str(GameController.player_health)
+	get_tree().get_first_node_in_group("Enemy_Life").text = str(GameController.enemy_health)
 
 
 func _on_turn_button_pressed():
 	if not GameController.isScreenTaken:
 		GameController.TurnButtonPressed()
-
