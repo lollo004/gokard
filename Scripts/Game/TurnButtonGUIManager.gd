@@ -1,7 +1,15 @@
 extends Sprite2D
 
+var GameController # Game controller reference
 
-func _process(delta):
+
+func _ready(): #Setup first datas
+	GameController = get_tree().get_first_node_in_group("GameController")
+	
+	_on_Update()
+
+
+func _on_Update():
 	if not len(GameController.player_hand) > 0: # Play button (aggiungere anche il controllo sulle carte in tavola)
 		get_tree().get_first_node_in_group("PlayButton").disabled = true
 	else:
@@ -21,3 +29,4 @@ func _process(delta):
 		get_tree().get_first_node_in_group("StressButton").disabled = true
 	else:
 		get_tree().get_first_node_in_group("StressButton").disabled = false
+

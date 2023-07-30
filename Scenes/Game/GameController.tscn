@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d252ftuaio4r8"]
 
-[ext_resource type="Script" path="res://Scripts/GameController.gd" id="1_pfy42"]
+[ext_resource type="Script" path="res://Scripts/Game/GameController.gd" id="1_a3x6d"]
 
 [node name="Game Controller" type="Control" groups=["Deactivable", "GameManager"]]
 layout_mode = 3
@@ -8,7 +8,7 @@ anchor_right = 1.002
 anchor_bottom = 0.989
 offset_right = 0.079895
 offset_bottom = -0.0599976
-script = ExtResource("1_pfy42")
+script = ExtResource("1_a3x6d")
 lymph = 5
 stress = 5
 turn = "player"

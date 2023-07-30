@@ -12,8 +12,8 @@ extends Area2D
 @export var id : int = 0 # Univoc id to represent the card
 
 @export var Name : String = ""
-@export var Race : String = ""  # Race (human - magic - building - ecc.)
-@export var Nature : String = "" # Nature (aggressive - normal - pacifist)
+@export var Gene : String = ""  # Gene (human - magic - building - ecc.)
+@export var Deviation : String = "" # Deviation (standard - mage - sage)
 
 @export var Effect : String = "" # Effect in game
 @export var Description : String = "" # Lore
@@ -29,6 +29,8 @@ var Location : String = "hand" # Location of the card (deck - hand - field - was
 
 var isFirstTurn : bool = true # Variable used to disable the card on the first turn you play it
 var isEnabled : bool = false # Variable to check if a card is enabled and you can interact with it
+
+var GameController # Game controller reference
 
 ## Scale Variables ##
 
@@ -64,6 +66,8 @@ var hasAbilityBeenUsedThisTurn : bool = false # Variable to check if the card de
 
 
 func _ready(): # Function called only on start
+	GameController = get_tree().get_first_node_in_group("GameController")
+	
 	for x in self.get_children():
 		if "Border" in x.get_groups():
 			sprite = x
@@ -75,7 +79,27 @@ func _ready(): # Function called only on start
 
 
 func _process(delta): # Function called every frame
-	if Input.is_action_just_pressed("click") and isMouseOver and isEnabled: # Click over a card with mouse
+	if isCardSelected and isEnabled: # Drag card with mouse
+		global_position = lerp(global_position, get_global_mouse_position(), 25 * delta)
+		sprite.scale = minScale
+
+
+### MOUSE EVENTS ###
+
+
+func _on_mouse_entered(): # Start override with mouse
+	sprite.scale = maxScale
+	isMouseOver = true
+
+
+func _on_mouse_exited(): # Stop override with mouse
+	sprite.scale = minScale
+	isMouseOver = false
+
+
+func _on_input_event(_viewport, event, _shape_idx):
+	if event is InputEventMouseButton:
+		if event.is_pressed() and isMouseOver and isEnabled: # Click over a card with mouse
 			if Team == "player" and GameController.turn == "player":
 				if isCardSelected: # Dropping the card
 					if (
@@ -97,6 +121,8 @@ func _process(delta): # Function called every frame
 						
 						GameController.player_hand.remove_at(GameController.player_hand.find(self))
 						GameController.UpdateHand()
+	
+						get_tree().call_group("GUI_Manager", "_on_Update")
 					else:
 						global_position = old_position
 					isCardSelected = false
@@ -108,7 +134,7 @@ func _process(delta): # Function called every frame
 						GameController.started_attack_card = self
 						isSearchingForEnemy = true
 						
-						var scene = load("res://Scenes/RuntimeScenes/EnemyPointer.tscn")
+						var scene = load("res://Scenes/Game/RuntimeScenes/EnemyPointer.tscn")
 						var instance = scene.instantiate()
 						add_child(instance)
 						
@@ -120,7 +146,7 @@ func _process(delta): # Function called every frame
 						GameController.started_defende_card = self
 						isChoosingToDefend = true
 						
-						var scene = load("res://Scenes/RuntimeScenes/DefenseChoosing.tscn")
+						var scene = load("res://Scenes/Game/RuntimeScenes/DefenseChoosing.tscn")
 						var instance = scene.instantiate()
 						add_child(instance)
 						
@@ -129,23 +155,6 @@ func _process(delta): # Function called every frame
 					if Location == "field" and isChooseDone and not isChoosingToDefend and GameController.phase == "defense" and currentLoc == "Defense" and not isFirstTurn and not isBlockedByAbility: # Cancel choose on the card
 						GameController.CancelDefense(self)
 						isChooseDone = false
-	
-	if isCardSelected and isEnabled: # Drag card with mouse
-		global_position = lerp(global_position, get_global_mouse_position(), 25 * delta)
-		sprite.scale = minScale
-
-
-### MOUSE EVENTS ###
-
-
-func _on_mouse_entered(): # Start override with mouse
-	sprite.scale = maxScale
-	isMouseOver = true
-
-
-func _on_mouse_exited(): # Stop override with mouse
-	sprite.scale = minScale
-	isMouseOver = false
 
 
 ### COLLISION EVENTS ###
@@ -230,10 +239,10 @@ func UpdateStats(who): # Function called when card's stats change
 				i.text = str(Cost)
 			if "Name" in i.get_groups():
 				i.text = Name
-			if "Race" in i.get_groups():
-				i.text = Race
-			if "Nature" in i.get_groups():
-				i.text = Nature
+			if "Gene" in i.get_groups():
+				i.text = Gene
+			if "Deviation" in i.get_groups():
+				i.text = Deviation
 			if "Effect" in i.get_groups():
 				i.text = Effect
 			if "Description" in i.get_groups():

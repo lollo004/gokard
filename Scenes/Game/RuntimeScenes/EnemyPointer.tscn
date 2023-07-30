@@ -1,17 +1,22 @@
 [gd_scene load_steps=4 format=3 uid="uid://dmdhs80i75kr"]
 
-[ext_resource type="Script" path="res://Scripts/EnemyPointer.gd" id="1_ab2j2"]
-[ext_resource type="Texture2D" uid="uid://2a6h1xkqnw7g" path="res://Resources/EnemyPointer.png" id="1_ttp4s"]
+[ext_resource type="Script" path="res://Scripts/Game/EnemyPointer.gd" id="1_hic73"]
+[ext_resource type="Texture2D" uid="uid://2a6h1xkqnw7g" path="res://Resources/EnemyPointer.png" id="2_hq45n"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hhn6w"]
 radius = 348.036
 
 [node name="Enemy Pointer" type="Area2D" groups=["Pointer"]]
+z_index = 1
 scale = Vector2(0.5, 0.5)
-script = ExtResource("1_ab2j2")
+script = ExtResource("1_hic73")
 
 [node name="Sprite2D" type="Sprite2D" parent="." groups=["Pointer"]]
-texture = ExtResource("1_ttp4s")
+z_index = 5
+texture = ExtResource("2_hq45n")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Pointer"]]
+z_index = 5
 shape = SubResource("CircleShape2D_hhn6w")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]

@@ -1,0 +1,118 @@
+[gd_scene load_steps=4 format=3 uid="uid://nm4l76n7wk3a"]
+
+[ext_resource type="Texture2D" uid="uid://8ifvl8oyqb3u" path="res://Resources/TurnSelector.png" id="1_0tqcn"]
+[ext_resource type="Script" path="res://Scripts/Lobby/Register.gd" id="2_3w0p6"]
+[ext_resource type="Script" path="res://Scripts/Lobby/Back.gd" id="3_ovr6p"]
+
+[node name="Node" type="Node"]
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(475, 275)
+scale = Vector2(0.5, 0.588)
+texture = ExtResource("1_0tqcn")
+
+[node name="Submit" type="Button" parent="."]
+offset_left = 650.0
+offset_top = 175.0
+offset_right = 900.0
+offset_bottom = 325.0
+text = "SUBMIT"
+script = ExtResource("2_3w0p6")
+
+[node name="Back" type="Button" parent="."]
+offset_left = 650.0
+offset_top = 375.0
+offset_right = 900.0
+offset_bottom = 525.0
+text = "GO BACK"
+script = ExtResource("3_ovr6p")
+
+[node name="Title" type="Label" parent="."]
+offset_left = 70.0
+offset_top = 30.0
+offset_right = 370.0
+offset_bottom = 80.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "REGISTER"
+vertical_alignment = 1
+
+[node name="Nick Label" type="Label" parent="."]
+offset_left = 70.0
+offset_top = 125.0
+offset_right = 370.0
+offset_bottom = 175.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "Nickname:"
+vertical_alignment = 1
+
+[node name="Nick Input" type="TextEdit" parent="."]
+offset_left = 70.0
+offset_top = 175.0
+offset_right = 470.0
+offset_bottom = 225.0
+placeholder_text = "Nickname"
+
+[node name="Mail Label" type="Label" parent="."]
+offset_left = 70.0
+offset_top = 225.0
+offset_right = 370.0
+offset_bottom = 275.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "Email:"
+vertical_alignment = 1
+
+[node name="Mail Input" type="TextEdit" parent="."]
+offset_left = 70.0
+offset_top = 275.0
+offset_right = 470.0
+offset_bottom = 325.0
+placeholder_text = "Email"
+
+[node name="Pass Label" type="Label" parent="."]
+offset_left = 70.0
+offset_top = 325.0
+offset_right = 370.0
+offset_bottom = 375.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "Password:"
+vertical_alignment = 1
+
+[node name="Pass Input" type="TextEdit" parent="."]
+offset_left = 69.0
+offset_top = 375.0
+offset_right = 469.0
+offset_bottom = 425.0
+placeholder_text = "Password"
+
+[node name="Repeat Label" type="Label" parent="."]
+offset_left = 70.0
+offset_top = 425.0
+offset_right = 370.0
+offset_bottom = 475.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "Repeat Password:"
+vertical_alignment = 1
+
+[node name="Repeat Input" type="TextEdit" parent="."]
+offset_left = 70.0
+offset_top = 475.0
+offset_right = 470.0
+offset_bottom = 525.0
+placeholder_text = "Password"
+
+[connection signal="pressed" from="Back" to="Back" method="_on_back_pressed"]

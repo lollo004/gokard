@@ -1,8 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://bp6kelnxloeu"]
+[gd_scene load_steps=8 format=3 uid="uid://crwd33midt3p5"]
 
-[ext_resource type="Script" path="res://Scripts/Card.gd" id="1_oo0sj"]
-[ext_resource type="Texture2D" uid="uid://rf6sp07qeavm" path="res://Resources/Card.png" id="2_gkp3r"]
-[ext_resource type="Texture2D" uid="uid://dq7meuos2i3le" path="res://Resources/Images/Card0.png" id="3_gg0mf"]
+[ext_resource type="Script" path="res://Scripts/Game/Card.gd" id="1_r1st7"]
+[ext_resource type="Texture2D" uid="uid://rf6sp07qeavm" path="res://Resources/Card.png" id="2_rprm0"]
+[ext_resource type="Texture2D" uid="uid://cvi8a66npk1s0" path="res://Resources/Images/Card3.png" id="3_24htc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yvtci"]
 size = Vector2(769, 1024)
@@ -18,7 +18,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_gkp3r")
+"texture": ExtResource("2_rprm0")
 }, {
 "duration": 1.0,
 "texture": SubResource("CompressedTexture2D_cxlfj")
@@ -33,15 +33,15 @@ animations = [{
 "speed": 2.0
 }]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_fqy1g"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_r6ate"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_gg0mf")
+"texture": ExtResource("3_24htc")
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 2.0
 }]
 
 [node name="Card" type="Area2D" groups=["Card", "Deactivable"]]
@@ -49,8 +49,14 @@ top_level = true
 visibility_layer = 3
 z_index = 1
 scale = Vector2(0.06, 0.06)
-script = ExtResource("1_oo0sj")
+script = ExtResource("1_r1st7")
+Health = 1
+Attack = 2
+Speed = 3
+Weight = 86
 Cost = 1
+id = 3
+Name = "Angry Barbarian"
 Type = "Versatile"
 metadata/_edit_vertical_guides_ = [-222.0]
 
@@ -67,16 +73,16 @@ animation = &"idle"
 [node name="Sprite" type="AnimatedSprite2D" parent="Border" groups=["Sprite"]]
 visibility_layer = 3
 z_index = -1
-position = Vector2(-6.10352e-05, -433.333)
+position = Vector2(-6.67572e-06, -433.333)
 scale = Vector2(0.694444, 0.846354)
-sprite_frames = SubResource("SpriteFrames_fqy1g")
+sprite_frames = SubResource("SpriteFrames_r6ate")
 animation = &"idle"
 
 [node name="Attack" type="Label" parent="Border" groups=["Attack"]]
 offset_left = -620.0
 offset_top = 720.0
-offset_right = -420.0
-offset_bottom = 920.0
+offset_right = -520.0
+offset_bottom = 820.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -87,8 +93,8 @@ vertical_alignment = 1
 [node name="Health" type="Label" parent="Border" groups=["Health"]]
 offset_left = 420.0
 offset_top = 720.0
-offset_right = 620.0
-offset_bottom = 920.0
+offset_right = 520.0
+offset_bottom = 820.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -99,8 +105,8 @@ vertical_alignment = 1
 [node name="Speed" type="Label" parent="Border" groups=["Speed"]]
 offset_left = -340.0
 offset_top = 570.0
-offset_right = -240.0
-offset_bottom = 670.0
+offset_right = -290.0
+offset_bottom = 620.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -111,8 +117,8 @@ vertical_alignment = 1
 [node name="Weight" type="Label" parent="Border" groups=["Weight"]]
 offset_left = 240.0
 offset_top = 570.0
-offset_right = 340.0
-offset_bottom = 670.0
+offset_right = 290.0
+offset_bottom = 620.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -123,8 +129,8 @@ vertical_alignment = 1
 [node name="Cost" type="Label" parent="Border" groups=["Cost"]]
 offset_left = -70.0
 offset_top = -940.0
-offset_right = 80.0
-offset_bottom = -790.0
+offset_right = 5.00001
+offset_bottom = -865.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -135,8 +141,8 @@ vertical_alignment = 1
 [node name="Name" type="Label" parent="Border" groups=["Name"]]
 offset_left = -220.0
 offset_top = -70.0
-offset_right = 180.0
-offset_bottom = 80.0
+offset_right = -20.0
+offset_bottom = 5.00001
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -147,8 +153,7 @@ vertical_alignment = 1
 [node name="Race" type="Label" parent="Border" groups=["Race"]]
 offset_left = -200.0
 offset_top = 780.0
-offset_right = 200.0
-offset_bottom = 930.0
+offset_bottom = 855.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -159,8 +164,7 @@ vertical_alignment = 1
 [node name="Nature" type="Label" parent="Border" groups=["Nature"]]
 offset_left = -150.0
 offset_top = 700.0
-offset_right = 150.0
-offset_bottom = 800.0
+offset_bottom = 750.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -171,8 +175,7 @@ vertical_alignment = 1
 [node name="Effect" type="Label" parent="Border" groups=["Effect"]]
 offset_left = -600.0
 offset_top = 120.0
-offset_right = 600.0
-offset_bottom = 520.0
+offset_bottom = 320.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -192,10 +195,10 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Type" type="Label" parent="Border" groups=["Type"]]
-offset_left = 430.0
+offset_left = 433.333
 offset_top = -1000.0
-offset_right = 730.0
-offset_bottom = -900.0
+offset_right = 583.333
+offset_bottom = -950.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -205,5 +208,6 @@ vertical_alignment = 1
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]
+[connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

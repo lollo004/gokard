@@ -1,25 +1,25 @@
 [gd_scene load_steps=5 format=3 uid="uid://c3ccrckpghnpv"]
 
-[ext_resource type="Texture2D" uid="uid://dbu1lpx484grs" path="res://Resources/TurnSelector.png" id="1_ie0c4"]
-[ext_resource type="Script" path="res://Scripts/TurnSelecter.gd" id="1_vmxut"]
-[ext_resource type="Script" path="res://Scripts/TurnButtonGUIManager.gd" id="1_y8oyk"]
+[ext_resource type="Texture2D" uid="uid://8ifvl8oyqb3u" path="res://Resources/TurnSelector.png" id="1_ie0c4"]
+[ext_resource type="Script" path="res://Scripts/Game/TurnSelecter.gd" id="1_ogkea"]
+[ext_resource type="Script" path="res://Scripts/Game/TurnButtonGUIManager.gd" id="3_ssey4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1xhgl"]
 size = Vector2(613, 307)
 
-[node name="Area2D" type="Area2D"]
+[node name="Turn Manager" type="Area2D"]
 z_index = 2
-script = ExtResource("1_vmxut")
+script = ExtResource("1_ogkea")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 0.5)
 shape = SubResource("RectangleShape2D_1xhgl")
 
-[node name="Background" type="Sprite2D" parent="." groups=["TurnManager"]]
+[node name="Background" type="Sprite2D" parent="." groups=["GUI_Manager", "TurnManager"]]
 visible = false
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("1_ie0c4")
-script = ExtResource("1_y8oyk")
+script = ExtResource("3_ssey4")
 
 [node name="Play" type="Button" parent="Background" groups=["PlayButton"]]
 offset_left = -950.0

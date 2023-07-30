@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://ln7gh0jaspw5"]
+
+[ext_resource type="Texture2D" uid="uid://8ifvl8oyqb3u" path="res://Resources/TurnSelector.png" id="1_cbuuv"]
+[ext_resource type="Script" path="res://Scripts/Lobby/Choose.gd" id="1_cr5qd"]
+
+[node name="Node" type="Node"]
+script = ExtResource("1_cr5qd")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(475, 275)
+scale = Vector2(0.5, 0.588)
+texture = ExtResource("1_cbuuv")
+
+[node name="Login" type="Button" parent="."]
+offset_left = 70.0
+offset_top = 250.0
+offset_right = 320.0
+offset_bottom = 400.0
+text = "LOGIN"
+
+[node name="Register" type="Button" parent="."]
+offset_left = 650.0
+offset_top = 250.0
+offset_right = 900.0
+offset_bottom = 400.0
+text = "REGISTER"
+
+[node name="Text" type="Label" parent="."]
+offset_left = 335.0
+offset_top = 100.0
+offset_right = 635.0
+offset_bottom = 200.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "LOGIN OR REGISTER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="Login" to="." method="_on_login_pressed"]
+[connection signal="pressed" from="Register" to="." method="_on_register_pressed"]

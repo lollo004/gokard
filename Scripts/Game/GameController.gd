@@ -1,4 +1,4 @@
-extends Control
+extends Node
 
 ### Game Values ###
 
@@ -53,10 +53,10 @@ func _ready():
 	for i in 30:
 		var rng = RandomNumberGenerator.new()
 		var number = rng.randf_range(1, 4)
-		scene = load("res://Scenes/Cards/Card"+str(int(number))+".tscn")
+		scene = load("res://Scenes/Game/Cards/Card"+str(int(number))+".tscn")
 		instance = scene.instantiate()
 		instance.Team = "player"
-		
+	
 		player_deck.append(instance)
 	
 	var number_of_cards = 9
@@ -65,7 +65,7 @@ func _ready():
 		add_child(player_deck[i])
 		player_hand.append(player_deck[i])
 		player_deck.remove_at(i)
-		
+	
 	UpdateHand()
 	## RANDOM HAND GEN ##
 	
@@ -106,6 +106,8 @@ func TurnButtonPressed():
 		get_tree().call_group("Card", "onPhaseBegin", "enemy")
 		
 		ManageEnemyDefense()
+	
+	get_tree().call_group("GUI_Manager", "_on_Update")
 
 
 ### TURN MANAGEMEN FUNCTIONS ###
@@ -152,9 +154,12 @@ func UpdateHand():
 	
 	for item in player_hand:
 		i += 1
+		
 		if len(player_hand) % 2 == 0:
+			@warning_ignore("integer_division")
 			item.global_position = Vector2((540 - ((len(player_hand) / 2) * 48)) + (46*i), 520)
 		else:
+			@warning_ignore("integer_division")
 			item.global_position = Vector2((520 - (((len(player_hand) - 1) / 2) * 48)) + (46*i), 520)
 
 func ShuffleDeck():
@@ -365,6 +370,9 @@ func Fight(attacker, defender, canDefend : bool):
 		defender.ProtectByEnemy(attacker) #defender protect himself only if the proprietary decided to defend
 	else:
 		print("Fight --> " + attacker.Name + " vs " + defender.Name + " (without defending himself)")
+	
+	get_tree().call_group("GUI_Manager", "_on_Update")
+	get_tree().call_group("Leader", "_on_Update")
 
 # Management #
 
@@ -378,3 +386,4 @@ func GameEnds(looser): # Function called when someone dies (looser = who died)
 		print(str(player_name) + " died!")
 	if looser == "enemy":
 		print(str(enemy_name) + " died!")
+

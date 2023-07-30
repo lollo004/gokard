@@ -1,0 +1,144 @@
+[gd_scene load_steps=5 format=3 uid="uid://cn7qq6h6vk6m1"]
+
+[ext_resource type="PackedScene" uid="uid://haworbi8gah1" path="res://Scenes/Positioner.tscn" id="1_jchfp"]
+[ext_resource type="Script" path="res://Scripts/GUIManagement.gd" id="2_vfo2y"]
+[ext_resource type="PackedScene" uid="uid://c3ccrckpghnpv" path="res://Scenes/TurnSelecter.tscn" id="3_t61jt"]
+[ext_resource type="PackedScene" uid="uid://c7jux2wqw05t7" path="res://Scenes/Cards/Card1.tscn" id="5_bichs"]
+
+[node name="Main Scene" type="Node"]
+
+[node name="Card Position" type="Node" parent="."]
+
+[node name="Player Positioner 1" parent="Card Position" groups=["1", "Attack"] instance=ExtResource("1_jchfp")]
+z_index = -10
+position = Vector2(300, 350)
+
+[node name="Player Positioner 2" parent="Card Position" groups=["2", "Attack"] instance=ExtResource("1_jchfp")]
+z_index = -10
+position = Vector2(430, 350)
+
+[node name="Player Positioner 3" parent="Card Position" groups=["3", "Attack"] instance=ExtResource("1_jchfp")]
+z_index = -10
+position = Vector2(560, 350)
+
+[node name="Player Positioner 4" parent="Card Position" groups=["4", "Attack"] instance=ExtResource("1_jchfp")]
+z_index = -10
+position = Vector2(690, 350)
+
+[node name="Player Positioner 5" parent="Card Position" groups=["5", "Attack"] instance=ExtResource("1_jchfp")]
+z_index = -10
+position = Vector2(820, 350)
+
+[node name="Player Positioner 6" parent="Card Position" groups=["6", "Defense"] instance=ExtResource("1_jchfp")]
+z_index = -10
+position = Vector2(365, 450)
+
+[node name="Player Positioner 7" parent="Card Position" groups=["7", "Defense"] instance=ExtResource("1_jchfp")]
+z_index = -10
+position = Vector2(495, 450)
+
+[node name="Player Positioner 8" parent="Card Position" groups=["8", "Defense"] instance=ExtResource("1_jchfp")]
+z_index = -10
+position = Vector2(625, 450)
+
+[node name="Player Positioner 9" parent="Card Position" groups=["9", "Defense"] instance=ExtResource("1_jchfp")]
+z_index = -10
+position = Vector2(755, 450)
+
+[node name="GUI" type="Node" parent="."]
+
+[node name="Management" type="Node" parent="GUI"]
+script = ExtResource("2_vfo2y")
+
+[node name="Lymph Text" type="Label" parent="GUI/Management" groups=["Lymph"]]
+offset_left = 30.0
+offset_top = 220.0
+offset_right = 110.0
+offset_bottom = 250.0
+text = "Lymph: 10"
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Stress Text" type="Label" parent="GUI/Management" groups=["Stress"]]
+offset_left = 30.0
+offset_top = 280.0
+offset_right = 110.0
+offset_bottom = 310.0
+text = "Stress: 5
+"
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Turn Button" type="Button" parent="GUI/Management" groups=["Deactivable", "Turn"]]
+offset_left = 820.0
+offset_top = 240.0
+offset_right = 948.0
+offset_bottom = 280.0
+text = "Opponent Turn"
+metadata/_edit_use_anchors_ = true
+
+[node name="TurnSelector" parent="GUI/Management" instance=ExtResource("3_t61jt")]
+visibility_layer = 7
+position = Vector2(500, 280)
+
+[node name="Player" type="Node" parent="GUI"]
+
+[node name="Player Name" type="Label" parent="GUI/Player" groups=["Player_Name"]]
+offset_top = 385.0
+offset_right = 150.0
+offset_bottom = 440.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "player name"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Player Life" type="Label" parent="GUI/Player" groups=["Player_Life"]]
+offset_left = 55.0
+offset_top = 475.0
+offset_right = 95.0
+offset_bottom = 505.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Enemy" type="Node" parent="GUI"]
+
+[node name="Enemy Name" type="Label" parent="GUI/Enemy" groups=["Enemy_Name"]]
+offset_top = 100.0
+offset_right = 150.0
+offset_bottom = 155.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "enemy name"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Enemy Life" type="Label" parent="GUI/Enemy" groups=["Enemy_Life"]]
+offset_left = 55.0
+offset_top = 35.0
+offset_right = 95.0
+offset_bottom = 65.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Enemy Test Card" parent="." instance=ExtResource("5_bichs")]
+position = Vector2(383, 165)
+Health = 3
+Name = "Test"
+Team = "enemy"
+
+[connection signal="pressed" from="GUI/Management/Turn Button" to="GUI/Management" method="_on_turn_button_pressed"]

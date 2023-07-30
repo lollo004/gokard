@@ -1,6 +1,3 @@
-Deck creation
-Screen size based card positioning
+Check if player can play or not
 Animations and feedbacks
 
-
-"personal script in a new node made properly, and with determinates groups"

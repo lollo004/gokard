@@ -1,5 +1,11 @@
 extends Area2D
 
+var GameController # Game controller reference
+
+
+func _ready(): #Setup first datas
+	GameController = get_tree().get_first_node_in_group("GameController")
+
 
 func _on_defende_button_pressed():
 	get_tree().call_group("Card", "isDefenseOk", GameController.started_defende_card, "defende")

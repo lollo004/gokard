@@ -1,14 +1,14 @@
 [gd_scene load_steps=4 format=3 uid="uid://bc04oldvebs2w"]
 
 [ext_resource type="Texture2D" uid="uid://dq7meuos2i3le" path="res://Resources/Images/Card0.png" id="1_dp78f"]
-[ext_resource type="Script" path="res://Scripts/Hero.gd" id="1_qbw3r"]
+[ext_resource type="Script" path="res://Scripts/Game/Leader.gd" id="1_lpvsh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bncrx"]
 size = Vector2(1531, 1023)
 
-[node name="Hero" type="Area2D" groups=["Hero"]]
+[node name="Hero" type="Area2D" groups=["Leader"]]
 scale = Vector2(0.1, 0.1)
-script = ExtResource("1_qbw3r")
+script = ExtResource("1_lpvsh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_dp78f")

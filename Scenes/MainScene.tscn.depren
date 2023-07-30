@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://haworbi8gah1" path="res://Scenes/Positioner.tscn" id="1_jchfp"]
 [ext_resource type="Script" path="res://Scripts/GUIManagement.gd" id="2_vfo2y"]
 [ext_resource type="PackedScene" uid="uid://c3ccrckpghnpv" path="res://Scenes/TurnSelecter.tscn" id="3_t61jt"]
-[ext_resource type="PackedScene" uid="uid://bc04oldvebs2w" path="res://Scenes/Hero.tscn" id="4_fu2pt"]
+[ext_resource type="PackedScene" uid="uid://bc04oldvebs2w" path="res://Scenes/Leader.tscn" id="4_fu2pt"]
 [ext_resource type="PackedScene" uid="uid://c7jux2wqw05t7" path="res://Scenes/Cards/Card1.tscn" id="5_bichs"]
 
 [node name="Main Scene" type="Node"]
