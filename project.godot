@@ -11,10 +11,14 @@ config_version=5
 [application]
 
 config/name="gokard"
-run/main_scene="res://Scenes/Lobby/LoginAndRegister.tscn"
+run/main_scene="res://Scenes/Lobby/MainMenu.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
 run/max_fps=120
 config/icon="res://icon.svg"
+
+[autoload]
+
+Data="*res://Scenes/Data.tscn"
 
 [display]
 

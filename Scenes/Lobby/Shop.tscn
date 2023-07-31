@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://crx0u55uof2gq"]
+
+[ext_resource type="Texture2D" uid="uid://8ifvl8oyqb3u" path="res://Resources/TurnSelector.png" id="1_wahxv"]
+
+[node name="Shop" type="Node"]
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(475, 275)
+scale = Vector2(0.5, 0.588)
+texture = ExtResource("1_wahxv")

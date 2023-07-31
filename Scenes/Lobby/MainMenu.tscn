@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://sjslp427n3co"]
+
+[ext_resource type="Script" path="res://Scripts/Lobby/MainMenu.gd" id="1_assdh"]
+[ext_resource type="Texture2D" uid="uid://8ifvl8oyqb3u" path="res://Resources/TurnSelector.png" id="1_axx6k"]
+
+[node name="Main Menu" type="Node"]
+script = ExtResource("1_assdh")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(475, 275)
+scale = Vector2(0.5, 0.588)
+texture = ExtResource("1_axx6k")
+
+[node name="Play Button" type="Button" parent="."]
+offset_left = 350.0
+offset_top = 150.0
+offset_right = 600.0
+offset_bottom = 300.0
+text = "BATTLE"
+
+[node name="Shop Button" type="Button" parent="."]
+offset_left = 100.0
+offset_top = 400.0
+offset_right = 250.0
+offset_bottom = 500.0
+text = "SHOP"
+
+[node name="Deck Button" type="Button" parent="."]
+offset_left = 400.0
+offset_top = 400.0
+offset_right = 550.0
+offset_bottom = 500.0
+text = "DECK"
+
+[node name="Quit Button" type="Button" parent="."]
+offset_left = 700.0
+offset_top = 400.0
+offset_right = 850.0
+offset_bottom = 500.0
+text = "QUIT"
+
+[connection signal="pressed" from="Play Button" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="Shop Button" to="." method="_on_shop_button_pressed"]
+[connection signal="pressed" from="Deck Button" to="." method="_on_deck_button_pressed"]
+[connection signal="pressed" from="Quit Button" to="." method="_on_quit_button_pressed"]
