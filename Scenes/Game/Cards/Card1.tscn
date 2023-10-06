@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://c7jux2wqw05t7"]
+[gd_scene load_steps=8 format=3 uid="uid://c7jux2wqw05t7"]
 
 [ext_resource type="Script" path="res://Scripts/Game/Card.gd" id="1_tvvug"]
 [ext_resource type="Texture2D" uid="uid://rf6sp07qeavm" path="res://Resources/Card.png" id="2_ag8tj"]
 [ext_resource type="Texture2D" uid="uid://dev2du62wt7yv" path="res://Resources/Images/Card1.png" id="3_a1w3s"]
+[ext_resource type="Script" path="res://Scripts/Game/SpecificEffects/Test.gd" id="4_v8wn6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yvtci"]
 size = Vector2(769, 1024)
@@ -203,6 +204,11 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 70
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Common Effects" type="Node" parent="."]
+
+[node name="Rise" type="Node" parent="Common Effects" groups=["Rise"]]
+script = ExtResource("4_v8wn6")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]

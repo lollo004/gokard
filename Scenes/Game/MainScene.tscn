@@ -9,44 +9,6 @@
 
 [node name="Main Scene" type="Node"]
 
-[node name="Card Position" type="Node" parent="."]
-
-[node name="Player Positioner 1" parent="Card Position" groups=["1", "Attack"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(300, 350)
-
-[node name="Player Positioner 2" parent="Card Position" groups=["2", "Attack"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(430, 350)
-
-[node name="Player Positioner 3" parent="Card Position" groups=["3", "Attack"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(560, 350)
-
-[node name="Player Positioner 4" parent="Card Position" groups=["4", "Attack"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(690, 350)
-
-[node name="Player Positioner 5" parent="Card Position" groups=["5", "Attack"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(820, 350)
-
-[node name="Player Positioner 6" parent="Card Position" groups=["6", "Defense"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(365, 450)
-
-[node name="Player Positioner 7" parent="Card Position" groups=["7", "Defense"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(495, 450)
-
-[node name="Player Positioner 8" parent="Card Position" groups=["8", "Defense"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(625, 450)
-
-[node name="Player Positioner 9" parent="Card Position" groups=["9", "Defense"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(755, 450)
-
 [node name="GUI" type="Node" parent="."]
 
 [node name="Management" type="Node" parent="GUI" groups=["GUI_Manager"]]
@@ -57,7 +19,7 @@ offset_left = 30.0
 offset_top = 220.0
 offset_right = 110.0
 offset_bottom = 250.0
-text = "Lymph: 10"
+text = "Lymph: 0"
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
@@ -66,7 +28,7 @@ offset_left = 30.0
 offset_top = 280.0
 offset_right = 110.0
 offset_bottom = 310.0
-text = "Stress: 5
+text = "Stress: 0
 "
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
@@ -123,6 +85,44 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
+[node name="Card Position" type="Node" parent="GUI/Player"]
+
+[node name="Player Positioner 1" parent="GUI/Player/Card Position" groups=["1", "Attack", "Player"] instance=ExtResource("1_kj4pf")]
+z_index = -10
+position = Vector2(300, 350)
+
+[node name="Player Positioner 2" parent="GUI/Player/Card Position" groups=["2", "Defense", "Player"] instance=ExtResource("1_kj4pf")]
+z_index = -10
+position = Vector2(365, 450)
+
+[node name="Player Positioner 3" parent="GUI/Player/Card Position" groups=["3", "Attack", "Player"] instance=ExtResource("1_kj4pf")]
+z_index = -10
+position = Vector2(430, 350)
+
+[node name="Player Positioner 4" parent="GUI/Player/Card Position" groups=["4", "Defense", "Player"] instance=ExtResource("1_kj4pf")]
+z_index = -10
+position = Vector2(495, 450)
+
+[node name="Player Positioner 5" parent="GUI/Player/Card Position" groups=["5", "Attack", "Player"] instance=ExtResource("1_kj4pf")]
+z_index = -10
+position = Vector2(560, 350)
+
+[node name="Player Positioner 6" parent="GUI/Player/Card Position" groups=["6", "Defense", "Player"] instance=ExtResource("1_kj4pf")]
+z_index = -10
+position = Vector2(625, 450)
+
+[node name="Player Positioner 7" parent="GUI/Player/Card Position" groups=["7", "Attack", "Player"] instance=ExtResource("1_kj4pf")]
+z_index = -10
+position = Vector2(690, 350)
+
+[node name="Player Positioner 8" parent="GUI/Player/Card Position" groups=["8", "Defense", "Player"] instance=ExtResource("1_kj4pf")]
+z_index = -10
+position = Vector2(755, 450)
+
+[node name="Player Positioner 9" parent="GUI/Player/Card Position" groups=["9", "Attack", "Player"] instance=ExtResource("1_kj4pf")]
+z_index = -10
+position = Vector2(820, 350)
+
 [node name="Enemy" type="Node" parent="GUI"]
 
 [node name="Enemy" parent="GUI/Enemy" groups=["ENEMY"] instance=ExtResource("5_cjfwb")]
@@ -153,6 +153,44 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
+
+[node name="Card Position" type="Node" parent="GUI/Enemy"]
+
+[node name="Enemy Positioner 1" parent="GUI/Enemy/Card Position" groups=["1", "Attack", "Enemy"] instance=ExtResource("1_kj4pf")]
+z_index = -10
+position = Vector2(300, 200)
+
+[node name="Enemy Positioner 2" parent="GUI/Enemy/Card Position" groups=["2", "Defense", "Enemy"] instance=ExtResource("1_kj4pf")]
+z_index = -10
+position = Vector2(365, 100)
+
+[node name="Enemy Positioner 3" parent="GUI/Enemy/Card Position" groups=["3", "Attack", "Enemy"] instance=ExtResource("1_kj4pf")]
+z_index = -10
+position = Vector2(430, 200)
+
+[node name="Enemy Positioner 4" parent="GUI/Enemy/Card Position" groups=["4", "Defense", "Enemy"] instance=ExtResource("1_kj4pf")]
+z_index = -10
+position = Vector2(495, 100)
+
+[node name="Enemy Positioner 5" parent="GUI/Enemy/Card Position" groups=["5", "Attack", "Enemy"] instance=ExtResource("1_kj4pf")]
+z_index = -10
+position = Vector2(560, 200)
+
+[node name="Enemy Positioner 6" parent="GUI/Enemy/Card Position" groups=["6", "Defense", "Enemy"] instance=ExtResource("1_kj4pf")]
+z_index = -10
+position = Vector2(625, 100)
+
+[node name="Enemy Positioner 7" parent="GUI/Enemy/Card Position" groups=["7", "Attack", "Enemy"] instance=ExtResource("1_kj4pf")]
+z_index = -10
+position = Vector2(690, 200)
+
+[node name="Enemy Positioner 8" parent="GUI/Enemy/Card Position" groups=["8", "Defense", "Enemy"] instance=ExtResource("1_kj4pf")]
+z_index = -10
+position = Vector2(755, 100)
+
+[node name="Enemy Positioner 9" parent="GUI/Enemy/Card Position" groups=["9", "Attack", "Enemy"] instance=ExtResource("1_kj4pf")]
+z_index = -10
+position = Vector2(820, 200)
 
 [node name="Enemy Test Card" parent="." instance=ExtResource("6_nt3k0")]
 position = Vector2(383, 165)

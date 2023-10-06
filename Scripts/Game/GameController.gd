@@ -27,6 +27,10 @@ var player_deck = []
 
 var isScreenTaken = true # Variable to check if you can interact with buttons
 
+var positionStatus = { # Dictionary that contains position status
+	1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false, 8 : false, 9 : false
+}
+
 ## Attack Variables ##
 
 var started_attack_card # the card that is attacing

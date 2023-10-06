@@ -24,7 +24,7 @@ extends Area2D
 
 ## Management Variables ##
 
-var Position : String = "" # Position on the field (1-9)
+var Position : int = 0 # Position on the field (1-9 => field | 10 => Leader | 0 => Invalid)
 var Location : String = "hand" # Location of the card (deck - hand - field - waste)
 
 var isFirstTurn : bool = true # Variable used to disable the card on the first turn you play it
@@ -43,7 +43,7 @@ var sprite
 var isMouseOver : bool = false
 var isCardSelected : bool = false
 
-var currentPos : int = 0 # Current position on the field (0 => Invalid)
+var currentPos : int = 0 # Current position on the field (1-9 => field | 10 => Leader | 0 => Invalid)
 var old_position # First position of the card
 var new_position # New position of the card
 var currentLoc : String = "" # Type on the field (attack - defense)
@@ -104,6 +104,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 				if isCardSelected: # Dropping the card
 					if (
 						currentPos != 0 # Right position
+						and GameController.positionStatus[currentPos] == false
 						and GameController.lymph >= Cost # Enough lymph 
 						and GameController.turn == "player" # Right turn
 						and GameController.phase == "attack" # Right phase
@@ -115,14 +116,20 @@ func _on_input_event(_viewport, event, _shape_idx):
 						
 						Location = "field"
 						global_position = new_position
+						Position = currentPos
+						GameController.positionStatus[Position] = true
 						
 						GameController.lymph -= Cost
 						GameController.player_current_stress += 1
 						
 						GameController.player_hand.remove_at(GameController.player_hand.find(self))
 						GameController.UpdateHand()
-	
+						
 						get_tree().call_group("GUI_Manager", "_on_Update")
+						
+						if get_node_or_null("Common Effects/Rise"):
+							get_node("Common Effects/Rise").Effect(Team, Position) # Call 'Rise' function of the played card
+						get_tree().call_group("On Deploy", "Effect", Team, Position) # Call 'On Deploy' functions
 					else:
 						global_position = old_position
 					isCardSelected = false
@@ -162,7 +169,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 
 func _on_area_entered(area):
 	if area.get_groups():
-		if area.get_groups()[0] == "Positioner" and not isSearchingForEnemy and not isChoosingToDefend: # Dropping the card on a valid position
+		if area.get_groups()[0] == "Positioner" and area.get_groups()[3] == "Player" and not isSearchingForEnemy and not isChoosingToDefend: # Dropping the card on a valid position
 			currentPos = int(String(area.get_groups()[1]))
 			currentLoc = String(area.get_groups()[2])
 			new_position = area.global_position
@@ -224,6 +231,7 @@ func isDefenseOk(who, what : String): # Fuction called when you choose what to d
 func UpdateStats(who): # Function called when card's stats change
 	if who == self:
 		if Health <= 0: # Check Card Health
+			GameController.positionStatus[Position] = false
 			queue_free()
 		
 		for i in get_all_children(self): # Update GUI

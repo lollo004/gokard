@@ -204,6 +204,44 @@ theme_override_font_sizes/font_size = 35
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Common Effects" type="Node" parent="."]
+
+[node name="Rise" type="Node" parent="Common Effects" groups=["Rise"]]
+
+[node name="Heritage" type="Node" parent="Common Effects" groups=["Heritage"]]
+
+[node name="Guard" type="Node" parent="Common Effects" groups=["Guard"]]
+
+[node name="Accuracy" type="Node" parent="Common Effects" groups=["Accuracy"]]
+
+[node name="Uprising" type="Node" parent="Common Effects" groups=["Uprising"]]
+
+[node name="Rage" type="Node" parent="Common Effects" groups=["Rage"]]
+
+[node name="Revenge" type="Node" parent="Common Effects" groups=["Revenge"]]
+
+[node name="On Deploy" type="Node" parent="Common Effects" groups=["Deploy"]]
+
+[node name="Zippy" type="Node" parent="Common Effects" groups=["Zippy"]]
+
+[node name="Dead Weight" type="Node" parent="Common Effects" groups=["Dead Weight"]]
+
+[node name="Sweet Song" type="Node" parent="Common Effects" groups=["Sweet Song"]]
+
+[node name="Tunnel" type="Node" parent="Common Effects" groups=["Tunnel"]]
+
+[node name="Teleport" type="Node" parent="Common Effects" groups=["Teleport"]]
+
+[node name="Bane (X)" type="Node" parent="Common Effects" groups=["Bane"]]
+
+[node name="Super Bane (X)" type="Node" parent="Common Effects" groups=["Super Bane"]]
+
+[node name="Raising (X,Y,Z,W)" type="Node" parent="Common Effects" groups=["Raising"]]
+
+[node name="Phase Mutation (X)" type="Node" parent="Common Effects" groups=["Phase Mutation"]]
+
+[node name="Turn Mutation (X)" type="Node" parent="Common Effects" groups=["Turn Mutation"]]
+
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]
 [connection signal="input_event" from="." to="." method="_on_input_event"]
