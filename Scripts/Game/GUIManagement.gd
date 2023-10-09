@@ -25,9 +25,12 @@ func _on_Update():
 	
 	get_tree().get_first_node_in_group("Player_Life").text = str(GameController.player_health)
 	get_tree().get_first_node_in_group("Enemy_Life").text = str(GameController.enemy_health)
+	get_tree().get_first_node_in_group("Player_Name").text = str(GameController.player_name)
+	get_tree().get_first_node_in_group("Enemy_Name").text = str(GameController.enemy_name)
 
 
 func _on_turn_button_pressed():
-	if not GameController.isScreenTaken:
+	if not GameController.isScreenTaken and GameController.turn == "player":
 		GameController.TurnButtonPressed()
+		get_tree().call_group("ClientInstance", "send_pass") # Tell you passed phase to opponent
 

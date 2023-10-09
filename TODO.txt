@@ -1,7 +1,5 @@
 Check if player can play or not
 Animations and feedbacks
 
-REMEMBER: when calling a common effect of a specific script call the function: 
-	Effect(Team, ...)
-	Team = team of who calls the function (player - enemy)
-	... = extra arguments
+bugged opponent hand
+no attack /defense system 

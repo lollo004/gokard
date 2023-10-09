@@ -42,6 +42,7 @@ var sprite
 
 var isMouseOver : bool = false
 var isCardSelected : bool = false
+var alreadyMoved : bool = false
 
 var currentPos : int = 0 # Current position on the field (1-9 => field | 10 => Leader | 0 => Invalid)
 var old_position # First position of the card
@@ -99,7 +100,7 @@ func _on_mouse_exited(): # Stop override with mouse
 
 func _on_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
-		if event.is_pressed() and isMouseOver and isEnabled: # Click over a card with mouse
+		if event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT and isMouseOver and isEnabled: # Click over a card with left mouse button
 			if Team == "player" and GameController.turn == "player":
 				if isCardSelected: # Dropping the card
 					if (
@@ -130,6 +131,8 @@ func _on_input_event(_viewport, event, _shape_idx):
 						if get_node_or_null("Common Effects/Rise"):
 							get_node("Common Effects/Rise").Effect(Team, Position) # Call 'Rise' function of the played card
 						get_tree().call_group("On Deploy", "Effect", Team, Position) # Call 'On Deploy' functions
+						
+						get_tree().call_group("ClientInstance", "send_play_card", id, Position) # Send card and position to opponent
 					else:
 						global_position = old_position
 					isCardSelected = false
@@ -162,6 +165,36 @@ func _on_input_event(_viewport, event, _shape_idx):
 					if Location == "field" and isChooseDone and not isChoosingToDefend and GameController.phase == "defense" and currentLoc == "Defense" and not isFirstTurn and not isBlockedByAbility: # Cancel choose on the card
 						GameController.CancelDefense(self)
 						isChooseDone = false
+		if event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT and isMouseOver and isEnabled: # Click over a card with right mouse button
+			if Team == "player" and GameController.turn == "player":
+				if isCardSelected: # Dropping the card
+					if (
+						currentPos != 0 # Right position
+						and GameController.positionStatus[currentPos] == false
+						and GameController.turn == "player" # Right turn
+						and GameController.phase == "attack" # Right phase
+						and GameController.turnType == "draw" # RIght turn type
+						and Location == "field" # Right card
+						and Type == "Versatile" # Right type
+						):
+						
+						global_position = new_position
+						var oldPos = Position
+						GameController.positionStatus[oldPos] = false
+						Position = currentPos
+						GameController.positionStatus[Position] = true
+						
+						alreadyMoved = true
+						isFirstTurn = true
+						
+						get_tree().call_group("ClientInstance", "send_move_card", oldPos, Position) # Send old and new position to opponent
+					else:
+						global_position = old_position
+					isCardSelected = false
+				else:
+					if Location == "field" and not isTargetSelected and not isSearchingForEnemy and not isChooseDone and not isChoosingToDefend and not alreadyMoved and GameController.phase == "attack" and Type == "Versatile" and GameController.turnType == "draw" and not isFirstTurn: # Move the card if it's versatile
+						old_position = global_position
+						isCardSelected = true
 
 
 ### COLLISION EVENTS ###
@@ -169,7 +202,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 
 func _on_area_entered(area):
 	if area.get_groups():
-		if area.get_groups()[0] == "Positioner" and area.get_groups()[3] == "Player" and not isSearchingForEnemy and not isChoosingToDefend: # Dropping the card on a valid position
+		if area.get_groups()[0] == "Positioner" and area.get_groups()[4] == "Player" and not isSearchingForEnemy and not isChoosingToDefend: # Dropping the card on a valid position
 			currentPos = int(String(area.get_groups()[1]))
 			currentLoc = String(area.get_groups()[2])
 			new_position = area.global_position
@@ -232,6 +265,14 @@ func UpdateStats(who): # Function called when card's stats change
 	if who == self:
 		if Health <= 0: # Check Card Health
 			GameController.positionStatus[Position] = false
+			
+			if get_node_or_null("Common Effects/Tunnel"):
+				get_node("Common Effects/Tunnel").Effect() # Call 'Tunnel' function of the played card
+			if get_node_or_null("Common Effects/Heritage"):
+				get_node("Common Effects/Heritage").Effect() # Call 'Heritage' function of the played card
+			
+			get_tree().call_group("Revenge", "Effect", Team, Position) # Call 'Revenge' function
+			
 			queue_free()
 		
 		for i in get_all_children(self): # Update GUI
@@ -265,25 +306,40 @@ func onTurnBegin(team): # Function called on turn start (team = player / enemy)
 			isFirstTurn = false
 			isTargetSelected = false #attack
 			isChooseDone = false #defense
+			alreadyMoved = false #movement
 		
-		if actionDuringDefense == "defende": #Toggle the block on turn start
+		if actionDuringDefense == "defende": # Toggle the block on turn start
 			isBlockedByAbility = false
 			hasAbilityBeenUsedThisTurn = false
 
 
 func onPhaseBegin(team): # Function called on attack phase start (team = player / enemy)
 	if Team == team:
-		if actionDuringDefense == "special" and not hasAbilityBeenUsedThisTurn: #Toggle the block on phase start
+		if actionDuringDefense == "special" and not hasAbilityBeenUsedThisTurn: # Toggle the block on phase start
 			isBlockedByAbility = false
-		if actionDuringDefense == "special" and hasAbilityBeenUsedThisTurn: #Use special ability
+		if actionDuringDefense == "special" and hasAbilityBeenUsedThisTurn: # Use special ability
 			isBlockedByAbility = true
 			hasAbilityBeenUsedThisTurn = false
-			print("special") # use special
+			
+			### ||| !!! USE SPECIAL ABILITY !!! ||| ###
+			print("special")
 
 
 func AttackEnemy(enemy): # Function called when the card has to attack another one
 	enemy.Health -= Attack
 	get_tree().call_group("Card", "UpdateStats", enemy)
+	get_tree().call_group("Uprising", "Effect", Team) # Call 'Uprising' functions
+	get_tree().call_group("Rage", "Effect", Team) # Call 'Rage' functions
+	get_tree().call_group("Teleport", "Effect", Team) # Call 'Teleport' function
+	
+	if get_node_or_null("Common Effects/Raising"):
+		get_node("Common Effects/Raising").Effect() # Call 'Raising' function of the played card
+	if get_node_or_null("Common Effects/Sweet Song"):
+		get_node("Common Effects/Sweet Song").Effect() # Call 'Sweet Song' function of the played card
+	if get_node_or_null("Common Effects/Bane"):
+		get_node("Common Effects/Bane").Effect() # Call 'Bane' function of the played card
+	if get_node_or_null("Common Effects/Super Bane"):
+		get_node("Common Effects/Super Bane").Effect() # Call 'Super Bane' function of the played card
 
 
 func ProtectByEnemy(enemy): # Function called when the card has to defende by another one

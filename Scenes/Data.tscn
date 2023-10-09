@@ -2,5 +2,5 @@
 
 [ext_resource type="Script" path="res://Scripts/Data.gd" id="1_l6jlc"]
 
-[node name="Static Data" type="Node"]
+[node name="Static Data" type="Node" groups=["Data"]]
 script = ExtResource("1_l6jlc")

@@ -22,10 +22,16 @@ var max_stress : int = 9
 
 var turnType : String = "" # Action to do in current turn (play, draw, lymph, stress)
 
+var initial_number_player_cards : int = 0
 var player_hand = []
 var player_deck = []
 
-var isScreenTaken = true # Variable to check if you can interact with buttons
+var initial_number_enemy_cards : int = 0
+var enemy_hand = []
+var enemy_deck = []
+var enemy_cards = {} # Dict of enemy cards on the field
+
+var isScreenTaken = false # Variable to check if you can interact with buttons
 
 var positionStatus = { # Dictionary that contains position status
 	1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false, 8 : false, 9 : false
@@ -50,30 +56,29 @@ var enemy_defends = [] # List with who is defending
 
 
 func _ready():
-	## RANDOM HAND GEN ##
-	var scene
-	var instance
+	print("Game Started!")
 	
-	for i in 30:
-		var rng = RandomNumberGenerator.new()
-		var number = rng.randf_range(1, 4)
-		scene = load("res://Scenes/Game/Cards/Card"+str(int(number))+".tscn")
-		instance = scene.instantiate()
-		instance.Team = "player"
+	player_name = Data.nickname
 	
-		player_deck.append(instance)
+	player_deck = get_tree().get_first_node_in_group("Data").deck
+	initial_number_player_cards = get_tree().get_first_node_in_group("Data").initial_number_player_cards
+	initial_number_enemy_cards = get_tree().get_first_node_in_group("Data").initial_number_enemy_cards
+	enemy_deck = get_tree().get_first_node_in_group("Data").enemy_back
 	
-	var number_of_cards = 9
-	
-	for i in number_of_cards:
+	for i in initial_number_player_cards:
 		add_child(player_deck[i])
 		player_hand.append(player_deck[i])
 		player_deck.remove_at(i)
 	
-	UpdateHand()
-	## RANDOM HAND GEN ##
+	for i in initial_number_enemy_cards:
+		add_child(enemy_deck[i])
+		enemy_hand.append(enemy_deck[i])
 	
-	get_tree().get_first_node_in_group("TurnManager").visible = true
+	UpdateHand()
+	UpdateEnemyHand()
+	
+	## SETUP ##
+	
 	current_max_lymph = lymph
 	
 	get_tree().get_first_node_in_group("Player_Name").text = player_name
@@ -104,6 +109,8 @@ func TurnButtonPressed():
 		turn = "enemy"
 		phase = "defense"
 		get_tree().call_group("Card", "onTurnBegin", "enemy")
+		
+		lymph = current_max_lymph
 	
 	elif turn == "enemy" and phase == "defense":
 		phase = "attack"
@@ -114,19 +121,35 @@ func TurnButtonPressed():
 	get_tree().call_group("GUI_Manager", "_on_Update")
 
 
+func InitialSetupForGameStart(nickname, canStart):
+	enemy_name = nickname
+	# set skin and leader ability
+	
+	if canStart == "true":
+		turn = "player"
+		get_tree().get_first_node_in_group("TurnManager").visible = true
+	else:
+		turn = "enemy"
+	
+	print("Setup Finished !!")
+
+
 ### TURN MANAGEMEN FUNCTIONS ###
 
 
 func PlayCard():
 	if len(player_hand) > 0:
 		turnType = "play"
+		
+		get_tree().call_group("ClientInstance", "send_turn_choice", turnType) # Send turn type to opponent
 
 
 func DrawCard():
 	if len(player_deck) > 0 and len(player_hand) < 10:
 		turnType = "draw"
 		DrawOneCard()
-		UpdateHand()
+		
+		get_tree().call_group("ClientInstance", "send_turn_choice", turnType) # Send turn type to opponent
 
 
 func AddLymph():
@@ -134,12 +157,16 @@ func AddLymph():
 		turnType = "lymph"
 		lymph += 1
 		current_max_lymph += 1
+		
+		get_tree().call_group("ClientInstance", "send_turn_choice", turnType) # Send turn type to opponent
 
 
 func AddStress():
 	if stress < max_stress:
 		turnType = "stress"
 		stress += 1
+		
+		get_tree().call_group("ClientInstance", "send_turn_choice", turnType) # Send turn type to opponent
 
 
 ### OTHER FUNCTIONS ###
@@ -152,6 +179,8 @@ func DrawOneCard():
 		player_hand.append(player_deck[-1])
 		add_child(player_deck[-1])
 		player_deck.remove_at(player_deck.size() - 1)
+		
+		UpdateHand()
 
 func UpdateHand():
 	var i : int = 0
@@ -391,3 +420,69 @@ func GameEnds(looser): # Function called when someone dies (looser = who died)
 	if looser == "enemy":
 		print(str(enemy_name) + " died!")
 
+
+### OPPONENT FIELD MANAGEMENT FUNCTIONS ###
+
+
+# Prepare Game Session #
+
+func UpdateEnemyHand():
+	var i : int = 0
+	
+	for item in enemy_hand:
+		i += 1
+		
+		if len(enemy_hand) % 2 == 0:
+			@warning_ignore("integer_division")
+			item.global_position = Vector2((540 - ((len(enemy_hand) / 2) * 48)) + (46*i), 20)
+		else:
+			@warning_ignore("integer_division")
+			item.global_position = Vector2((520 - (((len(enemy_hand) - 1) / 2) * 48)) + (46*i), 20)
+
+# Turn Selection #
+
+func DrawEnemyCard():
+	if len(enemy_deck) > 0 and len(enemy_hand) < 10:
+		enemy_hand.append(enemy_deck[-1])
+		add_child(enemy_deck[-1])
+		enemy_deck.remove_at(enemy_deck.size() - 1)
+		
+		UpdateEnemyHand()
+
+# During Opponent Turn #
+
+func PlayEnemyCard(id, pos, stats):
+	enemy_hand.remove_at(enemy_hand.size() - 1) # Remove card from enemy hand
+	
+	var scene = load("res://Scenes/Game/Cards/Card"+str(int(id))+".tscn") # Load card resources
+	var instance = scene.instantiate() # Instantiate card resources
+	enemy_cards[pos] = instance # Save card instance
+	
+	add_child(enemy_cards[pos]) # Create card
+	
+	var positioner_pos = get_tree().get_first_node_in_group("EP"+str(pos)) # Get the right position
+	enemy_cards[pos].global_position = positioner_pos.global_position # Move card to the right position
+	
+	if stats != []: # Stats different to default
+		enemy_cards[pos].Health = stats[0]
+		enemy_cards[pos].Attack = stats[1]
+		enemy_cards[pos].Speed = stats[2]
+		enemy_cards[pos].Weight = stats[3]
+	
+	lymph -= enemy_cards[pos].Cost # Update lymph used by enemy
+	
+	UpdateEnemyHand()
+	
+	get_tree().call_group("GUI_Manager", "_on_Update")
+
+func MoveEnemyCard(old_pos, new_pos):
+	var positioner_pos = get_tree().get_first_node_in_group("EP"+str(new_pos))
+	enemy_cards[old_pos].global_position = positioner_pos.global_position # Swap cards position
+	enemy_cards[new_pos] = enemy_cards[old_pos] # Add new position to card dict
+	enemy_cards.erase(old_pos) # Remove old position from card dict
+	
+	get_tree().call_group("GUI_Manager", "_on_Update")
+
+# Attack and Defense #
+
+pass
