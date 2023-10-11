@@ -118,11 +118,15 @@ func handle_new_message(message): # Check message type and choose what to do
 		return
 	
 	elif message["type"] == "attack": # Opponent choose attackers and targets
-		#discover enemy attackers
+		GameController.enemy_attacks = message["attacker_list"]
+		GameController.FormatAttackerAndDefenders()
+		GameController.ManagePlayerDefense()
 		return
 	
 	elif message["type"] == "defende": # Opponent choose defenders
-		#discover enemy defenders
+		GameController.enemy_defends = message["defender_list"]
+		GameController.FormatAttackerAndDefenders()
+		GameController.ManageEnemyDefense()
 		return
 	
 	elif message["type"] == "pass": # Opponent passed phase or turn
@@ -130,7 +134,7 @@ func handle_new_message(message): # Check message type and choose what to do
 		GUI_Manager._on_Update()
 		return
 	
-	elif message["type"] == "user_event" and message["action"] == "OPPONENT_DISCONNECTED": # Opponent left the game
+	elif message["type"] == "OPPONENT_DISCONNECTED": # Opponent left the game
 		GameController.GameEnds("enemy") # You win!
 		return
 
@@ -171,18 +175,17 @@ func send_move_card(old_pos, new_pos): # Function called when player move a card
 	socket.send_text(JSON.stringify(join_message))
 
 
-func send_attack(attacker_list, target_list): # Function called when player decide to attack
+func send_attack(attacker_dict): # Function called when player decide to attack
 	var join_message = {
 		"type": "attack",
 		"id": client_id,
-		"attacker_list": attacker_list,
-		"target_list": target_list
+		"attacker_list": attacker_dict
 	}
 	
 	socket.send_text(JSON.stringify(join_message))
 
 
-func send_defende(defender_list): # Function called when player decide to defende
+func send_defense(defender_list): # Function called when player decide to defende
 	var join_message = {
 		"type": "defender",
 		"id": client_id,

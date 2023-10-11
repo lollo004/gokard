@@ -1,5 +1,7 @@
 Check if player can play or not
 Animations and feedbacks
 
-bugged opponent hand
-no attack /defense system 
+
+fix opponent hand visual updating!
+fix defense system
+implement special system and related hero

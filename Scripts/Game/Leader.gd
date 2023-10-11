@@ -3,6 +3,7 @@ extends Area2D
 @export var Team : String = ""
 var Name : String = ""
 var Health : int = 30
+var Position : String = "10"
 
 var GameController # Game controller reference
 

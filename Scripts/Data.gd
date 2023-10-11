@@ -12,7 +12,7 @@ var deck = [] # cards used during game
 var player_back = null # back of the card
 var initial_number_player_cards = 0 # number of cards when game start
 
-var enemy_back = [] # back of the card
+var enemy_back_deck = [] # back of the card
 var initial_number_enemy_cards = 0 # number of cards when game start
 
 
@@ -40,7 +40,7 @@ func _ready():
 	## ONLY_FOR_DEBUG ENEMY SETUP ##
 	
 	for i in 30:
-		enemy_back.append(load("res://Scenes/Game/Cards/BackCard.tscn").instantiate())
+		enemy_back_deck.append(load("res://Scenes/Game/Cards/BackCard.tscn").instantiate())
 	
 	initial_number_enemy_cards = 4
 	

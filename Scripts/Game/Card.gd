@@ -24,7 +24,7 @@ extends Area2D
 
 ## Management Variables ##
 
-var Position : int = 0 # Position on the field (1-9 => field | 10 => Leader | 0 => Invalid)
+var Position : String = "0" # Position on the field (1-9 => field | 10 => Leader | 0 => Invalid)
 var Location : String = "hand" # Location of the card (deck - hand - field - waste)
 
 var isFirstTurn : bool = true # Variable used to disable the card on the first turn you play it
@@ -44,7 +44,7 @@ var isMouseOver : bool = false
 var isCardSelected : bool = false
 var alreadyMoved : bool = false
 
-var currentPos : int = 0 # Current position on the field (1-9 => field | 10 => Leader | 0 => Invalid)
+var currentPos : String = "" # Current position on the field (1-9 => field | 10 => Leader | 0 => Invalid)
 var old_position # First position of the card
 var new_position # New position of the card
 var currentLoc : String = "" # Type on the field (attack - defense)
@@ -104,7 +104,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 			if Team == "player" and GameController.turn == "player":
 				if isCardSelected: # Dropping the card
 					if (
-						currentPos != 0 # Right position
+						currentPos != "0" # Right position
 						and GameController.positionStatus[currentPos] == false
 						and GameController.lymph >= Cost # Enough lymph 
 						and GameController.turn == "player" # Right turn
@@ -169,7 +169,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 			if Team == "player" and GameController.turn == "player":
 				if isCardSelected: # Dropping the card
 					if (
-						currentPos != 0 # Right position
+						currentPos != "0" # Right position
 						and GameController.positionStatus[currentPos] == false
 						and GameController.turn == "player" # Right turn
 						and GameController.phase == "attack" # Right phase
@@ -203,7 +203,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 func _on_area_entered(area):
 	if area.get_groups():
 		if area.get_groups()[0] == "Positioner" and area.get_groups()[4] == "Player" and not isSearchingForEnemy and not isChoosingToDefend: # Dropping the card on a valid position
-			currentPos = int(String(area.get_groups()[1]))
+			currentPos = String(area.get_groups()[1])
 			currentLoc = String(area.get_groups()[2])
 			new_position = area.global_position
 		
@@ -215,7 +215,7 @@ func _on_area_entered(area):
 func _on_area_exited(area):
 	if area.get_groups():
 		if area.get_groups()[0] == "Positioner" and not isSearchingForEnemy and not isChoosingToDefend: # Exiting by dropping the card on a valid position
-			currentPos = 0
+			currentPos = "0"
 			
 		if area.get_groups()[0] == "Pointer": # Exiting by getting selected by the pointer
 			if Team == "enemy":
@@ -240,7 +240,7 @@ func Enable(flag : bool): # Function called when a menu is appearing or disappea
 
 
 func isAttackOk(who, flag : bool): # Fuction called when a pointer is going to be deleted
-	if who == self:
+	if who.Position == Position:
 		if flag:
 			isTargetSelected = true
 		else:
@@ -249,7 +249,7 @@ func isAttackOk(who, flag : bool): # Fuction called when a pointer is going to b
 
 
 func isDefenseOk(who, what : String): # Fuction called when you choose what to do with a defender card
-	if who == self:
+	if who.Position == Position:
 		if what == "defende" or what == "special":
 			isChooseDone = true
 			hasAbilityBeenUsedThisTurn = true
@@ -259,6 +259,17 @@ func isDefenseOk(who, what : String): # Fuction called when you choose what to d
 			hasAbilityBeenUsedThisTurn = false
 			actionDuringDefense = ""
 		isChoosingToDefend = false
+
+
+func isItYou(team : String, pos : String, target = null, atf : String = ""): # Function called to format attack and defense array (atf = array_to_fill)
+	if Team == team and Position == pos:
+		if not target:
+			GameController.current_array_filler = self
+		else:
+			if atf == "pa":
+				GameController.raw_player_attacks[self] = GameController.current_array_filler
+			if atf == "ea":
+				GameController.raw_enemy_attacks[self] = GameController.current_array_filler
 
 
 func UpdateStats(who): # Function called when card's stats change
