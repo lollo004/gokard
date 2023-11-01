@@ -1,5 +1,3 @@
-Check if player can play or not
 Animations and feedbacks
 
-bugged opponent hand
-no attack /defense system 
+Graphic upgrade !

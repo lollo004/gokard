@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://cn7qq6h6vk6m1"]
+[gd_scene load_steps=6 format=3 uid="uid://cn7qq6h6vk6m1"]
 
 [ext_resource type="PackedScene" uid="uid://haworbi8gah1" path="res://Scenes/Game/Positioner.tscn" id="1_kj4pf"]
 [ext_resource type="Script" path="res://Scripts/Game/GUIManagement.gd" id="2_1wmxs"]
 [ext_resource type="Script" path="res://Scripts/Game/GameController.gd" id="3_ovi4y"]
 [ext_resource type="PackedScene" uid="uid://c3ccrckpghnpv" path="res://Scenes/Game/TurnSelecter.tscn" id="4_fkvir"]
 [ext_resource type="PackedScene" uid="uid://bc04oldvebs2w" path="res://Scenes/Game/Leader.tscn" id="5_cjfwb"]
-[ext_resource type="PackedScene" uid="uid://c7jux2wqw05t7" path="res://Scenes/Game/Cards/Card1.tscn" id="6_nt3k0"]
 
 [node name="Main Scene" type="Node"]
 
@@ -58,7 +57,7 @@ position = Vector2(500, 280)
 
 [node name="Player" parent="GUI/Player" groups=["PLAYER"] instance=ExtResource("5_cjfwb")]
 position = Vector2(75, 490)
-Team = "player"
+id = 1
 
 [node name="Player Name" type="Label" parent="GUI/Player" groups=["Player_Name"]]
 offset_top = 385.0
@@ -128,6 +127,7 @@ position = Vector2(820, 350)
 [node name="Enemy" parent="GUI/Enemy" groups=["ENEMY"] instance=ExtResource("5_cjfwb")]
 position = Vector2(75, 50)
 Team = "enemy"
+id = 1
 
 [node name="Enemy Name" type="Label" parent="GUI/Enemy" groups=["Enemy_Name"]]
 offset_top = 100.0
@@ -191,11 +191,5 @@ position = Vector2(755, 100)
 [node name="Enemy Positioner 9" parent="GUI/Enemy/Card Position" groups=["9", "Attack", "EP9", "Enemy"] instance=ExtResource("1_kj4pf")]
 z_index = -10
 position = Vector2(820, 200)
-
-[node name="Enemy Test Card" parent="." instance=ExtResource("6_nt3k0")]
-position = Vector2(383, 165)
-Health = 3
-Name = "Test"
-Team = "enemy"
 
 [connection signal="pressed" from="GUI/Management/Turn Button" to="GUI/Management" method="_on_turn_button_pressed"]

@@ -81,24 +81,24 @@ animation = &"idle"
 [node name="Attack" type="Label" parent="Border" groups=["Attack"]]
 offset_left = -620.0
 offset_top = 720.0
-offset_right = -520.0
-offset_bottom = 820.0
+offset_right = -433.0
+offset_bottom = 900.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 100
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Health" type="Label" parent="Border" groups=["Health"]]
-offset_left = 420.0
-offset_top = 720.0
-offset_right = 520.0
-offset_bottom = 820.0
+offset_left = 433.0
+offset_top = 733.0
+offset_right = 600.0
+offset_bottom = 900.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 100
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -110,7 +110,7 @@ offset_bottom = 620.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 25
+theme_override_font_sizes/font_size = 70
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -122,7 +122,7 @@ offset_bottom = 620.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 25
+theme_override_font_sizes/font_size = 70
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -134,7 +134,7 @@ offset_bottom = -865.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 85
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -173,17 +173,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Effect" type="Label" parent="Border" groups=["Effect"]]
-offset_left = -600.0
-offset_top = 120.0
-offset_bottom = 320.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Description" type="Label" parent="Border" groups=["Description"]]
 offset_left = -600.0
 offset_top = 120.0
 offset_bottom = 320.0

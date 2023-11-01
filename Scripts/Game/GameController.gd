@@ -22,6 +22,16 @@ var max_stress : int = 9
 
 var turnType : String = "" # Action to do in current turn (play, draw, lymph, stress)
 
+## Leaders Variables ##
+
+var player_leader_special_effect # Special effect's script
+var enemy_leader_special_effect # Special effect's script
+
+var player_leader_ref # Player leader ref to hit it
+var enemy_leader_ref # Enemy leader ref to hit it
+
+## Setup Variables ##
+
 var initial_number_player_cards : int = 0
 var player_hand = []
 var player_deck = []
@@ -34,16 +44,20 @@ var enemy_cards = {} # Dict of enemy cards on the field
 var isScreenTaken = false # Variable to check if you can interact with buttons
 
 var positionStatus = { # Dictionary that contains position status
-	1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false, 8 : false, 9 : false
+	"1" : false, "2" : false, "3" : false, "4" : false, "5" : false, "6" : false, "7" : false, "8" : false, "9" : false
 }
 
 ## Attack Variables ##
 
-var started_attack_card # the card that is attacing
+var started_attack_card # the card that is attacking
 var selected_card_to_attack # the card that is selected by the pointer
 
 var player_attacks = {} # Dict with who is attacing who (attacker_pos : defender_pos)
 var enemy_attacks = {} # Dict with who is attacing who (attacker_pos : defender_pos)
+var raw_player_attacks = {} # Dict with who is attacing who (attacker_pos : defender_pos)
+var raw_enemy_attacks = {} # Dict with who is attacing who (attacker_pos : defender_pos)
+
+var current_array_filler = null # Variable used to format the attack and defense array / dict
 
 ## Defende Variables ##
 
@@ -51,6 +65,8 @@ var started_defende_card # the card that is choosing to defende or not
 
 var player_defends = [] # List with who is defending
 var enemy_defends = [] # List with who is defending
+var raw_player_defends = [] # List with who is defending
+var raw_enemy_defends = [] # List with who is defending
 
 ### MAIN EVENTS ###
 
@@ -63,7 +79,7 @@ func _ready():
 	player_deck = get_tree().get_first_node_in_group("Data").deck
 	initial_number_player_cards = get_tree().get_first_node_in_group("Data").initial_number_player_cards
 	initial_number_enemy_cards = get_tree().get_first_node_in_group("Data").initial_number_enemy_cards
-	enemy_deck = get_tree().get_first_node_in_group("Data").enemy_back
+	enemy_deck = get_tree().get_first_node_in_group("Data").enemy_back_deck
 	
 	for i in initial_number_player_cards:
 		add_child(player_deck[i])
@@ -71,8 +87,9 @@ func _ready():
 		player_deck.remove_at(i)
 	
 	for i in initial_number_enemy_cards:
-		add_child(enemy_deck[i])
-		enemy_hand.append(enemy_deck[i])
+		enemy_hand.append(enemy_deck[-1])
+		add_child(enemy_hand[-1])
+		enemy_deck.remove_at(enemy_deck.size() - 1)
 	
 	UpdateHand()
 	UpdateEnemyHand()
@@ -103,7 +120,7 @@ func TurnButtonPressed():
 		phase = "attack"
 		get_tree().call_group("Card", "onPhaseBegin", "player")
 		
-		ManagePlayerDefense()
+		get_tree().call_group("ClientInstance", "send_defense", player_defends)
 	
 	elif turn == "player" and phase == "attack":
 		turn = "enemy"
@@ -116,7 +133,7 @@ func TurnButtonPressed():
 		phase = "attack"
 		get_tree().call_group("Card", "onPhaseBegin", "enemy")
 		
-		ManageEnemyDefense()
+		get_tree().call_group("ClientInstance", "send_attack", player_attacks)
 	
 	get_tree().call_group("GUI_Manager", "_on_Update")
 
@@ -131,7 +148,22 @@ func InitialSetupForGameStart(nickname, canStart):
 	else:
 		turn = "enemy"
 	
+	get_tree().call_group("Leader", "setGlobalId")
+	
 	print("Setup Finished !!")
+
+
+func SetLeaders(team, leader_id, ref): # Save leader special powers
+	if team == "player":
+		var scene1 = load("res://Scenes/Game/LeaderSpecials/Special"+ str(leader_id) +".tscn")
+		player_leader_special_effect = scene1.instantiate()
+		add_child(player_leader_special_effect)
+		player_leader_ref = ref
+	else:
+		var scene2 = load("res://Scenes/Game/LeaderSpecials/Special"+ str(leader_id) +".tscn")
+		enemy_leader_special_effect = scene2.instantiate()
+		add_child(enemy_leader_special_effect)
+		enemy_leader_ref = ref
 
 
 ### TURN MANAGEMEN FUNCTIONS ###
@@ -202,7 +234,7 @@ func ShuffleDeck():
 
 func AttackResult(flag : bool): # Function called when an attack is confirmed or not setted
 	if flag:
-		player_attacks[started_attack_card] = selected_card_to_attack
+		player_attacks[started_attack_card.Position] = selected_card_to_attack.Position
 		started_attack_card = null
 		selected_card_to_attack = null
 	else:
@@ -210,202 +242,252 @@ func AttackResult(flag : bool): # Function called when an attack is confirmed or
 		selected_card_to_attack = null
 
 func CancelAttack(who): # Function called when an attack is cancelled
-	player_attacks.erase(who)
+	player_attacks.erase(who.Position)
 	started_attack_card = null
 	selected_card_to_attack = null
 
 func DefenseResult(flag : bool): # Function called when a defense is confirmed or not setted
 	if flag:
-		player_defends.append(started_defende_card)
+		player_defends.append(started_defende_card.Position)
 		started_defende_card = null
 	else:
 		started_defende_card = null
 
 func CancelDefense(who): # Function called when a defense is cancelled
-	player_defends.erase(who)
+	player_defends.erase(who.Position)
 	started_defende_card = null
 
-func ManagePlayerDefense(): # Function that contains player defense system
-	if enemy_attacks.size() > 0:
-		if enemy_attacks.size() > player_defends.size():
-			var slowests = []
-			var targets = []
-			
-			while enemy_attacks.size() > player_defends.size():
-				var first_obj = true
-				
-				for i in enemy_attacks: #iterate all the attackers
-					if first_obj:
-						slowests.append(i)
-					elif i.Speed <= slowests[-1].Speed:
-						if i.Speed == slowests[-1].Speed:
-							if i.Weight > slowests[-1].Weight:
-								slowests[-1] = i
-						else:
-							slowests[-1] = i
-					first_obj = false
-				
-				targets.append(enemy_attacks[slowests[-1]]) #remember his target
-				enemy_attacks.erase(slowests[-1]) #remove the slowest (it will be the last attacker)
-			
-			PlayerDefense()
-			
-			var x = 0
-			slowests.reverse()
-			targets.reverse()
-			
-			while x < len(slowests): #attackers attack the desired target
-				Fight(slowests[x], targets[x], false)
-				x += 1
-			
-		elif player_defends.size() > enemy_attacks.size(): # if there are more defenders that attackers then remove the slowest
-			while player_defends.size() > enemy_attacks.size():
-				var slowest = null
-				
-				for i in player_defends: #iterate all the defenders
-					if not slowest:
-						slowest = i
-					elif i.Speed <= slowest.Speed:
-						if i.Speed == slowest.Speed:
-							if i.Weight > slowest.Weight:
-								slowest = i
-						else:
-							slowest = i
-				
-				player_defends.erase(slowest) #remove the slowest
-				
-			PlayerDefense()
-		else:
-			PlayerDefense()
+func UsePlayerSpecial(): #Function called when player use a special
+	player_leader_special_effect.UsePlayerEffect()
 
-func PlayerDefense():
-	var n_times = enemy_attacks.size()
-	
-	for n in n_times: # used only to make this operation for every attacker
-		var quicker_attacker
-		var quicker_defender
+func UseEnemySpecial(): #Function called when enemy use a special
+	enemy_leader_special_effect.UseEnemyEffect()
+
+func ManagePlayerDefense(): # Function that contains player defense system
+	if raw_enemy_attacks.size() > 0:
+		var attackers = [] # attacker array from quicker to slower
+		var targets = [] # targets array ordered like quickers
+		var defenders = [] # attacker array from quicker to slower
 		
-		for i in enemy_attacks: #iterate all the attackers
-			if not quicker_attacker:
-				quicker_attacker = i
-			elif i.Speed >= quicker_attacker.Speed:
-				if i.Speed == quicker_attacker.Speed:
-					if i.Weight < quicker_attacker.Weight:
-						quicker_attacker = i
+		while raw_enemy_attacks.size() > 0: # order the attacker from quicker to slower
+			var first_obj = true
+			
+			for i in raw_enemy_attacks: #iterate all the attackers to select the quicker
+				if first_obj:
+					attackers.append(i)
+					first_obj = false
+				elif i.Speed <= attackers[-1].Speed: #if it's slower than the first select him
+					if i.Speed == attackers[-1].Speed:
+						if i.Weight >= attackers[-1].Weight: #if it's less heavy than the first select him
+							if i.Weight == attackers[-1].Weight:
+								if i.Attack <= attackers[-1].Attack: #if it's has more attack than the first select him
+									if i.Attack == attackers[-1].Attack:
+										if i.Health <= attackers[-1].Health: #if it's has more health than the first select him
+											if i.Health == attackers[-1].Health:
+												if i.Cost < attackers[-1].Cost: #if it's cheaper than the first select him
+													attackers[-1] = i
+										else:
+											attackers[-1] = i
+								else:
+									attackers[-1] = i
+						else:
+							attackers[-1] = i
 				else:
-					quicker_attacker = i
+					attackers[-1] = i
+			
+			targets.append(raw_enemy_attacks[attackers[-1]]) #remember his target
+			raw_enemy_attacks.erase(attackers[-1]) #remove the slowest (it will be the last attacker)
 		
-		for i in player_defends: #iterate all the defenders
-			if not quicker_defender:
-				quicker_defender = i
-			elif i.Speed >= quicker_defender.Speed:
-				if i.Speed == quicker_defender.Speed:
-					if i.Weight < quicker_defender.Weight:
-						quicker_defender = i
+		while raw_player_defends.size() > 0: # order the attacker from quicker to slower
+			var first_obj = true
+			
+			for i in raw_player_defends: #iterate all the defenders to select the quicker
+				if first_obj:
+					defenders.append(i)
+					first_obj = false
+				elif i.Speed <= defenders[-1].Speed: #if it's slower than the first select him
+					if i.Speed == defenders[-1].Speed:
+						if i.Weight >= defenders[-1].Weight: #if it's less heavy than the first select him
+							if i.Weight == defenders[-1].Weight:
+								if i.Attack <= defenders[-1].Attack: #if it's has more attack than the first select him
+									if i.Attack == defenders[-1].Attack:
+										if i.Health <= defenders[-1].Health: #if it's has more health than the first select him
+											if i.Health == defenders[-1].Health:
+												if i.Cost < defenders[-1].Cost: #if it's cheaper than the first select him
+													defenders[-1] = i
+										else:
+											defenders[-1] = i
+								else:
+									defenders[-1] = i
+						else:
+							defenders[-1] = i
 				else:
-					quicker_defender = i
+					defenders[-1] = i
+			
+			raw_player_defends.erase(defenders[-1]) #remove the slowest (it will be the last attacker)
 		
-		enemy_attacks.erase(quicker_attacker) #remove faster from the attackers
-		player_defends.erase(quicker_defender) #remove faster from the defenders
-		
-		Fight(quicker_attacker, quicker_defender, true) #let's fight
+		if attackers.size() > defenders.size(): # if there are more attackers than defenders
+			var a = 0
+			
+			while attackers.size() > defenders.size(): # remove all extra defender
+				Fight(attackers[a], targets[a], false)
+				
+				attackers.remove_at(0)
+				targets.remove_at(0)
+			
+			while a < len(attackers): #attackers attack the desired target
+				Fight(attackers[a], defenders[a], true)
+				a += 1
+		elif attackers.size() < defenders.size(): # if there are less attackers than defenders
+			var b = 0
+			
+			while attackers.size() < defenders.size(): # remove all extra defender
+				defenders.remove_at(defenders.size() - 1)
+			
+			while b < len(attackers): #attackers attack the desired target
+				Fight(attackers[b], defenders[b], true)
+				b += 1
+		else: # same number of attacker and defenders
+			var c = 0
+			
+			while c < len(attackers): #attackers attack the desired target
+				Fight(attackers[c], defenders[c], true)
+				c += 1
 
 func ManageEnemyDefense(): # Function that contains enemy defense system
-	if player_attacks.size() > 0:
-		if player_attacks.size() > enemy_defends.size():
-			var slowests = []
-			var targets = []
+	if raw_player_attacks.size() > 0:
+		var attackers = [] # attacker array from quicker to slower
+		var targets = [] # targets array ordered like quickers
+		var defenders = [] # attacker array from quicker to slower
+		
+		while raw_player_attacks.size() > 0: # order the attacker from quicker to slower
+			var first_obj = true
 			
-			while player_attacks.size() > enemy_defends.size():
-				var first_obj = true
-				
-				for i in player_attacks: #iterate all the attackers
-					if first_obj:
-						slowests.append(i)
-					elif i.Speed <= slowests[-1].Speed:
-						if i.Speed == slowests[-1].Speed:
-							if i.Weight > slowests[-1].Weight:
-								slowests[-1] = i
-						else:
-							slowests[-1] = i
+			for i in raw_player_attacks: #iterate all the attackers to select the quicker
+				if first_obj:
+					attackers.append(i)
 					first_obj = false
-				
-				targets.append(player_attacks[slowests[-1]]) #remember his target
-				player_attacks.erase(slowests[-1]) #remove the slowest (it will be the last attacker)
-			
-			EnemyDefense()
-			
-			var x = 0
-			slowests.reverse()
-			targets.reverse()
-			
-			while x < len(slowests): #attackers attack the desired target
-				Fight(slowests[x], targets[x], false)
-				x += 1
-			
-		elif enemy_defends.size() > player_attacks.size(): # if there are more defenders that attackers then remove the slowest
-			while enemy_defends.size() > player_attacks.size():
-				var slowest = null
-				
-				for i in enemy_defends: #iterate all the defenders
-					if not slowest:
-						slowest = i
-					elif i.Speed <= slowest.Speed:
-						if i.Speed == slowest.Speed:
-							if i.Weight > slowest.Weight:
-								slowest = i
+				elif i.Speed <= attackers[-1].Speed: #if it's slower than the first select him
+					if i.Speed == attackers[-1].Speed:
+						if i.Weight >= attackers[-1].Weight: #if it's less heavy than the first select him
+							if i.Weight == attackers[-1].Weight:
+								if i.Attack <= attackers[-1].Attack: #if it's has more attack than the first select him
+									if i.Attack == attackers[-1].Attack:
+										if i.Health <= attackers[-1].Health: #if it's has more health than the first select him
+											if i.Health == attackers[-1].Health:
+												if i.Cost < attackers[-1].Cost: #if it's cheaper than the first select him
+													attackers[-1] = i
+										else:
+											attackers[-1] = i
+								else:
+									attackers[-1] = i
 						else:
-							slowest = i
+							attackers[-1] = i
+				else:
+					attackers[-1] = i
+			
+			targets.append(raw_player_attacks[attackers[-1]]) #remember his target
+			raw_player_attacks.erase(attackers[-1]) #remove the slowest (it will be the last attacker)
+		
+		while raw_enemy_defends.size() > 0: # order the attacker from quicker to slower
+			var first_obj = true
+			
+			for i in raw_enemy_defends: #iterate all the defenders to select the quicker
+				if first_obj:
+					defenders.append(i)
+					first_obj = false
+				elif i.Speed <= defenders[-1].Speed: #if it's slower than the first select him
+					if i.Speed == defenders[-1].Speed:
+						if i.Weight >= defenders[-1].Weight: #if it's less heavy than the first select him
+							if i.Weight == defenders[-1].Weight:
+								if i.Attack <= defenders[-1].Attack: #if it's has more attack than the first select him
+									if i.Attack == defenders[-1].Attack:
+										if i.Health <= defenders[-1].Health: #if it's has more health than the first select him
+											if i.Health == defenders[-1].Health:
+												if i.Cost < defenders[-1].Cost: #if it's cheaper than the first select him
+													defenders[-1] = i
+										else:
+											defenders[-1] = i
+								else:
+									defenders[-1] = i
+						else:
+							defenders[-1] = i
+				else:
+					defenders[-1] = i
+			
+			raw_enemy_defends.erase(defenders[-1]) #remove the slowest (it will be the last attacker)
+		
+		if attackers.size() > defenders.size(): # if there are more attackers than defenders
+			var a = 0
+			
+			while attackers.size() > defenders.size(): # remove all extra defender
+				Fight(attackers[a], targets[a], false)
 				
-				enemy_defends.erase(slowest) #remove the slowest
-				
-			EnemyDefense()
-		else:
-			EnemyDefense()
+				attackers.remove_at(0)
+				targets.remove_at(0)
+			
+			while a < len(attackers): #attackers attack the desired target
+				Fight(attackers[a], defenders[a], true)
+				a += 1
+		elif attackers.size() < defenders.size(): # if there are less attackers than defenders
+			var b = 0
+			
+			while attackers.size() < defenders.size(): # remove all extra defender
+				defenders.remove_at(defenders.size() - 1)
+			
+			while b < len(attackers): #attackers attack the desired target
+				Fight(attackers[b], defenders[b], true)
+				b += 1
+		else: # same number of attacker and defenders
+			var c = 0
+			
+			while c < len(attackers): #attackers attack the desired target
+				Fight(attackers[c], defenders[c], true)
+				c += 1
 
-func EnemyDefense():
-	var n_times = player_attacks.size()
+func FormatOnDefende(): # Function called to make previous function work properly
+	for c in enemy_attacks:
+		if enemy_attacks[c] == "10":
+			get_tree().call_group("Card", "isItYou", "enemy", c)
+			raw_enemy_attacks[current_array_filler] = player_leader_ref
+			current_array_filler = null
+		else:
+			get_tree().call_group("Card", "isItYou", "player", enemy_attacks[c])
+			get_tree().call_group("Card", "isItYou", "enemy", c, current_array_filler, "ea")
+			current_array_filler = null
 	
-	for n in n_times: # used only to make this operation for every attacker
-		var quicker_attacker
-		var quicker_defender
-		
-		for i in player_attacks: #iterate all the attackers
-			if not quicker_attacker:
-				quicker_attacker = i
-			elif i.Speed >= quicker_attacker.Speed:
-				if i.Speed == quicker_attacker.Speed:
-					if i.Weight < quicker_attacker.Weight:
-						quicker_attacker = i
-				else:
-					quicker_attacker = i
-		
-		for i in enemy_defends: #iterate all the defenders
-			if not quicker_defender:
-				quicker_defender = i
-			elif i.Speed >= quicker_defender.Speed:
-				if i.Speed == quicker_defender.Speed:
-					if i.Weight < quicker_defender.Weight:
-						quicker_defender = i
-				else:
-					quicker_defender = i
-		
-		player_attacks.erase(quicker_attacker) #remove faster from the attackers
-		player_defends.erase(quicker_defender) #remove faster from the defenders
-		
-		Fight(quicker_attacker, quicker_defender, true) #let's fight
+	for b in player_defends:
+		get_tree().call_group("Card", "isItYou", "player", b)
+		raw_player_defends.append(current_array_filler)
+		current_array_filler = null
+
+func FormatOnAttack(): # Function called to make previous function work properly
+	for d in enemy_defends:
+		get_tree().call_group("Card", "isItYou", "enemy", d)
+		raw_enemy_defends.append(current_array_filler)
+		current_array_filler = null
+	
+	for a in player_attacks:
+		if player_attacks[a] == "10":
+			get_tree().call_group("Card", "isItYou", "player", a)
+			raw_player_attacks[current_array_filler] = enemy_leader_ref
+			current_array_filler = null
+		else:
+			get_tree().call_group("Card", "isItYou", "enemy", player_attacks[a])
+			get_tree().call_group("Card", "isItYou", "player", a, current_array_filler, "pa")
+			current_array_filler = null
 
 func Fight(attacker, defender, canDefend : bool):
 	attacker.AttackEnemy(defender) #attacker attack the defender
 	
 	if canDefend:
-		print("Fight --> " + attacker.Name + " vs " + defender.Name + " (defending himself)")
+		print("Fight --> " + attacker.Name + "(" + attacker.Team + ") vs " + defender.Name + "(" + defender.Team + ") (protecting himself)")
 		defender.ProtectByEnemy(attacker) #defender protect himself only if the proprietary decided to defend
 	else:
-		print("Fight --> " + attacker.Name + " vs " + defender.Name + " (without defending himself)")
+		print("Fight --> " + attacker.Name + "(" + attacker.Team + ") vs " + defender.Name + "(" + defender.Team + ") (without defending himself)")
 	
-	get_tree().call_group("GUI_Manager", "_on_Update")
 	get_tree().call_group("Leader", "_on_Update")
+	get_tree().call_group("GUI_Manager", "_on_Update")
 
 # Management #
 
@@ -444,7 +526,7 @@ func UpdateEnemyHand():
 func DrawEnemyCard():
 	if len(enemy_deck) > 0 and len(enemy_hand) < 10:
 		enemy_hand.append(enemy_deck[-1])
-		add_child(enemy_deck[-1])
+		add_child(enemy_hand[-1])
 		enemy_deck.remove_at(enemy_deck.size() - 1)
 		
 		UpdateEnemyHand()
@@ -452,11 +534,15 @@ func DrawEnemyCard():
 # During Opponent Turn #
 
 func PlayEnemyCard(id, pos, stats):
+	enemy_hand[-1].queue_free()
 	enemy_hand.remove_at(enemy_hand.size() - 1) # Remove card from enemy hand
 	
 	var scene = load("res://Scenes/Game/Cards/Card"+str(int(id))+".tscn") # Load card resources
 	var instance = scene.instantiate() # Instantiate card resources
 	enemy_cards[pos] = instance # Save card instance
+	enemy_cards[pos].Team = "enemy" # Set team for new card
+	enemy_cards[pos].Position = pos # Set position for new card
+	enemy_cards[pos].Location = "field" # Set location for new card
 	
 	add_child(enemy_cards[pos]) # Create card
 	
@@ -483,6 +569,3 @@ func MoveEnemyCard(old_pos, new_pos):
 	
 	get_tree().call_group("GUI_Manager", "_on_Update")
 
-# Attack and Defense #
-
-pass

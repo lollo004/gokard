@@ -81,7 +81,8 @@ offset_bottom = 920.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 100
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -93,7 +94,8 @@ offset_bottom = 920.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 100
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -105,7 +107,8 @@ offset_bottom = 670.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 25
+theme_override_font_sizes/font_size = 70
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -117,7 +120,8 @@ offset_bottom = 670.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 25
+theme_override_font_sizes/font_size = 70
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -129,7 +133,8 @@ offset_bottom = -790.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 85
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -141,7 +146,8 @@ offset_bottom = 80.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 50
+text = "Name"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -153,7 +159,8 @@ offset_bottom = 930.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 75
+text = "Gene"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -165,7 +172,8 @@ offset_bottom = 800.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 60
+text = "Deviation"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -177,31 +185,22 @@ offset_bottom = 520.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Description" type="Label" parent="Border" groups=["Description"]]
-offset_left = -600.0
-offset_top = 120.0
-offset_bottom = 320.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 50
+text = "Effect..."
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Type" type="Label" parent="Border" groups=["Type"]]
-offset_left = 430.0
+offset_left = 400.0
 offset_top = -1000.0
-offset_right = 730.0
+offset_right = 700.0
 offset_bottom = -900.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
-horizontal_alignment = 1
+theme_override_font_sizes/font_size = 50
+text = "Type"
+horizontal_alignment = 2
 vertical_alignment = 1
 
 [node name="Common Effects" type="Node" parent="."]

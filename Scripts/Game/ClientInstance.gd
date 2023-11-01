@@ -1,5 +1,5 @@
 extends Node
-
+ 
 @export var client_id = "client1"
 
 var socket = WebSocketPeer.new()
@@ -118,11 +118,21 @@ func handle_new_message(message): # Check message type and choose what to do
 		return
 	
 	elif message["type"] == "attack": # Opponent choose attackers and targets
-		#discover enemy attackers
+		GameController.enemy_attacks = message["attacker_list"]
+		GameController.FormatOnDefende()
+		GameController.ManagePlayerDefense()
+		GameController.player_attacks.clear()
 		return
 	
 	elif message["type"] == "defende": # Opponent choose defenders
-		#discover enemy defenders
+		GameController.enemy_defends = message["defender_list"]
+		GameController.FormatOnAttack()
+		GameController.ManageEnemyDefense()
+		GameController.player_defends.clear()
+		return
+	
+	elif message["type"] == "special": # Opponent choose defenders
+		GameController.UseEnemySpecial()
 		return
 	
 	elif message["type"] == "pass": # Opponent passed phase or turn
@@ -130,8 +140,9 @@ func handle_new_message(message): # Check message type and choose what to do
 		GUI_Manager._on_Update()
 		return
 	
-	elif message["type"] == "user_event" and message["action"] == "OPPONENT_DISCONNECTED": # Opponent left the game
+	elif message["type"] == "OPPONENT_DISCONNECTED": # Opponent left the game
 		GameController.GameEnds("enemy") # You win!
+		get_tree().change_scene_to_file("Scenes/Lobby/MainMenu.tscn")
 		return
 
 
@@ -171,22 +182,30 @@ func send_move_card(old_pos, new_pos): # Function called when player move a card
 	socket.send_text(JSON.stringify(join_message))
 
 
-func send_attack(attacker_list, target_list): # Function called when player decide to attack
+func send_attack(attacker_dict): # Function called when player decide to attack
 	var join_message = {
 		"type": "attack",
 		"id": client_id,
-		"attacker_list": attacker_list,
-		"target_list": target_list
+		"attacker_list": attacker_dict
 	}
 	
 	socket.send_text(JSON.stringify(join_message))
 
 
-func send_defende(defender_list): # Function called when player decide to defende
+func send_defense(defender_list): # Function called when player decide to defende
 	var join_message = {
-		"type": "defender",
+		"type": "defende",
 		"id": client_id,
 		"defender_list": defender_list,
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_special(): # Function called when player decide to use special
+	var join_message = {
+		"type": "special",
+		"id": client_id,
 	}
 	
 	socket.send_text(JSON.stringify(join_message))

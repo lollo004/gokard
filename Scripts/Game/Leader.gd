@@ -1,8 +1,10 @@
 extends Area2D
 
-@export var Team : String = ""
+@export var Team : String = "player"
 var Name : String = ""
 var Health : int = 30
+var Position : String = "10"
+@export var id : int = 0
 
 var GameController # Game controller reference
 
@@ -35,7 +37,11 @@ func _on_area_entered(area):
 
 
 func _on_area_exited(area):
-	if area.get_groups()[0] == "Pointer": # Getting selected by the pointer
+	if area.get_groups()[0] == "Pointer": # Getting deselected by the pointer
 		if Team == "enemy":
-			GameController.selected_card_to_attack = self
+			GameController.selected_card_to_attack = null
+
+
+func setGlobalId(): # Function called to get leader id for each team
+	GameController.SetLeaders(Team, id, self)
 
