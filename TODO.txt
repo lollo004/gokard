@@ -1,3 +1,5 @@
 Animations and feedbacks
 
 Graphic upgrade !
+
+add magics...

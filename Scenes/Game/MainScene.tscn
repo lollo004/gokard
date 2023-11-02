@@ -34,16 +34,14 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Turn Button" type="Button" parent="GUI/Management" groups=["Deactivable", "Turn"]]
 offset_left = 820.0
-offset_top = 240.0
+offset_top = 255.0
 offset_right = 948.0
-offset_bottom = 280.0
+offset_bottom = 295.0
 text = "Opponent Turn"
 metadata/_edit_use_anchors_ = true
 
 [node name="Game Manager" type="Node" parent="GUI/Management" groups=["Deactivable", "GameController"]]
 script = ExtResource("3_ovi4y")
-lymph = 5
-stress = 5
 turn = "player"
 phase = "defense"
 player_name = "player_name"
@@ -88,39 +86,39 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Player Positioner 1" parent="GUI/Player/Card Position" groups=["1", "Attack", "PP1", "Player"] instance=ExtResource("1_kj4pf")]
 z_index = -10
-position = Vector2(300, 350)
+position = Vector2(300, 330)
 
 [node name="Player Positioner 2" parent="GUI/Player/Card Position" groups=["2", "Defense", "PP2", "Player"] instance=ExtResource("1_kj4pf")]
 z_index = -10
-position = Vector2(365, 450)
+position = Vector2(365, 430)
 
 [node name="Player Positioner 3" parent="GUI/Player/Card Position" groups=["3", "Attack", "PP3", "Player"] instance=ExtResource("1_kj4pf")]
 z_index = -10
-position = Vector2(430, 350)
+position = Vector2(430, 330)
 
 [node name="Player Positioner 4" parent="GUI/Player/Card Position" groups=["4", "Defense", "PP4", "Player"] instance=ExtResource("1_kj4pf")]
 z_index = -10
-position = Vector2(495, 450)
+position = Vector2(495, 430)
 
 [node name="Player Positioner 5" parent="GUI/Player/Card Position" groups=["5", "Attack", "PP5", "Player"] instance=ExtResource("1_kj4pf")]
 z_index = -10
-position = Vector2(560, 350)
+position = Vector2(560, 330)
 
 [node name="Player Positioner 6" parent="GUI/Player/Card Position" groups=["6", "Defense", "PP6", "Player"] instance=ExtResource("1_kj4pf")]
 z_index = -10
-position = Vector2(625, 450)
+position = Vector2(625, 430)
 
 [node name="Player Positioner 7" parent="GUI/Player/Card Position" groups=["7", "Attack", "PP7", "Player"] instance=ExtResource("1_kj4pf")]
 z_index = -10
-position = Vector2(690, 350)
+position = Vector2(690, 330)
 
 [node name="Player Positioner 8" parent="GUI/Player/Card Position" groups=["8", "Defense", "PP8", "Player"] instance=ExtResource("1_kj4pf")]
 z_index = -10
-position = Vector2(755, 450)
+position = Vector2(755, 430)
 
 [node name="Player Positioner 9" parent="GUI/Player/Card Position" groups=["9", "Attack", "PP9", "Player"] instance=ExtResource("1_kj4pf")]
 z_index = -10
-position = Vector2(820, 350)
+position = Vector2(820, 330)
 
 [node name="Enemy" type="Node" parent="GUI"]
 
@@ -158,38 +156,38 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Enemy Positioner 1" parent="GUI/Enemy/Card Position" groups=["1", "Attack", "EP1", "Enemy"] instance=ExtResource("1_kj4pf")]
 z_index = -10
-position = Vector2(300, 200)
+position = Vector2(300, 220)
 
 [node name="Enemy Positioner 2" parent="GUI/Enemy/Card Position" groups=["2", "Defense", "EP2", "Enemy"] instance=ExtResource("1_kj4pf")]
 z_index = -10
-position = Vector2(365, 100)
+position = Vector2(365, 120)
 
 [node name="Enemy Positioner 3" parent="GUI/Enemy/Card Position" groups=["3", "Attack", "EP3", "Enemy"] instance=ExtResource("1_kj4pf")]
 z_index = -10
-position = Vector2(430, 200)
+position = Vector2(430, 220)
 
 [node name="Enemy Positioner 4" parent="GUI/Enemy/Card Position" groups=["4", "Defense", "EP4", "Enemy"] instance=ExtResource("1_kj4pf")]
 z_index = -10
-position = Vector2(495, 100)
+position = Vector2(495, 120)
 
 [node name="Enemy Positioner 5" parent="GUI/Enemy/Card Position" groups=["5", "Attack", "EP5", "Enemy"] instance=ExtResource("1_kj4pf")]
 z_index = -10
-position = Vector2(560, 200)
+position = Vector2(560, 220)
 
 [node name="Enemy Positioner 6" parent="GUI/Enemy/Card Position" groups=["6", "Defense", "EP6", "Enemy"] instance=ExtResource("1_kj4pf")]
 z_index = -10
-position = Vector2(625, 100)
+position = Vector2(625, 120)
 
 [node name="Enemy Positioner 7" parent="GUI/Enemy/Card Position" groups=["7", "Attack", "EP7", "Enemy"] instance=ExtResource("1_kj4pf")]
 z_index = -10
-position = Vector2(690, 200)
+position = Vector2(690, 220)
 
 [node name="Enemy Positioner 8" parent="GUI/Enemy/Card Position" groups=["8", "Defense", "EP8", "Enemy"] instance=ExtResource("1_kj4pf")]
 z_index = -10
-position = Vector2(755, 100)
+position = Vector2(755, 120)
 
 [node name="Enemy Positioner 9" parent="GUI/Enemy/Card Position" groups=["9", "Attack", "EP9", "Enemy"] instance=ExtResource("1_kj4pf")]
 z_index = -10
-position = Vector2(820, 200)
+position = Vector2(820, 220)
 
 [connection signal="pressed" from="GUI/Management/Turn Button" to="GUI/Management" method="_on_turn_button_pressed"]

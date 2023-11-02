@@ -4,7 +4,7 @@ extends Node
 
 @export var player_health : int = 30
 @export var enemy_health : int = 30
-@export var lymph : int = 0
+@export var lymph : int = 1
 @export var stress : int = 0
 @export var turn : String = ""
 @export var phase : String = ""
@@ -43,9 +43,13 @@ var enemy_cards = {} # Dict of enemy cards on the field
 
 var isScreenTaken = false # Variable to check if you can interact with buttons
 
+## Management Variables ##
+
 var positionStatus = { # Dictionary that contains position status
 	"1" : false, "2" : false, "3" : false, "4" : false, "5" : false, "6" : false, "7" : false, "8" : false, "9" : false
 }
+
+var card_counter : int = 0 # Variable that check how many card you are tryng to select
 
 ## Attack Variables ##
 
@@ -222,10 +226,10 @@ func UpdateHand():
 		
 		if len(player_hand) % 2 == 0:
 			@warning_ignore("integer_division")
-			item.global_position = Vector2((540 - ((len(player_hand) / 2) * 48)) + (46*i), 520)
+			item.global_position = Vector2((540 - ((len(player_hand) / 2) * 55)) + (57.65*i), 510)
 		else:
 			@warning_ignore("integer_division")
-			item.global_position = Vector2((520 - (((len(player_hand) - 1) / 2) * 48)) + (46*i), 520)
+			item.global_position = Vector2((520 - (((len(player_hand) - 1) / 2) * 55)) + (57.65*i), 510)
 
 func ShuffleDeck():
 	player_deck.shuffle()

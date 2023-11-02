@@ -1,8 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://blcj81lb8gx7x"]
+[gd_scene load_steps=8 format=3 uid="uid://fqae38bnyoqg"]
 
 [ext_resource type="Script" path="res://Scripts/Game/Card.gd" id="1_war68"]
 [ext_resource type="Texture2D" uid="uid://rf6sp07qeavm" path="res://Resources/Card.png" id="2_37iog"]
-[ext_resource type="Texture2D" uid="uid://dqjug0em8250m" path="res://Resources/Images/Card2.png" id="3_xyujh"]
+[ext_resource type="Texture2D" uid="uid://cvi8a66npk1s0" path="res://Resources/Images/Card2.png" id="3_xyujh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yvtci"]
 size = Vector2(769, 1024)
@@ -33,7 +33,7 @@ animations = [{
 "speed": 2.0
 }]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_grfho"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_fqy1g"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -41,24 +41,29 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 2.0
+"speed": 5.0
 }]
 
 [node name="Card" type="Area2D" groups=["Card", "Deactivable"]]
 top_level = true
 visibility_layer = 3
 z_index = 1
-scale = Vector2(0.06, 0.06)
+scale = Vector2(0.075, 0.075)
 script = ExtResource("1_war68")
-Health = 2
+Health = 1
 Attack = 2
-Speed = 3
-Weight = 56
+Speed = 7
+Weight = 86
 Cost = 1
 id = 2
-Name = "Tower's Guardian"
-Type = "Defense"
+Name = "Angry Barbarian"
+Gene = "Human"
+Deviation = "Warrior"
+Effect = null
+Type = "Versatile"
+Team = null
 metadata/_edit_vertical_guides_ = [-222.0]
+metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1.5, 0)
@@ -73,126 +78,140 @@ animation = &"idle"
 [node name="Sprite" type="AnimatedSprite2D" parent="Border" groups=["Sprite"]]
 visibility_layer = 3
 z_index = -1
-position = Vector2(-2.86102e-05, -433.333)
-scale = Vector2(0.694444, 0.846354)
-sprite_frames = SubResource("SpriteFrames_grfho")
+position = Vector2(-6.10352e-05, -433.333)
+scale = Vector2(0.7, 0.853)
+sprite_frames = SubResource("SpriteFrames_fqy1g")
 animation = &"idle"
 
 [node name="Attack" type="Label" parent="Border" groups=["Attack"]]
 offset_left = -620.0
 offset_top = 720.0
-offset_right = -433.0
-offset_bottom = 900.0
+offset_right = -420.0
+offset_bottom = 920.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 100
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Health" type="Label" parent="Border" groups=["Health"]]
-offset_left = 433.0
-offset_top = 733.0
-offset_right = 600.0
-offset_bottom = 900.0
+offset_left = 420.0
+offset_top = 720.0
+offset_right = 620.0
+offset_bottom = 920.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 100
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Speed" type="Label" parent="Border" groups=["Speed"]]
 offset_left = -340.0
 offset_top = 570.0
-offset_right = -290.0
-offset_bottom = 620.0
+offset_right = -240.0
+offset_bottom = 670.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 70
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Weight" type="Label" parent="Border" groups=["Weight"]]
 offset_left = 240.0
 offset_top = 570.0
-offset_right = 290.0
-offset_bottom = 620.0
+offset_right = 340.0
+offset_bottom = 670.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 70
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Cost" type="Label" parent="Border" groups=["Cost"]]
 offset_left = -70.0
 offset_top = -940.0
-offset_right = 5.00001
-offset_bottom = -865.0
+offset_right = 80.0
+offset_bottom = -790.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 85
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Name" type="Label" parent="Border" groups=["Name"]]
 offset_left = -220.0
 offset_top = -70.0
-offset_right = -20.0
-offset_bottom = 5.00001
+offset_right = 180.0
+offset_bottom = 80.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 50
+text = "Name"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Race" type="Label" parent="Border" groups=["Race"]]
+[node name="Gene" type="Label" parent="Border" groups=["Gene"]]
 offset_left = -200.0
 offset_top = 780.0
-offset_bottom = 855.0
+offset_right = 200.0
+offset_bottom = 930.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 75
+text = "Gene"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Nature" type="Label" parent="Border" groups=["Nature"]]
+[node name="Deviation" type="Label" parent="Border" groups=["Deviation"]]
 offset_left = -150.0
 offset_top = 700.0
-offset_bottom = 750.0
+offset_right = 150.0
+offset_bottom = 800.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 60
+text = "Deviation"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Effect" type="Label" parent="Border" groups=["Effect"]]
 offset_left = -600.0
 offset_top = 120.0
-offset_bottom = 320.0
+offset_right = 600.0
+offset_bottom = 520.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
+theme_override_font_sizes/font_size = 65
+text = "Effect..."
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="Type" type="Label" parent="Border" groups=["Type"]]
-offset_left = 433.333
+offset_left = 400.0
 offset_top = -1000.0
-offset_right = 583.333
-offset_bottom = -950.0
+offset_right = 700.0
+offset_bottom = -900.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 35
-horizontal_alignment = 1
+theme_override_font_sizes/font_size = 50
+text = "Type"
+horizontal_alignment = 2
 vertical_alignment = 1
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

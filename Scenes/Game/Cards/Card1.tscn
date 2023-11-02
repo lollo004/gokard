@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://c7jux2wqw05t7"]
+[gd_scene load_steps=8 format=3 uid="uid://dmlws1na1vwxd"]
 
 [ext_resource type="Script" path="res://Scripts/Game/Card.gd" id="1_tvvug"]
 [ext_resource type="Texture2D" uid="uid://rf6sp07qeavm" path="res://Resources/Card.png" id="2_ag8tj"]
 [ext_resource type="Texture2D" uid="uid://dev2du62wt7yv" path="res://Resources/Images/Card1.png" id="3_a1w3s"]
-[ext_resource type="Script" path="res://Scripts/Game/SpecificEffects/Test.gd" id="4_v8wn6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yvtci"]
 size = Vector2(769, 1024)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_cxlfj"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_fdm6a"]
 animations = [{
@@ -18,6 +19,9 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("2_ag8tj")
+}, {
+"duration": 1.0,
+"texture": SubResource("CompressedTexture2D_cxlfj")
 }],
 "loop": true,
 "name": &"idle",
@@ -29,7 +33,7 @@ animations = [{
 "speed": 2.0
 }]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_qphjn"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_fqy1g"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -37,24 +41,29 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 2.0
+"speed": 5.0
 }]
 
 [node name="Card" type="Area2D" groups=["Card", "Deactivable"]]
 top_level = true
 visibility_layer = 3
 z_index = 1
-scale = Vector2(0.06, 0.06)
+scale = Vector2(0.075, 0.075)
 script = ExtResource("1_tvvug")
 Health = 2
 Attack = 1
-Speed = 4
+Speed = 6
 Weight = 72
 Cost = 1
 id = 1
 Name = "Golden Knight"
+Gene = "Human"
+Deviation = "Warrior"
+Effect = null
 Type = "Attack"
+Team = null
 metadata/_edit_vertical_guides_ = [-222.0]
+metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1.5, 0)
@@ -69,9 +78,9 @@ animation = &"idle"
 [node name="Sprite" type="AnimatedSprite2D" parent="Border" groups=["Sprite"]]
 visibility_layer = 3
 z_index = -1
-position = Vector2(9.53674e-06, -433.333)
-scale = Vector2(0.694444, 0.846354)
-sprite_frames = SubResource("SpriteFrames_qphjn")
+position = Vector2(-6.10352e-05, -433.333)
+scale = Vector2(0.7, 0.853)
+sprite_frames = SubResource("SpriteFrames_fqy1g")
 animation = &"idle"
 
 [node name="Attack" type="Label" parent="Border" groups=["Attack"]]
@@ -83,8 +92,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 100
-text = "
-"
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -97,6 +105,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 100
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -109,6 +118,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 70
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -121,6 +131,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 70
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -133,6 +144,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 85
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -144,11 +156,12 @@ offset_bottom = 80.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 70
+theme_override_font_sizes/font_size = 50
+text = "Name"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Race" type="Label" parent="Border" groups=["Race"]]
+[node name="Gene" type="Label" parent="Border" groups=["Gene"]]
 offset_left = -200.0
 offset_top = 780.0
 offset_right = 200.0
@@ -156,11 +169,12 @@ offset_bottom = 930.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 70
+theme_override_font_sizes/font_size = 75
+text = "Gene"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Nature" type="Label" parent="Border" groups=["Nature"]]
+[node name="Deviation" type="Label" parent="Border" groups=["Deviation"]]
 offset_left = -150.0
 offset_top = 700.0
 offset_right = 150.0
@@ -168,7 +182,8 @@ offset_bottom = 800.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 70
+theme_override_font_sizes/font_size = 60
+text = "Deviation"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -180,26 +195,25 @@ offset_bottom = 520.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 70
+theme_override_font_sizes/font_size = 65
+text = "Effect..."
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 2
+text_direction = 1
 
 [node name="Type" type="Label" parent="Border" groups=["Type"]]
-offset_left = 430.0
+offset_left = 400.0
 offset_top = -1000.0
-offset_right = 730.0
+offset_right = 700.0
 offset_bottom = -900.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 70
-horizontal_alignment = 1
+theme_override_font_sizes/font_size = 50
+text = "Type"
+horizontal_alignment = 2
 vertical_alignment = 1
-
-[node name="Common Effects" type="Node" parent="."]
-
-[node name="Rise" type="Node" parent="Common Effects" groups=["Rise"]]
-script = ExtResource("4_v8wn6")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]

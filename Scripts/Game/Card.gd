@@ -43,7 +43,7 @@ var isMouseOver : bool = false
 var isCardSelected : bool = false
 var alreadyMoved : bool = false
 
-var currentPos : String = "" # Current position on the field (1-9 => field | 10 => Leader | 0 => Invalid)
+var currentPos : String = "0" # Current position on the field (1-9 => field | 10 => Leader | 0 => Invalid)
 var old_position # First position of the card
 var new_position # New position of the card
 var currentLoc : String = "" # Type on the field (attack - defense)
@@ -73,7 +73,7 @@ func _ready(): # Function called only on start
 			sprite = x
 	
 	minScale = sprite.scale
-	maxScale = sprite.scale * 2
+	maxScale = sprite.scale * 2.75
 	
 	UpdateStats(self)
 
@@ -88,13 +88,33 @@ func _process(delta): # Function called every frame
 
 
 func _on_mouse_entered(): # Start override with mouse
-	sprite.scale = maxScale
-	isMouseOver = true
+		sprite.scale = maxScale
+		isMouseOver = true
+		
+		GameController.card_counter += 1
+		
+		sprite.z_index = 1
+		z_index = 2
+		
+		if Location == "hand":
+			sprite.offset.y -= 700
+			for objects in sprite.get_children():
+				objects.position.y -= 700
 
 
 func _on_mouse_exited(): # Stop override with mouse
 	sprite.scale = minScale
 	isMouseOver = false
+	
+	GameController.card_counter -= 1
+	
+	sprite.z_index = 0
+	z_index = 1
+	
+	if Location == "hand":
+		sprite.offset.y += 700
+		for objects in sprite.get_children():
+			objects.position.y += 700
 
 
 func _on_input_event(_viewport, event, _shape_idx):
@@ -125,6 +145,11 @@ func _on_input_event(_viewport, event, _shape_idx):
 						GameController.player_hand.remove_at(GameController.player_hand.find(self))
 						GameController.UpdateHand()
 						
+						
+						sprite.offset.y += 700 # Adjusting card offset
+						for objects in sprite.get_children(): # Adjusting statistics offset
+							objects.position.y += 700
+						
 						get_tree().call_group("GUI_Manager", "_on_Update")
 						
 						if get_node_or_null("Common Effects/Rise"):
@@ -136,7 +161,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 						global_position = old_position
 					isCardSelected = false
 				else:
-					if Location == "hand": # Taking the card
+					if Location == "hand" and GameController.card_counter == 1: # Taking the card
 						old_position = global_position
 						isCardSelected = true
 					if Location == "field" and not isTargetSelected and not isSearchingForEnemy and GameController.phase == "attack" and currentLoc == "Attack" and not isFirstTurn: # Selecting the card to attack
@@ -213,7 +238,7 @@ func _on_area_entered(area):
 
 func _on_area_exited(area):
 	if area.get_groups():
-		if area.get_groups()[0] == "Positioner" and not isSearchingForEnemy and not isChoosingToDefend: # Exiting by dropping the card on a valid position
+		if area.get_groups()[0] == "Positioner" and not isSearchingForEnemy and not isChoosingToDefend and currentPos == String(area.get_groups()[1]): # Exiting by dropping the card on a valid position
 			currentPos = "0"
 			
 		if area.get_groups()[0] == "Pointer": # Exiting by getting selected by the pointer

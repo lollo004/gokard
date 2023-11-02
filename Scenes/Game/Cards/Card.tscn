@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bp6kelnxloeu"]
+[gd_scene load_steps=7 format=3 uid="uid://bp6kelnxloeu"]
 
 [ext_resource type="Script" path="res://Scripts/Game/Card.gd" id="1_oo0sj"]
 [ext_resource type="Texture2D" uid="uid://rf6sp07qeavm" path="res://Resources/Card.png" id="2_gkp3r"]
@@ -6,8 +6,6 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yvtci"]
 size = Vector2(769, 1024)
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_cxlfj"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_fdm6a"]
 animations = [{
@@ -19,9 +17,6 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("2_gkp3r")
-}, {
-"duration": 1.0,
-"texture": SubResource("CompressedTexture2D_cxlfj")
 }],
 "loop": true,
 "name": &"idle",
@@ -48,10 +43,11 @@ animations = [{
 top_level = true
 visibility_layer = 3
 z_index = 1
-scale = Vector2(0.06, 0.06)
+scale = Vector2(0.1, 0.1)
 script = ExtResource("1_oo0sj")
 Cost = 1
 Type = "Versatile"
+Team = "player"
 metadata/_edit_vertical_guides_ = [-222.0]
 metadata/_edit_group_ = true
 
@@ -61,6 +57,7 @@ shape = SubResource("RectangleShape2D_yvtci")
 
 [node name="Border" type="AnimatedSprite2D" parent="." groups=["Border"]]
 visibility_layer = 3
+position = Vector2(1.24176e-07, 0)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_fdm6a")
 animation = &"idle"
@@ -69,7 +66,7 @@ animation = &"idle"
 visibility_layer = 3
 z_index = -1
 position = Vector2(-6.10352e-05, -433.333)
-scale = Vector2(0.694444, 0.846354)
+scale = Vector2(0.7, 0.853)
 sprite_frames = SubResource("SpriteFrames_fqy1g")
 animation = &"idle"
 
@@ -185,10 +182,11 @@ offset_bottom = 520.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 65
 text = "Effect..."
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="Type" type="Label" parent="Border" groups=["Type"]]
 offset_left = 400.0
