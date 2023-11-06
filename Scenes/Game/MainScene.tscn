@@ -49,6 +49,7 @@ enemy_name = "enemy_name"
 
 [node name="TurnSelector" parent="GUI/Management" instance=ExtResource("4_fkvir")]
 visibility_layer = 7
+z_index = 10
 position = Vector2(500, 280)
 
 [node name="Player" type="Node" parent="GUI"]

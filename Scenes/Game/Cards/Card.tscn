@@ -45,11 +45,7 @@ visibility_layer = 3
 z_index = 1
 scale = Vector2(0.1, 0.1)
 script = ExtResource("1_oo0sj")
-Cost = 1
-Type = "Versatile"
-Team = "player"
 metadata/_edit_vertical_guides_ = [-222.0]
-metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1.5, 0)
@@ -66,7 +62,7 @@ animation = &"idle"
 visibility_layer = 3
 z_index = -1
 position = Vector2(-6.10352e-05, -433.333)
-scale = Vector2(0.7, 0.853)
+scale = Vector2(0.85, 0.85)
 sprite_frames = SubResource("SpriteFrames_fqy1g")
 animation = &"idle"
 
@@ -201,7 +197,25 @@ text = "Type"
 horizontal_alignment = 2
 vertical_alignment = 1
 
+[node name="Base" type="Label" parent="Border" groups=["Base"]]
+offset_left = -680.0
+offset_top = -1000.0
+offset_right = -380.0
+offset_bottom = -900.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "Base"
+vertical_alignment = 1
+
 [node name="Common Effects" type="Node" parent="."]
+
+[node name="On Draw" type="Node" parent="Common Effects" groups=["OnDraw"]]
+
+[node name="OnAttacked" type="Node" parent="Common Effects" groups=["OnAttacked"]]
+
+[node name="OnSpecial" type="Node" parent="Common Effects" groups=["OnSpecial"]]
 
 [node name="Rise" type="Node" parent="Common Effects" groups=["Rise"]]
 
@@ -218,6 +232,8 @@ vertical_alignment = 1
 [node name="Revenge" type="Node" parent="Common Effects" groups=["Revenge"]]
 
 [node name="On Deploy" type="Node" parent="Common Effects" groups=["Deploy"]]
+
+[node name="OnBoost" type="Node" parent="Common Effects" groups=["OnBoost"]]
 
 [node name="Zippy" type="Node" parent="Common Effects" groups=["Zippy"]]
 

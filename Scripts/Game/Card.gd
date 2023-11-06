@@ -12,6 +12,9 @@ extends Area2D
 @export var id : int = 0 # Univoc id to represent the card
 
 @export var Name : String = ""
+
+@export var Base : String = "Base" # If it's an evolution write here base card name
+
 @export var Gene : String = ""  # Gene (human - magic - building - ecc.)
 @export var Deviation : String = "" # Deviation (standard - mage - sage)
 
@@ -20,6 +23,9 @@ extends Area2D
 @export var Type : String = "" # Type (attack - defense - versatile)
 
 @export var Team : String = "" # Team (player - enemy)
+
+@export var canAttackEnemies = true
+@export var canAttackLeader = true
 
 ## Management Variables ##
 
@@ -71,6 +77,8 @@ func _ready(): # Function called only on start
 	for x in self.get_children():
 		if "Border" in x.get_groups():
 			sprite = x
+	
+	scale /= 1.33 # 1.35 to separete the card correctly
 	
 	minScale = sprite.scale
 	maxScale = sprite.scale * 2.75
@@ -131,7 +139,6 @@ func _on_input_event(_viewport, event, _shape_idx):
 						and GameController.turnType == "play" # RIght turn type
 						and Location == "hand" # Right card
 						and (Type == currentLoc or Type == "Versatile") # Right type
-						and GameController.stress > GameController.player_current_stress # Enough stress
 						):
 						
 						Location = "field"
@@ -140,7 +147,6 @@ func _on_input_event(_viewport, event, _shape_idx):
 						GameController.positionStatus[Position] = true
 						
 						GameController.lymph -= Cost
-						GameController.player_current_stress += 1
 						
 						GameController.player_hand.remove_at(GameController.player_hand.find(self))
 						GameController.UpdateHand()
@@ -164,7 +170,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 					if Location == "hand" and GameController.card_counter == 1: # Taking the card
 						old_position = global_position
 						isCardSelected = true
-					if Location == "field" and not isTargetSelected and not isSearchingForEnemy and GameController.phase == "attack" and currentLoc == "Attack" and not isFirstTurn: # Selecting the card to attack
+					if Location == "field" and not isTargetSelected and not isSearchingForEnemy and GameController.phase == "attack" and currentLoc == "Attack" and not isFirstTurn and GameController.stress > GameController.player_current_stress: # Selecting the card to attack
 						GameController.started_attack_card = self
 						isSearchingForEnemy = true
 						
@@ -176,6 +182,8 @@ func _on_input_event(_viewport, event, _shape_idx):
 					if Location == "field" and isTargetSelected and not isSearchingForEnemy and GameController.phase == "attack" and currentLoc == "Attack" and not isFirstTurn: # Deselecting the card to attack
 						GameController.CancelAttack(self)
 						isTargetSelected = false
+						
+						GameController.player_current_stress -= 1
 					if Location == "field" and not isChooseDone and not isChoosingToDefend and GameController.phase == "defense" and currentLoc == "Defense" and not isFirstTurn and not isBlockedByAbility: # Choosing what to do with the card
 						GameController.started_defende_card = self
 						isChoosingToDefend = true
@@ -269,6 +277,7 @@ func isAttackOk(who, flag : bool): # Fuction called when a pointer is going to b
 			isTargetSelected = true
 		else:
 			isTargetSelected = false
+		
 		isSearchingForEnemy = false
 
 
@@ -300,7 +309,6 @@ func UpdateStats(who): # Function called when card's stats change
 	if who == self:
 		if Health <= 0: # Check Card Health
 			GameController.positionStatus[Position] = false
-			GameController.stress -= 1
 			
 			if get_node_or_null("Common Effects/Tunnel"):
 				get_node("Common Effects/Tunnel").Effect() # Call 'Tunnel' function of the played card
@@ -332,6 +340,8 @@ func UpdateStats(who): # Function called when card's stats change
 				i.text = Effect
 			if "Type" in i.get_groups():
 				i.text = Type
+			if "Base" in i.get_groups():
+				i.text = Base
 
 
 func onTurnBegin(team): # Function called on turn start (team = player / enemy)
@@ -363,7 +373,7 @@ func AttackEnemy(enemy): # Function called when the card has to attack another o
 	enemy.Health -= Attack
 	get_tree().call_group("Card", "UpdateStats", enemy)
 	get_tree().call_group("Uprising", "Effect", Team) # Call 'Uprising' functions
-	get_tree().call_group("Rage", "Effect", Team) # Call 'Rage' functions
+	get_tree().call_group("Rage", "Effect", Team, self) # Call 'Rage' functions
 	get_tree().call_group("Teleport", "Effect", Team) # Call 'Teleport' function
 	
 	if get_node_or_null("Common Effects/Raising"):

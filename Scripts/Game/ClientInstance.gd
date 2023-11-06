@@ -1,6 +1,6 @@
 extends Node
  
-@export var client_id = "client1"
+@export var client_id = "client2"
 
 var socket = WebSocketPeer.new()
 

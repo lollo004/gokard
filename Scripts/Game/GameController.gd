@@ -119,6 +119,7 @@ func TurnButtonPressed():
 		get_tree().call_group("Deactivable", "Enable", false)
 		
 		lymph = current_max_lymph
+		player_current_stress = 0
 	
 	elif turn == "player" and phase == "defense":
 		phase = "attack"
@@ -217,6 +218,8 @@ func DrawOneCard():
 		player_deck.remove_at(player_deck.size() - 1)
 		
 		UpdateHand()
+		
+		get_tree().call_group("OnDraw", "Effect", "player") # Call 'OnDraw' functions
 
 func UpdateHand():
 	var i : int = 0
@@ -482,16 +485,17 @@ func FormatOnAttack(): # Function called to make previous function work properly
 			current_array_filler = null
 
 func Fight(attacker, defender, canDefend : bool):
-	attacker.AttackEnemy(defender) #attacker attack the defender
-	
-	if canDefend:
-		print("Fight --> " + attacker.Name + "(" + attacker.Team + ") vs " + defender.Name + "(" + defender.Team + ") (protecting himself)")
-		defender.ProtectByEnemy(attacker) #defender protect himself only if the proprietary decided to defend
-	else:
-		print("Fight --> " + attacker.Name + "(" + attacker.Team + ") vs " + defender.Name + "(" + defender.Team + ") (without defending himself)")
-	
-	get_tree().call_group("Leader", "_on_Update")
-	get_tree().call_group("GUI_Manager", "_on_Update")
+	if attacker and defender:
+		attacker.AttackEnemy(defender) #attacker attack the defender
+		
+		if canDefend:
+			print("Fight --> " + attacker.Name + "(" + attacker.Team + ") vs " + defender.Name + "(" + defender.Team + ") (protecting himself)")
+			defender.ProtectByEnemy(attacker) #defender protect himself only if the proprietary decided to defend
+		else:
+			print("Fight --> " + attacker.Name + "(" + attacker.Team + ") vs " + defender.Name + "(" + defender.Team + ") (without defending himself)")
+		
+		get_tree().call_group("Leader", "_on_Update")
+		get_tree().call_group("GUI_Manager", "_on_Update")
 
 # Management #
 
@@ -534,6 +538,8 @@ func DrawEnemyCard():
 		enemy_deck.remove_at(enemy_deck.size() - 1)
 		
 		UpdateEnemyHand()
+		
+		get_tree().call_group("OnDraw", "Effect", "enemy") # Call 'OnDraw' functions
 
 # During Opponent Turn #
 

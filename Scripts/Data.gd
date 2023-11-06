@@ -26,7 +26,7 @@ func _ready():
 	
 	for i in 30:
 		var rng = RandomNumberGenerator.new()
-		var number = rng.randf_range(1, 4)
+		var number = rng.randf_range(101, 134)
 		scene = load("res://Scenes/Game/Cards/Card"+str(int(number))+".tscn")
 		instance = scene.instantiate()
 		instance.Team = "player"
