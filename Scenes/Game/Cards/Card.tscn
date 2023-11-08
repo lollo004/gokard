@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://bp6kelnxloeu"]
+[gd_scene load_steps=8 format=3 uid="uid://bp6kelnxloeu"]
 
 [ext_resource type="Script" path="res://Scripts/Game/Card.gd" id="1_oo0sj"]
 [ext_resource type="Texture2D" uid="uid://rf6sp07qeavm" path="res://Resources/Card.png" id="2_gkp3r"]
 [ext_resource type="Texture2D" uid="uid://dq7meuos2i3le" path="res://Resources/Images/Card0.png" id="3_gg0mf"]
+[ext_resource type="Script" path="res://Scripts/Game/SpecificEffects/Effect118.gd" id="4_0a705"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yvtci"]
 size = Vector2(769, 1024)
@@ -211,7 +212,7 @@ vertical_alignment = 1
 
 [node name="Common Effects" type="Node" parent="."]
 
-[node name="On Draw" type="Node" parent="Common Effects" groups=["OnDraw"]]
+[node name="OnDraw" type="Node" parent="Common Effects" groups=["OnDraw"]]
 
 [node name="OnAttacked" type="Node" parent="Common Effects" groups=["OnAttacked"]]
 
@@ -225,13 +226,11 @@ vertical_alignment = 1
 
 [node name="Accuracy" type="Node" parent="Common Effects" groups=["Accuracy"]]
 
-[node name="Uprising" type="Node" parent="Common Effects" groups=["Uprising"]]
-
 [node name="Rage" type="Node" parent="Common Effects" groups=["Rage"]]
 
 [node name="Revenge" type="Node" parent="Common Effects" groups=["Revenge"]]
 
-[node name="On Deploy" type="Node" parent="Common Effects" groups=["Deploy"]]
+[node name="OnDeploy" type="Node" parent="Common Effects" groups=["OnDeploy"]]
 
 [node name="OnBoost" type="Node" parent="Common Effects" groups=["OnBoost"]]
 
@@ -243,8 +242,6 @@ vertical_alignment = 1
 
 [node name="Tunnel" type="Node" parent="Common Effects" groups=["Tunnel"]]
 
-[node name="Teleport" type="Node" parent="Common Effects" groups=["Teleport"]]
-
 [node name="Bane (X)" type="Node" parent="Common Effects" groups=["Bane"]]
 
 [node name="Super Bane (X)" type="Node" parent="Common Effects" groups=["Super Bane"]]
@@ -254,6 +251,12 @@ vertical_alignment = 1
 [node name="Phase Mutation (X)" type="Node" parent="Common Effects" groups=["Phase Mutation"]]
 
 [node name="Turn Mutation (X)" type="Node" parent="Common Effects" groups=["Turn Mutation"]]
+
+[node name="onTurnBegin" type="Node" parent="Common Effects" groups=["onTurnBegin"]]
+script = ExtResource("4_0a705")
+
+[node name="onPhaseBegin" type="Node" parent="Common Effects" groups=["onPhaseBegin"]]
+script = ExtResource("4_0a705")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]

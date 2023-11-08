@@ -1,11 +1,14 @@
 extends Node
 
+var GameController
+var card
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
-	pass # Replace with function body.
+	GameController = get_tree().get_first_node_in_group("GameController")
+	card = get_parent().get_parent()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func Effect(attacker): # When attacked by an enemy will protect himself anyway
+	if card.actionDuringDefense != "defende": #protect only if he's not already protecting himself
+		card.ProtectByEnemy(attacker)

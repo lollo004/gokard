@@ -45,3 +45,9 @@ func _on_area_exited(area):
 func setGlobalId(): # Function called to get leader id for each team
 	GameController.SetLeaders(Team, id, self)
 
+
+func BoostByPos(_pos, _stat, value, _team): # Function called when a card must change one of his main values
+	Health += value
+	
+	#call function to say that you was hitted
+

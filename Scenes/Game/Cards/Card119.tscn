@@ -54,10 +54,11 @@ Cost = 5
 id = 119
 Name = "Self-Centered Guy"
 Base = "Shaky Warrior"
+BaseId = [118]
 Gene = "Dwarf"
 Deviation = "Standard"
 Effect = "When someone plays a dwarf gain +1 attack and +1 health"
-Type = "Defense"
+Type = "Attack"
 Team = "player"
 metadata/_edit_vertical_guides_ = [-222.0]
 metadata/_edit_group_ = true
@@ -226,7 +227,7 @@ vertical_alignment = 1
 
 [node name="Common Effects" type="Node" parent="."]
 
-[node name="On Deploy" type="Node" parent="Common Effects" groups=["Deploy"]]
+[node name="OnDeploy" type="Node" parent="Common Effects" groups=["OnDeploy"]]
 script = ExtResource("4_u54tq")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

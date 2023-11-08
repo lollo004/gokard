@@ -1,11 +1,16 @@
 extends Node
 
+var GameController
+var card
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
-	pass # Replace with function body.
+	GameController = get_tree().get_first_node_in_group("GameController")
+	card = get_parent().get_parent()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func Effect(stats, value, who): # When one of your cards increment the attack stats gain +1 attack but if the card it's a dwarf also gain +1 health
+	if stats == "attack" and value > 0 and who.id != card.id:
+		card.BoostByPos(card.Position, "attack", 1, card.Team) # Gain +1 attack
+		if who.Gene == "Dwarf":
+			card.BoostByPos(card.Position, "health", 1, card.Team) # Gain +1 health

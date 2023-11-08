@@ -225,7 +225,7 @@ vertical_alignment = 1
 
 [node name="Common Effects" type="Node" parent="."]
 
-[node name="On Draw" type="Node" parent="Common Effects" groups=["OnDraw"]]
+[node name="OnDraw" type="Node" parent="Common Effects" groups=["OnDraw"]]
 script = ExtResource("4_ttsw1")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

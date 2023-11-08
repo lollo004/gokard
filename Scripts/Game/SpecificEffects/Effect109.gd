@@ -1,11 +1,15 @@
 extends Node
 
+var GameController
+var card
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
-	pass # Replace with function body.
+	GameController = get_tree().get_first_node_in_group("GameController")
+	card = get_parent().get_parent()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func Effect(who, _death, _n): # When he attack he dies
+	if card == who:
+		card.Health -= card.Health # Kill himself
+		card.UpdateStats(card) # Tell him to update his stats

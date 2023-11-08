@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/Game/Card.gd" id="1_soec5"]
 [ext_resource type="Texture2D" uid="uid://rf6sp07qeavm" path="res://Resources/Card.png" id="2_8u8ct"]
 [ext_resource type="Texture2D" uid="uid://dq7meuos2i3le" path="res://Resources/Images/Card0.png" id="3_tb2j0"]
-[ext_resource type="Script" path="res://Scripts/Game/SpecificEffects/Effect132.gd" id="4_y647l"]
+[ext_resource type="Script" path="res://Scripts/Game/SpecificEffects/MutationEffect.gd" id="4_xngct"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yvtci"]
 size = Vector2(769, 1024)
@@ -58,6 +58,8 @@ Deviation = "Sage"
 Effect = "He's meditatitng... What did you expect? Turn Mutation (6)"
 Type = "Defense"
 Team = "player"
+phase_or_turn_mutation = 6
+mutation_id = 133
 metadata/_edit_vertical_guides_ = [-222.0]
 metadata/_edit_group_ = true
 
@@ -226,7 +228,7 @@ vertical_alignment = 1
 [node name="Common Effects" type="Node" parent="."]
 
 [node name="Turn Mutation (X)" type="Node" parent="Common Effects" groups=["Turn Mutation"]]
-script = ExtResource("4_y647l")
+script = ExtResource("4_xngct")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]

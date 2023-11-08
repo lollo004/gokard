@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/Game/Card.gd" id="1_uarwl"]
 [ext_resource type="Texture2D" uid="uid://rf6sp07qeavm" path="res://Resources/Card.png" id="2_62ont"]
 [ext_resource type="Texture2D" uid="uid://dq7meuos2i3le" path="res://Resources/Images/Card0.png" id="3_r1ksa"]
-[ext_resource type="Script" path="res://Scripts/Game/SpecificEffects/Effect112.gd" id="4_a3yca"]
+[ext_resource type="Script" path="res://Scripts/Game/SpecificEffects/MutationEffect.gd" id="4_pnclp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yvtci"]
 size = Vector2(769, 1024)
@@ -226,7 +226,7 @@ vertical_alignment = 1
 [node name="Common Effects" type="Node" parent="."]
 
 [node name="Phase Mutation (X)" type="Node" parent="Common Effects" groups=["Phase Mutation"]]
-script = ExtResource("4_a3yca")
+script = ExtResource("4_pnclp")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]

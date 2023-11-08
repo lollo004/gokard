@@ -1,6 +1,6 @@
 extends Node
  
-@export var client_id = "client2"
+@export var client_id = "client1"
 
 var socket = WebSocketPeer.new()
 
@@ -144,9 +144,45 @@ func handle_new_message(message): # Check message type and choose what to do
 		GameController.GameEnds("enemy") # You win!
 		get_tree().change_scene_to_file("Scenes/Lobby/MainMenu.tscn")
 		return
+	
+	elif message["type"] == "game_effect": # Opponent do something specific
+		if message["action"] == "104": # Opponent tell you who he damaged
+			get_tree().call_group("Card", "BoostByPos", message["card"], "health", -1, "player")
+			return
+		if message["action"] == "108": # Opponent tell you who he boosted
+			get_tree().call_group("Card", "BoostByPos", message["card"], "attack", 2, "enemy")
+			return
+		if message["action"] == "114": # Opponent show you a card
+			GameController.ShowOneCard(int(message["card_id"]))
+			return
+		if message["action"] == "115": # Opponent tell you who he boosted
+			for pos in message["cards"]:
+				get_tree().call_group("Card", "BoostByPos", pos, "attack", 2, "enemy")
+			return
+		if message["action"] == "122_1": # Opponent tell you who he boosted
+			get_tree().call_group("Card", "BoostByPos", message["card"], "attack", 2, "enemy")
+			return
+		if message["action"] == "122_2": # Opponent tell you who he boosted
+			for pos in message["cards"]:
+				get_tree().call_group("Card", "BoostByPos", pos, "health", 1, "enemy")
+			return
+		if message["action"] == "123": # Opponent tell you who he damaged
+			for pos in message["cards"]:
+				get_tree().call_group("Card", "BoostByPos", pos, "health", -1, "player")
+			return
+		if message["action"] == "124": # Opponent tell you that he drawed
+			GameController.DrawEnemyCard()
+			return
+		if message["action"] == "133": # Opponent tell you who he boosted
+			get_tree().call_group("Card", "BoostByPos", message["card"], "attack", 3, "enemy")
+			get_tree().call_group("Card", "BoostByPos", message["card"], "health", 1, "enemy")
+			return
 
 
 ### GAME MESSAGES ###
+
+
+## Main Events ##
 
 
 func send_turn_choice(action): # Function called when player choose what to do this turn
@@ -228,3 +264,103 @@ func send_quit(): # Function called when player quit
 	
 	socket.send_text(JSON.stringify(join_message))
 
+
+## Specif Cards Effects ##
+
+
+func send_effect_104(pos): # Function called when you play card with id 104
+	var join_message = {
+		"type": "game_effect",
+		"action": "104",
+		"id": client_id,
+		"card": pos #position of the card to boost
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_effect_108(pos): # Function called when you play card with id 108
+	var join_message = {
+		"type": "game_effect",
+		"action": "108",
+		"id": client_id,
+		"card": pos #position of the card to boost
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_effect_114(): # Function called when you play card with id 114
+	var join_message = {
+		"type": "game_effect",
+		"action": "114",
+		"id": client_id,
+		"card_id": GameController.player_hand[randi_range(0, len(GameController.player_hand) - 1)].id #card
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_effect_115(list): # Function called when you play card with id 115
+	var join_message = {
+		"type": "game_effect",
+		"action": "115",
+		"id": client_id,
+		"cards": list #list of card to boost
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_effect_122_1(pos): # Function called when you play card with id 122 on first function
+	var join_message = {
+		"type": "game_effect",
+		"action": "122_1",
+		"id": client_id,
+		"card": pos  #position of the card to boost
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_effect_122_2(list): # Function called when you play card with id 122 on second function
+	var join_message = {
+		"type": "game_effect",
+		"action": "122_2",
+		"id": client_id,
+		"cards": list #list of card to boost
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_effect_123(list): # Function called when you play card with id 123
+	var join_message = {
+		"type": "game_effect",
+		"action": "123",
+		"id": client_id,
+		"cards": list #list of card to damage
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_effect_124(): # Function called when you play card with id 124
+	var join_message = {
+		"type": "game_effect",
+		"action": "124",
+		"id": client_id,
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_effect_133(pos): # Function called when you play card with id 108
+	var join_message = {
+		"type": "game_effect",
+		"action": "133",
+		"id": client_id,
+		"card": pos #position of the card to boost
+	}
+	
+	socket.send_text(JSON.stringify(join_message))

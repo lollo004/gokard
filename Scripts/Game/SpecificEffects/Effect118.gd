@@ -1,11 +1,14 @@
 extends Node
 
+var GameController
+var card
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
-	pass # Replace with function body.
+	GameController = get_tree().get_first_node_in_group("GameController")
+	card = get_parent().get_parent()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func Effect(team): # When enemy turn starts gain +1 attack
+	if card.Team != team and card.Location == "field":
+		card.BoostByPos(card.Position, "attack", 1, card.Team) # Boost attack

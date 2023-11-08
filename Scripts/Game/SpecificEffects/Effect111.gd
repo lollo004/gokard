@@ -1,11 +1,14 @@
 extends Node
 
+var GameController
+var card
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
-	pass # Replace with function body.
+	GameController = get_tree().get_first_node_in_group("GameController")
+	card = get_parent().get_parent()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func Effect(who, _death, n): # If he perform the first attack he gain +1 health
+	if n == 0 and who == card: # he attacked has first
+		card.BoostByPos(card.Position, "health", 1, card.Team) # Boost health

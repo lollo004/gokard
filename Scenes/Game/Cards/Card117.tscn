@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/Game/Card.gd" id="1_j7nna"]
 [ext_resource type="Texture2D" uid="uid://rf6sp07qeavm" path="res://Resources/Card.png" id="2_uanra"]
 [ext_resource type="Texture2D" uid="uid://dq7meuos2i3le" path="res://Resources/Images/Card0.png" id="3_x7mc4"]
-[ext_resource type="Script" path="res://Scripts/Game/SpecificEffects/Effect117.gd" id="4_sm7ar"]
+[ext_resource type="Script" path="res://Scripts/Game/SpecificEffects/MutationEffect.gd" id="4_2nr2q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yvtci"]
 size = Vector2(769, 1024)
@@ -58,6 +58,7 @@ Deviation = "Standard"
 Effect = "Phase Mutation (5)"
 Type = "Attack"
 Team = "player"
+phase_or_turn_mutation = 5
 metadata/_edit_vertical_guides_ = [-222.0]
 metadata/_edit_group_ = true
 
@@ -226,7 +227,7 @@ vertical_alignment = 1
 [node name="Common Effects" type="Node" parent="."]
 
 [node name="Phase Mutation (X)" type="Node" parent="Common Effects" groups=["Phase Mutation"]]
-script = ExtResource("4_sm7ar")
+script = ExtResource("4_2nr2q")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]

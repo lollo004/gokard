@@ -1,12 +1,6 @@
 Animations and feedbacks
-
 Graphic upgrade !
 
 add magics...
 
-add extra damage on first target
-
-set canAttacks
-manage OnAttacked
-
-manage evolutions.
+131 add hyena !!

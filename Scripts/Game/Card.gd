@@ -14,6 +14,7 @@ extends Area2D
 @export var Name : String = ""
 
 @export var Base : String = "Base" # If it's an evolution write here base card name
+@export var BaseId = [] # If it's an evolution write here base card univoque id
 
 @export var Gene : String = ""  # Gene (human - magic - building - ecc.)
 @export var Deviation : String = "" # Deviation (standard - mage - sage)
@@ -36,6 +37,9 @@ var isFirstTurn : bool = true # Variable used to disable the card on the first t
 var isEnabled : bool = false # Variable to check if a card is enabled and you can interact with it
 
 var GameController # Game controller reference
+
+@export var phase_or_turn_mutation = 0 # if he has a mutation here's the number of phases/turns
+@export var mutation_id = 0 # if he has a mutations here's the new card's id
 
 ## Scale Variables ##
 
@@ -132,37 +136,48 @@ func _on_input_event(_viewport, event, _shape_idx):
 				if isCardSelected: # Dropping the card
 					if (
 						currentPos != "0" # Right position
-						and GameController.positionStatus[currentPos] == false
 						and GameController.lymph >= Cost # Enough lymph 
 						and GameController.turn == "player" # Right turn
-						and GameController.phase == "attack" # Right phase
-						and GameController.turnType == "play" # RIght turn type
+						#and GameController.phase == "attack" # Right phase
+						and (GameController.turnType == "play" or GameController.turnType == "draw") # Right turn type
 						and Location == "hand" # Right card
 						and (Type == currentLoc or Type == "Versatile") # Right type
 						):
-						
-						Location = "field"
-						global_position = new_position
-						Position = currentPos
-						GameController.positionStatus[Position] = true
-						
-						GameController.lymph -= Cost
-						
-						GameController.player_hand.remove_at(GameController.player_hand.find(self))
-						GameController.UpdateHand()
-						
-						
-						sprite.offset.y += 700 # Adjusting card offset
-						for objects in sprite.get_children(): # Adjusting statistics offset
-							objects.position.y += 700
-						
-						get_tree().call_group("GUI_Manager", "_on_Update")
-						
-						if get_node_or_null("Common Effects/Rise"):
-							get_node("Common Effects/Rise").Effect(Team, Position) # Call 'Rise' function of the played card
-						get_tree().call_group("On Deploy", "Effect", Team, Position) # Call 'On Deploy' functions
-						
-						get_tree().call_group("ClientInstance", "send_play_card", id, Position) # Send card and position to opponent
+							if (
+								(len(BaseId) == 0 and GameController.positionStatus[currentPos] == null) # free position
+								or 
+								(len(BaseId) > 0 and GameController.positionStatus[currentPos] != null and GameController.positionStatus[currentPos].id in BaseId) # his base his on this position
+							):
+								if len(BaseId) > 0 and GameController.positionStatus[currentPos].id in BaseId: # delete the old one
+									GameController.player_field_cards.erase(GameController.positionStatus[currentPos])
+									GameController.positionStatus[currentPos].queue_free()
+									GameController.card_counter = 1 # remove the deleted card
+								
+								Location = "field"
+								global_position = new_position
+								Position = currentPos
+								GameController.positionStatus[Position] = self
+								
+								GameController.lymph -= Cost
+								
+								GameController.player_hand.erase(self)
+								GameController.UpdateHand()
+								
+								sprite.offset.y += 700 # Adjusting card offset
+								for objects in sprite.get_children(): # Adjusting statistics offset
+									objects.position.y += 700
+								
+								get_tree().call_group("GUI_Manager", "_on_Update")
+								
+								if get_node_or_null("Common Effects/Rise"):
+									get_node("Common Effects/Rise").Effect(Team, Position) # Call 'Rise' function of the played card
+								get_tree().call_group("OnDeploy", "Effect", Team, Position, self) # Call 'OnDeploy' functions
+								
+								GameController.player_field_cards.append(self)
+								
+								get_tree().call_group("ClientInstance", "send_play_card", id, Position) # Send card and position to opponent
+							else:
+								global_position = old_position
 					else:
 						global_position = old_position
 					isCardSelected = false
@@ -202,7 +217,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 				if isCardSelected: # Dropping the card
 					if (
 						currentPos != "0" # Right position
-						and GameController.positionStatus[currentPos] == false
+						and GameController.positionStatus[currentPos] == null
 						and GameController.turn == "player" # Right turn
 						and GameController.phase == "attack" # Right phase
 						and GameController.turnType == "draw" # RIght turn type
@@ -212,9 +227,9 @@ func _on_input_event(_viewport, event, _shape_idx):
 						
 						global_position = new_position
 						var oldPos = Position
-						GameController.positionStatus[oldPos] = false
+						GameController.positionStatus[oldPos] = null
 						Position = currentPos
-						GameController.positionStatus[Position] = true
+						GameController.positionStatus[Position] = self
 						
 						alreadyMoved = true
 						isFirstTurn = true
@@ -308,14 +323,20 @@ func isItYou(team : String, pos : String, target = null, atf : String = ""): # F
 func UpdateStats(who): # Function called when card's stats change
 	if who == self:
 		if Health <= 0: # Check Card Health
-			GameController.positionStatus[Position] = false
+			if Team == "player":
+				GameController.positionStatus[Position] = null
+				GameController.player_field_cards.erase(self)
+			else:
+				GameController.enemy_field_cards.erase(self)
 			
 			if get_node_or_null("Common Effects/Tunnel"):
 				get_node("Common Effects/Tunnel").Effect() # Call 'Tunnel' function of the played card
 			if get_node_or_null("Common Effects/Heritage"):
 				get_node("Common Effects/Heritage").Effect() # Call 'Heritage' function of the played card
 			
-			get_tree().call_group("Revenge", "Effect", Team, Position) # Call 'Revenge' function
+			hide()
+			
+			get_tree().call_group("Revenge", "Effect", self) # Call 'Revenge' function
 			
 			queue_free()
 		
@@ -367,14 +388,16 @@ func onPhaseBegin(team): # Function called on attack phase start (team = player 
 			
 			get_tree().call_group("ClientInstance", "send_special")
 			GameController.UsePlayerSpecial()
+			get_tree().call_group("OnSpecial", "Effect", Team)
 
 
-func AttackEnemy(enemy): # Function called when the card has to attack another one
-	enemy.Health -= Attack
-	get_tree().call_group("Card", "UpdateStats", enemy)
-	get_tree().call_group("Uprising", "Effect", Team) # Call 'Uprising' functions
-	get_tree().call_group("Rage", "Effect", Team, self) # Call 'Rage' functions
-	get_tree().call_group("Teleport", "Effect", Team) # Call 'Teleport' function
+func AttackEnemy(enemy, number): # Function called when the card has to attack another one
+	enemy.Health -= Attack # Do damage
+	
+	get_tree().call_group("Rage", "Effect", self, enemy, number) # Call 'Rage' functions
+	
+	if enemy.get_node_or_null("Common Effects/OnAttacked"):
+		enemy.get_node("Common Effects/OnAttacked").Effect(self) # Tell him that he has been attacked
 	
 	if get_node_or_null("Common Effects/Raising"):
 		get_node("Common Effects/Raising").Effect() # Call 'Raising' function of the played card
@@ -384,9 +407,37 @@ func AttackEnemy(enemy): # Function called when the card has to attack another o
 		get_node("Common Effects/Bane").Effect() # Call 'Bane' function of the played card
 	if get_node_or_null("Common Effects/Super Bane"):
 		get_node("Common Effects/Super Bane").Effect() # Call 'Super Bane' function of the played card
+	
+	get_tree().call_group("Card", "UpdateStats", enemy)
 
 
 func ProtectByEnemy(enemy): # Function called when the card has to defende by another one
-	enemy.Health -= Attack
+	enemy.Health -= Attack # Do damage
+	
 	get_tree().call_group("Card", "UpdateStats", enemy)
 
+
+func AttackEnemyByExcess(enemy, value): # Function called when the card has to attack his original target
+	enemy.Health += value # Do damage
+		
+	get_tree().call_group("Card", "UpdateStats", enemy)
+
+
+func BoostByPos(pos, stat, value, team): # Function called when a card must change one of his main values
+	if Position == pos and Team == team:
+		match stat:
+			"health":
+				Health += value
+				get_tree().call_group("OnBoost", "Effect", "health", value, self)
+			"attack":
+				Attack += value
+				get_tree().call_group("OnBoost", "Effect", "attack", value, self)
+			"speed":
+				Speed += value
+				get_tree().call_group("OnBoost", "Effect", "speed", value, self)
+			"weight":
+				Weight += value
+				get_tree().call_group("OnBoost", "Effect", "cost", value, self)
+			"cost":
+				Cost += value
+		UpdateStats(self)

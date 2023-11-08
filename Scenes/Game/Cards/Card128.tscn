@@ -54,6 +54,7 @@ Cost = 8
 id = 128
 Name = "Fate Walker"
 Base = "White Beard / Dark Beard"
+BaseId = [120, 121]
 Gene = "Dwarf"
 Deviation = "Warrior"
 Effect = "When attacked by an enemy will protect himself anyway"

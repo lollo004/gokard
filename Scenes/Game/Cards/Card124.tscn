@@ -53,7 +53,7 @@ Weight = 82
 Cost = 6
 id = 124
 Name = "Old Man OF The Forest"
-Gene = "Drwarf"
+Gene = "Dwarf"
 Deviation = "Sage"
 Effect = "When enemy spends all the lymph draw a card and if it's a dwarf give it +1 attack, +1 health and reduce the cost by 1"
 Type = "Versatile"
@@ -225,7 +225,7 @@ vertical_alignment = 1
 
 [node name="Common Effects" type="Node" parent="."]
 
-[node name="On Deploy" type="Node" parent="Common Effects" groups=["Deploy"]]
+[node name="OnDeploy" type="Node" parent="Common Effects" groups=["OnDeploy"]]
 script = ExtResource("4_7uxle")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

@@ -225,7 +225,7 @@ vertical_alignment = 1
 
 [node name="Common Effects" type="Node" parent="."]
 
-[node name="Turn Mutation (X)" type="Node" parent="Common Effects" groups=["Turn Mutation"]]
+[node name="onTurnBegin" type="Node" parent="Common Effects" groups=["onTurnBegin"]]
 script = ExtResource("4_di5bt")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

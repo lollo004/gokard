@@ -1,11 +1,25 @@
 extends Node
 
+var GameController
+var card
 
-# Called when the node enters the scene tree for the first time.
+var array_temp
+
+
 func _ready():
-	pass # Replace with function body.
+	GameController = get_tree().get_first_node_in_group("GameController")
+	card = get_parent().get_parent()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func Effect(team, _position, _who): # When enemy spends all the lymph draw a card and if it's a dwarf give it +1 attack, +1 health and reduce the cost by 1
+	if team == "enemy" and card.Location == "field":
+		if GameController.lymph == 0:
+			var ret = GameController.DrawOneCard()
+			
+			if ret != null:
+				if ret.Gene == "Dwarf":
+					ret.BoostByPos(ret.Position, "health", 1, "player") # Gain +1 helath
+					ret.BoostByPos(ret.Position, "attack", 1, "player") # Gain +1 attack
+					ret.BoostByPos(ret.Position, "cost", -1, "player") # Reduce the cost by one
+				
+				get_tree().call_group("ClientInstance", "send_effect_124") # Send to opponent that you drawed

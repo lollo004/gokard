@@ -4,8 +4,8 @@ extends Node
 
 @export var player_health : int = 30
 @export var enemy_health : int = 30
-@export var lymph : int = 1
-@export var stress : int = 0
+@export var lymph : int = 100
+@export var stress : int = 5
 @export var turn : String = ""
 @export var phase : String = ""
 
@@ -18,7 +18,7 @@ var player_current_stress : int = 0
 var enemy_current_stress : int = 0
 
 var max_lymph : int = 10
-var max_stress : int = 9
+var max_stress : int = 5
 
 var turnType : String = "" # Action to do in current turn (play, draw, lymph, stress)
 
@@ -46,10 +46,13 @@ var isScreenTaken = false # Variable to check if you can interact with buttons
 ## Management Variables ##
 
 var positionStatus = { # Dictionary that contains position status
-	"1" : false, "2" : false, "3" : false, "4" : false, "5" : false, "6" : false, "7" : false, "8" : false, "9" : false
+	"1" : null, "2" : null, "3" : null, "4" : null, "5" : null, "6" : null, "7" : null, "8" : null, "9" : null
 }
 
 var card_counter : int = 0 # Variable that check how many card you are tryng to select
+
+var player_field_cards = [] # list of all player cards on the field
+var enemy_field_cards = [] # list of all enemy cards on the field
 
 ## Attack Variables ##
 
@@ -71,6 +74,11 @@ var player_defends = [] # List with who is defending
 var enemy_defends = [] # List with who is defending
 var raw_player_defends = [] # List with who is defending
 var raw_enemy_defends = [] # List with who is defending
+
+## Timers ##
+
+var timer = Timer.new()
+var current_showed_card_ref
 
 ### MAIN EVENTS ###
 
@@ -113,30 +121,44 @@ func TurnButtonPressed():
 	if turn == "enemy" and phase == "attack":
 		turn = "player"
 		phase = "defense"
+		get_tree().call_group("onTurnBegin", "Effect", "player")
 		get_tree().call_group("Card", "onTurnBegin", "player")
+		get_tree().call_group("Phase Mutation", "Effect")
+		get_tree().call_group("Turn Mutation", "Effect")
 		
 		get_tree().get_first_node_in_group("TurnManager").visible = true
 		get_tree().call_group("Deactivable", "Enable", false)
 		
 		lymph = current_max_lymph
 		player_current_stress = 0
+		
+		DrawOneCard()
 	
 	elif turn == "player" and phase == "defense":
 		phase = "attack"
+		get_tree().call_group("onPhaseBegin", "Effect", "player")
 		get_tree().call_group("Card", "onPhaseBegin", "player")
+		get_tree().call_group("Phase Mutation", "Effect")
 		
 		get_tree().call_group("ClientInstance", "send_defense", player_defends)
 	
 	elif turn == "player" and phase == "attack":
 		turn = "enemy"
 		phase = "defense"
+		get_tree().call_group("onTurnBegin", "Effect", "enemy")
 		get_tree().call_group("Card", "onTurnBegin", "enemy")
+		get_tree().call_group("Phase Mutation", "Effect")
+		get_tree().call_group("Turn Mutation", "Effect")
 		
 		lymph = current_max_lymph
+		
+		DrawEnemyCard()
 	
 	elif turn == "enemy" and phase == "defense":
 		phase = "attack"
+		get_tree().call_group("onPhaseBegin", "Effect", "enemy")
 		get_tree().call_group("Card", "onPhaseBegin", "enemy")
+		get_tree().call_group("Phase Mutation", "Effect")
 		
 		get_tree().call_group("ClientInstance", "send_attack", player_attacks)
 	
@@ -214,12 +236,20 @@ func AddStress():
 func DrawOneCard():
 	if len(player_deck) > 0 and len(player_hand) < 10:
 		player_hand.append(player_deck[-1])
-		add_child(player_deck[-1])
+		add_child(player_hand[-1])
 		player_deck.remove_at(player_deck.size() - 1)
+		
+		player_hand[-1].Location = "hand"
+		player_hand[-1].Team = "player"
+		if not get_tree().get_first_node_in_group("TurnManager").visible:
+			player_hand[-1].isEnabled = true
 		
 		UpdateHand()
 		
 		get_tree().call_group("OnDraw", "Effect", "player") # Call 'OnDraw' functions
+		
+		return player_hand[-1]
+	return null
 
 func UpdateHand():
 	var i : int = 0
@@ -335,31 +365,41 @@ func ManagePlayerDefense(): # Function that contains player defense system
 		
 		if attackers.size() > defenders.size(): # if there are more attackers than defenders
 			var a = 0
+			var x = 0
 			
-			while attackers.size() > defenders.size(): # remove all extra defender
-				Fight(attackers[a], targets[a], false)
+			while attackers.size() > defenders.size(): #attackers attack the desired target
+				Fight(attackers[a], targets[a], false, x, null)
 				
 				attackers.remove_at(0)
 				targets.remove_at(0)
+				
+				x += 1
 			
-			while a < len(attackers): #attackers attack the desired target
-				Fight(attackers[a], defenders[a], true)
+			while a < len(attackers): # remove all extra attacker
+				Fight(attackers[a], defenders[a], true, x, targets[a])
 				a += 1
+				x += 1
 		elif attackers.size() < defenders.size(): # if there are less attackers than defenders
 			var b = 0
+			var x = 0
 			
 			while attackers.size() < defenders.size(): # remove all extra defender
 				defenders.remove_at(defenders.size() - 1)
 			
 			while b < len(attackers): #attackers attack the desired target
-				Fight(attackers[b], defenders[b], true)
+				Fight(attackers[b], defenders[b], true, x, targets[b])
 				b += 1
+				
+				x += 1
 		else: # same number of attacker and defenders
 			var c = 0
+			var x = 0
 			
 			while c < len(attackers): #attackers attack the desired target
-				Fight(attackers[c], defenders[c], true)
+				Fight(attackers[c], defenders[c], true, x, targets[c])
 				c += 1
+				
+				x += 1
 
 func ManageEnemyDefense(): # Function that contains enemy defense system
 	if raw_player_attacks.size() > 0:
@@ -426,31 +466,42 @@ func ManageEnemyDefense(): # Function that contains enemy defense system
 		
 		if attackers.size() > defenders.size(): # if there are more attackers than defenders
 			var a = 0
+			var x = 0
 			
-			while attackers.size() > defenders.size(): # remove all extra defender
-				Fight(attackers[a], targets[a], false)
+			while attackers.size() > defenders.size(): #attackers attack the desired target
+				Fight(attackers[a], targets[a], false, x, null)
 				
 				attackers.remove_at(0)
 				targets.remove_at(0)
+				
+				x += 1
 			
-			while a < len(attackers): #attackers attack the desired target
-				Fight(attackers[a], defenders[a], true)
+			while a < len(attackers): # remove all extra attacker
+				Fight(attackers[a], defenders[a], true, x, targets[a])
 				a += 1
+				
+				x += 1
 		elif attackers.size() < defenders.size(): # if there are less attackers than defenders
 			var b = 0
+			var x = 0
 			
 			while attackers.size() < defenders.size(): # remove all extra defender
 				defenders.remove_at(defenders.size() - 1)
 			
-			while b < len(attackers): #attackers attack the desired target
-				Fight(attackers[b], defenders[b], true)
+			while b < len(attackers): #attackers attack the defenders
+				Fight(attackers[b], defenders[b], true, x, targets[b])
 				b += 1
+				
+				x += 1
 		else: # same number of attacker and defenders
 			var c = 0
+			var x = 0
 			
 			while c < len(attackers): #attackers attack the desired target
-				Fight(attackers[c], defenders[c], true)
+				Fight(attackers[c], defenders[c], true, x, targets[c])
 				c += 1
+				
+				x += 1
 
 func FormatOnDefende(): # Function called to make previous function work properly
 	for c in enemy_attacks:
@@ -484,12 +535,16 @@ func FormatOnAttack(): # Function called to make previous function work properly
 			get_tree().call_group("Card", "isItYou", "player", a, current_array_filler, "pa")
 			current_array_filler = null
 
-func Fight(attacker, defender, canDefend : bool):
+func Fight(attacker, defender, canDefend : bool, n, target):
 	if attacker and defender:
-		attacker.AttackEnemy(defender) #attacker attack the defender
+		attacker.AttackEnemy(defender, n) #attacker attack the defender
 		
 		if canDefend:
 			print("Fight --> " + attacker.Name + "(" + attacker.Team + ") vs " + defender.Name + "(" + defender.Team + ") (protecting himself)")
+			
+			if defender.Health < 0:
+				attacker.AttackEnemyByExcess(target, defender.Health) #attacker attack his first target
+			
 			defender.ProtectByEnemy(attacker) #defender protect himself only if the proprietary decided to defend
 		else:
 			print("Fight --> " + attacker.Name + "(" + attacker.Team + ") vs " + defender.Name + "(" + defender.Team + ") (without defending himself)")
@@ -567,8 +622,14 @@ func PlayEnemyCard(id, pos, stats):
 	
 	lymph -= enemy_cards[pos].Cost # Update lymph used by enemy
 	
+	enemy_field_cards.append(enemy_cards[pos]) # Add card to the array to simplify the founding of it
+	
 	UpdateEnemyHand()
 	
+	if enemy_cards[pos].get_node_or_null("Common Effects/Rise"):
+		enemy_cards[pos].get_node("Common Effects/Rise").Effect("enemy", enemy_cards[pos].Position) # Call 'Rise' function of the played card
+	get_tree().call_group("OnDeploy", "Effect", "enemy", pos, enemy_cards[pos]) # Call 'On Deploy' functions
+
 	get_tree().call_group("GUI_Manager", "_on_Update")
 
 func MoveEnemyCard(old_pos, new_pos):
@@ -579,3 +640,23 @@ func MoveEnemyCard(old_pos, new_pos):
 	
 	get_tree().call_group("GUI_Manager", "_on_Update")
 
+# Specific Effect #
+
+func ShowOneCard(id): # Function called when played "Light on the dark" card
+	var scene = load("res://Scenes/Game/Cards/Card"+str(id)+".tscn") # Load card resources
+	current_showed_card_ref = scene.instantiate() # Instantiate card resources
+	
+	current_showed_card_ref.Team = "no" # avoid any type of interaction with the card
+	current_showed_card_ref.position = Vector2(175,270)
+	current_showed_card_ref.scale *= 2
+	
+	add_child(current_showed_card_ref) # Create card
+	
+	timer.connect("timeout" , show_card)
+	timer.wait_time = 2.0
+	timer.one_shot = true
+	add_child(timer)
+	timer.start()
+
+func show_card(): # Delete the card after 2 seconds
+	current_showed_card_ref.queue_free()
