@@ -12,11 +12,11 @@ func _ready():
 	card = get_parent().get_parent()
 
 
-func Effect(_attacker): # When he's attacked give +2 attack to two of your dwarfs
+func Effect(_who, target, _n): # When he's attacked give +2 attack to two of your dwarfs
 	array_temp = [] + GameController.player_field_cards
 	list_of_card_to_boost.clear()
 	
-	if card.Team == "player":
+	if card.Team == "player" and target == card:
 		array_temp.erase(card) # remove the card that used the ability
 		
 		if len(array_temp) > 0:

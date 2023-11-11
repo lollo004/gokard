@@ -28,8 +28,9 @@ func _ready():
 		var rng = RandomNumberGenerator.new()
 		var number = rng.randi_range(101, 133)
 		
-		scene = load("res://Scenes/Game/Cards/Card"+str(int(number))+".tscn")
+		scene = load("res://Scenes/Game/Cards/Card.tscn")
 		instance = scene.instantiate()
+		instance.CreateCard(CardsList.getCardInfo(int(number)), int(number))
 		instance.Team = "player"
 		
 		deck.append(instance)

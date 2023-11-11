@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+CardsList="*res://Scenes/Game/Cards/CardsList.tscn"
 Data="*res://Scenes/Data.tscn"
 
 [display]

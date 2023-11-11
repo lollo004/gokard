@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bu51jsn3fng1d"]
+
+[ext_resource type="Script" path="res://Scripts/Game/CardsList.gd" id="1_s88qd"]
+
+[node name="Node" type="Node" groups=["CardsList"]]
+script = ExtResource("1_s88qd")

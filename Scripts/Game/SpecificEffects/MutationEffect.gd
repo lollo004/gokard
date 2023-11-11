@@ -22,8 +22,10 @@ func Effect(): # Phase / Turn Mutation
 		card.UpdateStats(card)
 		
 		if current_phase >= max_phase:
-			var scene = load("res://Scenes/Game/Cards/Card" + str(card.mutation_id) + ".tscn") # Load card resources
+			var scene = load("res://Scenes/Game/Cards/Card.tscn") # Load card resources
 			var instance = scene.instantiate() # Instantiate card resources
+			
+			instance.CreateCard(CardsList.getCardInfo(card.mutation_id), card.mutation_id)
 			
 			instance.Position = card.Position # Set in-game position for new card
 			instance.Location = "field" # Set location for new card

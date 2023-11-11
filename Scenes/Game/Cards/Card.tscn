@@ -1,44 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://bp6kelnxloeu"]
+[gd_scene load_steps=5 format=3 uid="uid://bp6kelnxloeu"]
 
 [ext_resource type="Script" path="res://Scripts/Game/Card.gd" id="1_oo0sj"]
 [ext_resource type="Texture2D" uid="uid://rf6sp07qeavm" path="res://Resources/Card.png" id="2_gkp3r"]
-[ext_resource type="Texture2D" uid="uid://dq7meuos2i3le" path="res://Resources/Images/Card0.png" id="3_gg0mf"]
-[ext_resource type="Script" path="res://Scripts/Game/SpecificEffects/Effect118.gd" id="4_0a705"]
+[ext_resource type="Texture2D" uid="uid://05g30jsudqqg" path="res://icon.svg" id="3_ydow4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yvtci"]
 size = Vector2(769, 1024)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_fdm6a"]
-animations = [{
-"frames": [],
-"loop": true,
-"name": &"attack",
-"speed": 2.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_gkp3r")
-}],
-"loop": true,
-"name": &"idle",
-"speed": 2.0
-}, {
-"frames": [],
-"loop": true,
-"name": &"take_damage",
-"speed": 2.0
-}]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_fqy1g"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("3_gg0mf")
-}],
-"loop": true,
-"name": &"idle",
-"speed": 5.0
-}]
 
 [node name="Card" type="Area2D" groups=["Card", "Deactivable"]]
 top_level = true
@@ -52,20 +19,18 @@ metadata/_edit_vertical_guides_ = [-222.0]
 position = Vector2(-1.5, 0)
 shape = SubResource("RectangleShape2D_yvtci")
 
-[node name="Border" type="AnimatedSprite2D" parent="." groups=["Border"]]
+[node name="Border" type="Sprite2D" parent="." groups=["Border"]]
 visibility_layer = 3
 position = Vector2(1.24176e-07, 0)
 scale = Vector2(0.5, 0.5)
-sprite_frames = SubResource("SpriteFrames_fdm6a")
-animation = &"idle"
+texture = ExtResource("2_gkp3r")
 
-[node name="Sprite" type="AnimatedSprite2D" parent="Border" groups=["Sprite"]]
+[node name="Sprite" type="Sprite2D" parent="Border" groups=["Sprite"]]
 visibility_layer = 3
 z_index = -1
-position = Vector2(-6.10352e-05, -433.333)
-scale = Vector2(0.85, 0.85)
-sprite_frames = SubResource("SpriteFrames_fqy1g")
-animation = &"idle"
+position = Vector2(0, -400)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("3_ydow4")
 
 [node name="Attack" type="Label" parent="Border" groups=["Attack"]]
 offset_left = -620.0
@@ -210,11 +175,9 @@ theme_override_font_sizes/font_size = 50
 text = "Base"
 vertical_alignment = 1
 
-[node name="Common Effects" type="Node" parent="."]
+[node name="Common Effects" type="Node" parent="." groups=["Effects"]]
 
 [node name="OnDraw" type="Node" parent="Common Effects" groups=["OnDraw"]]
-
-[node name="OnAttacked" type="Node" parent="Common Effects" groups=["OnAttacked"]]
 
 [node name="OnSpecial" type="Node" parent="Common Effects" groups=["OnSpecial"]]
 
@@ -236,27 +199,25 @@ vertical_alignment = 1
 
 [node name="Zippy" type="Node" parent="Common Effects" groups=["Zippy"]]
 
-[node name="Dead Weight" type="Node" parent="Common Effects" groups=["Dead Weight"]]
+[node name="DeadWeight" type="Node" parent="Common Effects" groups=["DeadWeight"]]
 
-[node name="Sweet Song" type="Node" parent="Common Effects" groups=["Sweet Song"]]
+[node name="SweetSong" type="Node" parent="Common Effects" groups=["SweetSong"]]
 
 [node name="Tunnel" type="Node" parent="Common Effects" groups=["Tunnel"]]
 
-[node name="Bane (X)" type="Node" parent="Common Effects" groups=["Bane"]]
+[node name="Bane" type="Node" parent="Common Effects" groups=["Bane"]]
 
-[node name="Super Bane (X)" type="Node" parent="Common Effects" groups=["Super Bane"]]
+[node name="SuperBane" type="Node" parent="Common Effects" groups=["SuperBane"]]
 
-[node name="Raising (X,Y,Z,W)" type="Node" parent="Common Effects" groups=["Raising"]]
+[node name="Raising" type="Node" parent="Common Effects" groups=["Raising"]]
 
-[node name="Phase Mutation (X)" type="Node" parent="Common Effects" groups=["Phase Mutation"]]
+[node name="Phase Mutation" type="Node" parent="Common Effects" groups=["Phase Mutation"]]
 
-[node name="Turn Mutation (X)" type="Node" parent="Common Effects" groups=["Turn Mutation"]]
+[node name="Turn Mutation" type="Node" parent="Common Effects" groups=["Turn Mutation"]]
 
 [node name="onTurnBegin" type="Node" parent="Common Effects" groups=["onTurnBegin"]]
-script = ExtResource("4_0a705")
 
 [node name="onPhaseBegin" type="Node" parent="Common Effects" groups=["onPhaseBegin"]]
-script = ExtResource("4_0a705")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]

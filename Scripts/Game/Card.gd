@@ -28,6 +28,12 @@ extends Area2D
 @export var canAttackEnemies = true
 @export var canAttackLeader = true
 
+@export var canBeMoved = true
+@export var canUseAbility = true
+@export var canBeBuffed = true
+
+@export var turnBlockedOnPlay = 1
+
 ## Management Variables ##
 
 var Position : String = "0" # Position on the field (1-9 => field | 10 => Leader | 0 => Invalid)
@@ -77,17 +83,6 @@ var hasAbilityBeenUsedThisTurn : bool = false # Variable to check if the card de
 
 func _ready(): # Function called only on start
 	GameController = get_tree().get_first_node_in_group("GameController")
-	
-	for x in self.get_children():
-		if "Border" in x.get_groups():
-			sprite = x
-	
-	scale /= 1.33 # 1.35 to separete the card correctly
-	
-	minScale = sprite.scale
-	maxScale = sprite.scale * 2.75
-	
-	UpdateStats(self)
 
 
 func _process(delta): # Function called every frame
@@ -169,7 +164,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 								
 								get_tree().call_group("GUI_Manager", "_on_Update")
 								
-								if get_node_or_null("Common Effects/Rise"):
+								if get_node_or_null("Common Effects/Rise").get_script():
 									get_node("Common Effects/Rise").Effect(Team, Position) # Call 'Rise' function of the played card
 								get_tree().call_group("OnDeploy", "Effect", Team, Position, self) # Call 'OnDeploy' functions
 								
@@ -220,7 +215,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 						and GameController.positionStatus[currentPos] == null
 						and GameController.turn == "player" # Right turn
 						and GameController.phase == "attack" # Right phase
-						and GameController.turnType == "draw" # RIght turn type
+						and (GameController.turnType == "play" or GameController.turnType == "draw") # Right turn type
 						and Location == "field" # Right card
 						and Type == "Versatile" # Right type
 						):
@@ -329,9 +324,9 @@ func UpdateStats(who): # Function called when card's stats change
 			else:
 				GameController.enemy_field_cards.erase(self)
 			
-			if get_node_or_null("Common Effects/Tunnel"):
+			if get_node_or_null("Common Effects/Tunnel").get_script():
 				get_node("Common Effects/Tunnel").Effect() # Call 'Tunnel' function of the played card
-			if get_node_or_null("Common Effects/Heritage"):
+			if get_node_or_null("Common Effects/Heritage").get_script():
 				get_node("Common Effects/Heritage").Effect() # Call 'Heritage' function of the played card
 			
 			hide()
@@ -396,17 +391,14 @@ func AttackEnemy(enemy, number): # Function called when the card has to attack a
 	
 	get_tree().call_group("Rage", "Effect", self, enemy, number) # Call 'Rage' functions
 	
-	if enemy.get_node_or_null("Common Effects/OnAttacked"):
-		enemy.get_node("Common Effects/OnAttacked").Effect(self) # Tell him that he has been attacked
-	
-	if get_node_or_null("Common Effects/Raising"):
+	if get_node_or_null("Common Effects/Raising").get_script():
 		get_node("Common Effects/Raising").Effect() # Call 'Raising' function of the played card
-	if get_node_or_null("Common Effects/Sweet Song"):
-		get_node("Common Effects/Sweet Song").Effect() # Call 'Sweet Song' function of the played card
-	if get_node_or_null("Common Effects/Bane"):
+	if get_node_or_null("Common Effects/SweetSong").get_script():
+		get_node("Common Effects/SweetSong").Effect() # Call 'Sweet Song' function of the played card
+	if get_node_or_null("Common Effects/Bane").get_script():
 		get_node("Common Effects/Bane").Effect() # Call 'Bane' function of the played card
-	if get_node_or_null("Common Effects/Super Bane"):
-		get_node("Common Effects/Super Bane").Effect() # Call 'Super Bane' function of the played card
+	if get_node_or_null("Common Effects/SuperBane").get_script():
+		get_node("Common Effects/SuperBane").Effect() # Call 'Super Bane' function of the played card
 	
 	get_tree().call_group("Card", "UpdateStats", enemy)
 
@@ -441,3 +433,54 @@ func BoostByPos(pos, stat, value, team): # Function called when a card must chan
 			"cost":
 				Cost += value
 		UpdateStats(self)
+
+
+func CreateCard(values, card_id): # Function only when the card is going to be created
+	id = card_id
+	
+	Health = values["health"]
+	Attack = values["attack"]
+	Speed = values["speed"]
+	Weight = values["weight"]
+	Cost = values["cost"]
+	Name = values["name"]
+	Base = values["base"]
+	BaseId = values["baseid"]
+	Gene = values["gene"]
+	Deviation = values["deviation"]
+	Effect = values["effect"]
+	Type = values["type"]
+	canAttackEnemies = values["cae"]
+	canAttackLeader = values["cal"]
+	phase_or_turn_mutation = values["ptm"]
+	mutation_id = values["mi"]
+	canBeMoved = values["can_move"]
+	canUseAbility = values["can_ability"]
+	canBeBuffed = values["can_buf"]
+	turnBlockedOnPlay = values["turn_blocked_on_play"]
+	
+	for x in self.get_children(): # attach right script to the card
+		if "Effects" in x.get_groups():
+			for y in x.get_children():
+				if values["effect_type"] in y.get_groups():
+					if values["effect_type"] == "Phase Mutation" or values["effect_type"] == "Turn Mutation":
+						y.set_script(load("res://Scripts/Game/SpecificEffects/MutationEffect.gd"))
+					else:
+						y.set_script(load("res://Scripts/Game/SpecificEffects/Effect"+str(card_id)+".gd"))
+	
+	for x in self.get_children(): # get texture reference and load card image
+		if "Border" in x.get_groups():
+			sprite = x
+			for y in sprite.get_children():
+				if "Sprite" in y.get_groups():
+					y.set_texture(load("res://Resources/Images/Card"+str(card_id)+".png"))
+					break
+			break
+	
+	scale /= 1.33 # 1.35 to separete the card correctly
+	
+	minScale = sprite.scale
+	maxScale = sprite.scale * 2.75
+	
+	UpdateStats(self)
+

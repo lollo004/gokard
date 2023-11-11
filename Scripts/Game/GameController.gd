@@ -602,9 +602,10 @@ func PlayEnemyCard(id, pos, stats):
 	enemy_hand[-1].queue_free()
 	enemy_hand.remove_at(enemy_hand.size() - 1) # Remove card from enemy hand
 	
-	var scene = load("res://Scenes/Game/Cards/Card"+str(int(id))+".tscn") # Load card resources
+	var scene = load("res://Scenes/Game/Cards/Card.tscn") # Load card resources
 	var instance = scene.instantiate() # Instantiate card resources
 	enemy_cards[pos] = instance # Save card instance
+	enemy_cards[pos].CreateCard(CardsList.getCardInfo(int(id)), int(id)) # Getting starter values
 	enemy_cards[pos].Team = "enemy" # Set team for new card
 	enemy_cards[pos].Position = pos # Set position for new card
 	enemy_cards[pos].Location = "field" # Set location for new card
@@ -626,7 +627,7 @@ func PlayEnemyCard(id, pos, stats):
 	
 	UpdateEnemyHand()
 	
-	if enemy_cards[pos].get_node_or_null("Common Effects/Rise"):
+	if enemy_cards[pos].get_node_or_null("Common Effects/Rise").get_script():
 		enemy_cards[pos].get_node("Common Effects/Rise").Effect("enemy", enemy_cards[pos].Position) # Call 'Rise' function of the played card
 	get_tree().call_group("OnDeploy", "Effect", "enemy", pos, enemy_cards[pos]) # Call 'On Deploy' functions
 

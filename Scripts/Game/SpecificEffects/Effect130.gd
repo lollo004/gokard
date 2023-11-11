@@ -11,7 +11,7 @@ func _ready():
 	card = get_parent().get_parent()
 
 
-func Effect(team, _pos, _who): # If 4 or more dwarfs are present on the attack field, then gain +2 health and +2 attack
+func Effect(team, _pos): # If 4 or more dwarfs are present on the attack field, then gain +2 health and +2 attack
 	card_counter_on_attack = 0
 	if team == "player":
 		for i in GameController.player_field_cards:
