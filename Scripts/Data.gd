@@ -26,11 +26,16 @@ func _ready():
 	
 	for i in 30:
 		var rng = RandomNumberGenerator.new()
-		var number = rng.randi_range(101, 133)
+		var number = rng.randi_range(101, 144)
 		
-		scene = load("res://Scenes/Game/Cards/Card.tscn")
+		var card_info = CardsList.getCardInfo(int(number))
+		
+		if card_info["magic"]:
+			scene = load("res://Scenes/Game/Cards/Magic.tscn")
+		else:
+			scene = load("res://Scenes/Game/Cards/Card.tscn")
 		instance = scene.instantiate()
-		instance.CreateCard(CardsList.getCardInfo(int(number)), int(number))
+		instance.CreateCard(card_info, int(number))
 		instance.Team = "player"
 		
 		deck.append(instance)

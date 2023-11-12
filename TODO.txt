@@ -1,6 +1,6 @@
 Animations and feedbacks
-Graphic upgrade !
-
-add magics...
 
 (131) add hyena !!
+
+implement turnBlocked system...
+implement magic return to hand...

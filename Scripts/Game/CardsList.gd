@@ -23,7 +23,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	101: {
 		"health" : 1,
@@ -46,7 +49,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	102: {
 		"health" : 2,
@@ -69,7 +75,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	103: {
 		"health" : 2,
@@ -92,7 +101,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	104: {
 		"health" : 1,
@@ -115,7 +127,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	105: {
 		"health" : 2,
@@ -138,7 +153,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	106: {
 		"health" : 4,
@@ -161,7 +179,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	107: {
 		"health" : 3,
@@ -184,7 +205,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	108: {
 		"health" : 2,
@@ -207,7 +231,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	109: {
 		"health" : 2,
@@ -230,7 +257,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	110: {
 		"health" : 3,
@@ -253,7 +283,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	111: {
 		"health" : 2,
@@ -276,7 +309,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	112: {
 		"health" : 4,
@@ -299,7 +335,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	113: {
 		"health" : 4,
@@ -322,7 +361,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	114: {
 		"health" : 3,
@@ -345,7 +387,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	115: {
 		"health" : 6,
@@ -368,7 +413,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	116: {
 		"health" : 5,
@@ -391,7 +439,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	117: {
 		"health" : 4,
@@ -414,7 +465,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	118: {
 		"health" : 5,
@@ -437,7 +491,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	119: {
 		"health" : 4,
@@ -460,7 +517,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	120: {
 		"health" : 6,
@@ -483,7 +543,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	121: {
 		"health" : 3,
@@ -506,7 +569,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	122: {
 		"health" : 6,
@@ -529,7 +595,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	123: {
 		"health" : 5,
@@ -552,7 +621,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	124: {
 		"health" : 7,
@@ -575,7 +647,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	125: {
 		"health" : 5,
@@ -598,7 +673,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	126: {
 		"health" : 7,
@@ -621,7 +699,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	127: {
 		"health" : 6,
@@ -644,7 +725,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	128: {
 		"health" : 10,
@@ -667,7 +751,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	129: {
 		"health" : 7,
@@ -690,7 +777,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	130: {
 		"health" : 8,
@@ -713,7 +803,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	131: {
 		"health" : 5,
@@ -736,7 +829,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	132: {
 		"health" : 6,
@@ -759,7 +855,10 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
 	133: {
 		"health" : 10,
@@ -768,7 +867,7 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"weight" : 2,
 		"cost" : 10,
 		"name" : "Inexorable Death",
-		"gene" : "Dwarf",
+		"gene" : "Spirit",
 		"deviation" : "Curse",
 		"type" : "Defense",
 		"effect" : "When an ally dwarf dies give one of your card +3 attack and +1 health",
@@ -782,8 +881,117 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"can_move": true,
 		"can_ability": true,
 		"can_buf": true,
-		"turn_blocked_on_play": 0
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
 		},
+	134: {
+		"health" : 3,
+		"attack" : 4,
+		"speed" : 5,
+		"weight" : 36,
+		"cost" : 4,
+		"name" : "Loyal Drudge",
+		"gene" : "Dwarf",
+		"deviation" : "Standard",
+		"type" : "Attack",
+		"effect" : "When someone of them dies then eat the leftovers and gain +1 attack and +8 weight",
+		"effect_type" : "Revenge",
+		"base" : "Base",
+		"baseid" : [],
+		"cae" : true,
+		"cal" : true,
+		"ptm" : 0,
+		"mi" : 0,
+		"can_move": true,
+		"can_ability": true,
+		"can_buf": true,
+		"turn_blocked_on_play": 1,
+		"magic" : false, "random" : true,
+		"fusion" : false,
+		"fusionid": []
+		},
+	135: {
+		"cost" : 1,
+		"name" : "Flying Pebbles",
+		"gene" : "Dwarf",
+		"type" : "Attack",
+		"effect" : "Deal 1 damage to 2 random enemy",
+		"magic" : true, "random" : true
+		},
+	136: {
+		"cost" : 2,
+		"name" : "Battle Horn",
+		"gene" : "Dwarf",
+		"type" : "Versatile",
+		"effect" : "+1 attack to 2 random ally dwarfs",
+		"magic" : true, "random" : true
+		},
+	137: {
+		"cost" : 2,
+		"name" : "Mountain Gift",
+		"gene" : "Dwarf",
+		"type" : "Versatile",
+		"effect" : "Draw a random dwarf that cost 2 lymph, but he’s cost is 0  and has +1 attack and +1 health",
+		"magic" : true, "random" : true
+		},
+	138: {
+		"cost" : 3,
+		"name" : "Landslide",
+		"gene" : "Dwarf",
+		"type" : "Attack",
+		"effect" : "Destroy 2 random enemies that has less then 10 attack",
+		"magic" : true, "random" : true
+		},
+	139: {
+		"cost" : 3,
+		"name" : "Laboratory Junk",
+		"gene" : "Dwarf",
+		"type" : "Versatile",
+		"effect" : "+3 health to a dwarf",
+		"magic" : true, "random" : false
+		},
+	140: {
+		"cost" : 3,
+		"name" : "Rage Bottle",
+		"gene" : "Dwarf",
+		"type" : "Attack",
+		"effect" : "Increment stress by 1",
+		"magic" : true, "random" : true
+		},
+	141: {
+		"cost" : 4,
+		"name" : "War Song",
+		"gene" : "Dwarf",
+		"type" : "Defense",
+		"effect" : "+2 attack and +1 health to 2 random ally dwarf",
+		"magic" : true, "random" : true
+		},
+	142: {
+		"cost" : 5,
+		"name" : "Rock Ritual",
+		"gene" : "Dwarf",
+		"type" : "Versatile",
+		"effect" : "Summon a random dead ally dwarf",
+		"magic" : true, "random" : true
+		},
+	143: {
+		"cost" : 7,
+		"name" : "Rise Of The Servants",
+		"gene" : "Dwarf",
+		"type" : "Versatile",
+		"effect" : "Fill your attack field with Loyal Drudges",
+		"magic" : true, "random" : true
+		},
+	144: {
+		"cost" : 10,
+		"name" : "Coordinated Assault",
+		"gene" : "Dwarf",
+		"type" : "Versatile",
+		"effect" : "Give +5 attack and +2 health to all the dwarfs in your field",
+		"magic" : true, "random" : true
+		}
 }
 
 

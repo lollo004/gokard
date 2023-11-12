@@ -113,6 +113,14 @@ func handle_new_message(message): # Check message type and choose what to do
 		GameController.PlayEnemyCard(message["card_id"], message["new_pos"], message["stats"])
 		return
 	
+	elif message["type"] == "magic": # Opponent played a magic from his hand
+		GameController.PlayEnemyMagic(message["card_id"])
+		return
+	
+	elif message["type"] == "draw": # Opponent drawed a card
+		GameController.DrawEnemyCard()
+		return
+	
 	elif message["type"] == "move": # Opponent moved a card into the field
 		GameController.MoveEnemyCard(message["old_pos"], message["new_pos"])
 		return
@@ -177,6 +185,77 @@ func handle_new_message(message): # Check message type and choose what to do
 			get_tree().call_group("Card", "BoostByPos", message["card"], "attack", 3, "enemy")
 			get_tree().call_group("Card", "BoostByPos", message["card"], "health", 1, "enemy")
 			return
+		if message["action"] == "135": # Opponent tell you who he damaged
+			for pos in message["cards"]:
+				get_tree().call_group("Card", "BoostByPos", pos, "health", -1, "player")
+			return
+		if message["action"] == "136": # Opponent tell you who he boosted
+			for pos in message["cards"]:
+				get_tree().call_group("Card", "BoostByPos", pos, "attack", 1, "enemy")
+			return
+		if message["action"] == "138": # Opponent tell you who he killed
+			var array_temp = [] + GameController.player_field_cards # create array
+			for o in array_temp: # remove object with more than 9 attack
+				if o.Attack >= 10:
+					array_temp.erase(o)
+			for c in array_temp:
+				c.BoostByPos(c.Position, "health", -c.Health, "player") # Kill
+			return
+		if message["action"] == "139": # Opponent tell you who he boosted
+			if message["card"] == "player":
+				message["card"].BoostByPos(message["card"].Position, "health", 3, "enemy") # Boost health
+			else:
+				message["card"].BoostByPos(message["card"].Position, "health", 3, "player") # Boost health
+		if message["action"] == "140": # Opponent tell you that he increased the stress
+			if GameController.stress < GameController.max_stress:
+				GameController.stress += 1
+				get_tree().call_group("GUI_Manager", "_on_Update")
+		if message["action"] == "141": # Opponent tell you who he boosted
+				for pos in message["cards"]:
+					get_tree().call_group("Card", "BoostByPos", pos, "attack", 2, "enemy")
+					get_tree().call_group("Card", "BoostByPos", pos, "health", 1, "enemy")
+				return
+		if message["action"] == "142": # Opponent tell you where and who he played
+			var scene = load("res://Scenes/Game/Cards/Card.tscn") # Load card resources
+			var instance = scene.instantiate() # Instantiate card resources
+			GameController.enemy_cards[message["pos"]] = instance # Save card instance
+			GameController.enemy_cards[message["pos"]].CreateCard(CardsList.getCardInfo(int(message["card"])), int(message["card"])) # Getting starter values
+			GameController.enemy_cards[message["pos"]].Team = "enemy" # Set team for new card
+			GameController.enemy_cards[message["pos"]].Position = str(message["pos"]) # Set position for new card
+			GameController.enemy_cards[message["pos"]].Location = "field" # Set location for new card
+			
+			GameController.add_child(GameController.enemy_cards[message["pos"]]) # Create card
+			
+			var positioner_pos = get_tree().get_first_node_in_group("EP"+str(message["pos"])) # Get the right position
+			GameController.enemy_cards[message["pos"]].global_position = positioner_pos.global_position # Move card to the right position
+			
+			GameController.positionStatus[message["pos"]] = GameController.enemy_cards[message["pos"]]
+			
+			GameController.enemy_field_cards.append(GameController.enemy_cards[message["pos"]]) # Add card to the array to simplify the founding of it
+			
+			return # stop the for loop
+		if message["action"] == "143": # todo
+			for i in message["cards"]:
+				var scene = load("res://Scenes/Game/Cards/Card.tscn") # Load card resources
+				var instance = scene.instantiate() # Instantiate card resources
+				GameController.enemy_cards[i] = instance # Save card instance
+				GameController.enemy_cards[i].CreateCard(CardsList.getCardInfo(134), 134) # Getting starter values
+				GameController.enemy_cards[i].Team = "enemy" # Set team for new card
+				GameController.enemy_cards[i].Position = i # Set position for new card
+				GameController.enemy_cards[i].Location = "field" # Set location for new card
+				
+				GameController.add_child(GameController.enemy_cards[i]) # Create card
+				
+				var positioner_pos = get_tree().get_first_node_in_group("EP"+str(i)) # Get the right position
+				GameController.enemy_cards[i].global_position = positioner_pos.global_position # Move card to the right position
+				
+				GameController.positionStatus[i] = GameController.enemy_cards[i]
+				
+				GameController.enemy_field_cards.append(GameController.enemy_cards[i]) # Add card to the array to simplify the founding of it
+		if message["action"] == "144": # Opponent tell you who he boosted
+			for i in GameController.enemy_field_cards:
+				i.BoostByPos(i.Position, "attack", 5, "enemy") # Gain attack
+				i.BoostByPos(i.Position, "health", 2, "enemy") # Gain health
 
 
 ### GAME MESSAGES ###
@@ -202,6 +281,25 @@ func send_play_card(card_id, new_pos, stats = []): # Function called when player
 		"card_id": card_id,
 		"new_pos": new_pos,
 		"stats": stats
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_play_magic(card_id): # Function called when player play a magic from his hand
+	var join_message = {
+		"type": "magic",
+		"id": client_id,
+		"card_id": card_id,
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_draw(): # Function called when drawed a card not regularly
+	var join_message = {
+		"type": "draw",
+		"id": client_id,
 	}
 	
 	socket.send_text(JSON.stringify(join_message))
@@ -355,7 +453,7 @@ func send_effect_124(): # Function called when you play card with id 124
 	socket.send_text(JSON.stringify(join_message))
 
 
-func send_effect_133(pos): # Function called when you play card with id 108
+func send_effect_133(pos): # Function called when you play card with id 133
 	var join_message = {
 		"type": "game_effect",
 		"action": "133",
@@ -364,3 +462,102 @@ func send_effect_133(pos): # Function called when you play card with id 108
 	}
 	
 	socket.send_text(JSON.stringify(join_message))
+
+
+func send_effect_135(list): # Function called when you play card with id 135
+	var join_message = {
+		"type": "game_effect",
+		"action": "135",
+		"id": client_id,
+		"cards": list #list of card to damage
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_effect_136(list): # Function called when you play card with id 136
+	var join_message = {
+		"type": "game_effect",
+		"action": "136",
+		"id": client_id,
+		"cards": list #list of card to damage
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_effect_138(): # Function called when you play card with id 138
+	var join_message = {
+		"type": "game_effect",
+		"action": "138",
+		"id": client_id,
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_effect_139(card, team): # Function called when you play card with id 139
+	var join_message = {
+		"type": "game_effect",
+		"action": "139",
+		"id": client_id,
+		"card": card,
+		"team": team
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_effect_140(): # Function called when you play card with id 140
+	var join_message = {
+		"type": "game_effect",
+		"action": "140",
+		"id": client_id,
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_effect_141(list): # Function called when you play card with id 141
+	var join_message = {
+		"type": "game_effect",
+		"action": "141",
+		"id": client_id,
+		"cards": list #list of card to damage
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_effect_142(pos, card_id): # Function called when you play card with id 142
+	var join_message = {
+		"type": "game_effect",
+		"action": "142",
+		"id": client_id,
+		"pos": pos, #position of the card to boost
+		"card": card_id
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_effect_143(list): # Function called when you play card with id 143
+	var join_message = {
+		"type": "game_effect",
+		"action": "143",
+		"id": client_id,
+		"cards": list #list of card to damage
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+
+
+func send_effect_144(): # Function called when you play card with id 144
+	var join_message = {
+		"type": "game_effect",
+		"action": "144",
+		"id": client_id,
+	}
+	
+	socket.send_text(JSON.stringify(join_message))
+

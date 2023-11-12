@@ -43,7 +43,7 @@ metadata/_edit_use_anchors_ = true
 [node name="Game Manager" type="Node" parent="GUI/Management" groups=["Deactivable", "GameController"]]
 script = ExtResource("3_ovi4y")
 turn = "player"
-phase = "defense"
+phase = "Defense"
 player_name = "player_name"
 enemy_name = "enemy_name"
 

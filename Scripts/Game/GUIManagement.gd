@@ -13,9 +13,9 @@ func _on_Update():
 	var turn = GameController.turn
 	var phase = GameController.phase
 	
-	if turn == "player" and phase == "defense":
+	if turn == "player" and phase == "Defense":
 		get_tree().get_first_node_in_group("Turn").text = "End Phase"
-	if turn == "player" and phase == "attack":
+	if turn == "player" and phase == "Attack":
 		get_tree().get_first_node_in_group("Turn").text = "End Turn"
 	if turn == "enemy":
 		get_tree().get_first_node_in_group("Turn").text = "Opponent Turn"

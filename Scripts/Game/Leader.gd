@@ -4,6 +4,7 @@ extends Area2D
 var Name : String = ""
 var Health : int = 30
 var Position : String = "10"
+var Gene : String = ""
 @export var id : int = 0
 
 var GameController # Game controller reference

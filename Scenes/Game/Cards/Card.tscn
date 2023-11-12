@@ -44,6 +44,7 @@ theme_override_font_sizes/font_size = 100
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Health" type="Label" parent="Border" groups=["Health"]]
 offset_left = 420.0
@@ -57,6 +58,7 @@ theme_override_font_sizes/font_size = 100
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Speed" type="Label" parent="Border" groups=["Speed"]]
 offset_left = -340.0
@@ -70,6 +72,7 @@ theme_override_font_sizes/font_size = 70
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Weight" type="Label" parent="Border" groups=["Weight"]]
 offset_left = 240.0
@@ -83,6 +86,7 @@ theme_override_font_sizes/font_size = 70
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Cost" type="Label" parent="Border" groups=["Cost"]]
 offset_left = -70.0
@@ -96,6 +100,7 @@ theme_override_font_sizes/font_size = 85
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Name" type="Label" parent="Border" groups=["Name"]]
 offset_left = -220.0
@@ -109,6 +114,7 @@ theme_override_font_sizes/font_size = 50
 text = "Name"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Gene" type="Label" parent="Border" groups=["Gene"]]
 offset_left = -200.0
@@ -122,6 +128,7 @@ theme_override_font_sizes/font_size = 75
 text = "Gene"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Deviation" type="Label" parent="Border" groups=["Deviation"]]
 offset_left = -150.0
@@ -135,6 +142,7 @@ theme_override_font_sizes/font_size = 60
 text = "Deviation"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Effect" type="Label" parent="Border" groups=["Effect"]]
 offset_left = -600.0
@@ -149,6 +157,7 @@ text = "Effect..."
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="Type" type="Label" parent="Border" groups=["Type"]]
 offset_left = 400.0
@@ -162,6 +171,7 @@ theme_override_font_sizes/font_size = 50
 text = "Type"
 horizontal_alignment = 2
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Base" type="Label" parent="Border" groups=["Base"]]
 offset_left = -680.0
@@ -174,6 +184,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 50
 text = "Base"
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Common Effects" type="Node" parent="." groups=["Effects"]]
 

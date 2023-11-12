@@ -1,0 +1,109 @@
+[gd_scene load_steps=5 format=3 uid="uid://bcmlon3r0nwd2"]
+
+[ext_resource type="Script" path="res://Scripts/Game/Card.gd" id="1_ynf8k"]
+[ext_resource type="Texture2D" uid="uid://rf6sp07qeavm" path="res://Resources/Card.png" id="2_bjo51"]
+[ext_resource type="Texture2D" uid="uid://05g30jsudqqg" path="res://icon.svg" id="3_n4gdc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qakxp"]
+size = Vector2(769, 1024)
+
+[node name="Area2D" type="Area2D" groups=["Card", "Deactivable"]]
+scale = Vector2(0.1, 0.1)
+script = ExtResource("1_ynf8k")
+isMagic = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.5, 0)
+shape = SubResource("RectangleShape2D_qakxp")
+
+[node name="Border" type="Sprite2D" parent="." groups=["Border"]]
+visibility_layer = 3
+position = Vector2(1.24176e-07, 0)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_bjo51")
+
+[node name="Sprite" type="Sprite2D" parent="Border" groups=["Sprite"]]
+visibility_layer = 3
+z_index = -1
+position = Vector2(0, -400)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("3_n4gdc")
+
+[node name="Cost" type="Label" parent="Border" groups=["Cost"]]
+offset_left = -70.0
+offset_top = -940.0
+offset_right = 80.0
+offset_bottom = -790.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 85
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Name" type="Label" parent="Border" groups=["Name"]]
+offset_left = -220.0
+offset_top = -70.0
+offset_right = 180.0
+offset_bottom = 80.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Gene" type="Label" parent="Border" groups=["Gene"]]
+offset_left = -200.0
+offset_top = 780.0
+offset_right = 200.0
+offset_bottom = 930.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 75
+text = "Gene"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Effect" type="Label" parent="Border" groups=["Effect"]]
+offset_left = -600.0
+offset_top = 120.0
+offset_right = 600.0
+offset_bottom = 520.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 65
+text = "Effect..."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Type" type="Label" parent="Border" groups=["Type"]]
+offset_left = 400.0
+offset_top = -1000.0
+offset_right = 700.0
+offset_bottom = -900.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "Type"
+horizontal_alignment = 2
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="MagicEffect" type="Node" parent="." groups=["MagicEffect"]]
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

@@ -54,6 +54,9 @@ var card_counter : int = 0 # Variable that check how many card you are tryng to 
 var player_field_cards = [] # list of all player cards on the field
 var enemy_field_cards = [] # list of all enemy cards on the field
 
+var player_deaths = [] # list of all player dead card's ids
+var enemy_deaths = [] # list of all enemy dead card's ids
+
 ## Attack Variables ##
 
 var started_attack_card # the card that is attacking
@@ -75,10 +78,15 @@ var enemy_defends = [] # List with who is defending
 var raw_player_defends = [] # List with who is defending
 var raw_enemy_defends = [] # List with who is defending
 
+## Magic Variables ##
+
+var started_choosing_magic # the magic that is selecting
+var type_of_pointer = "" # type of action for the pointer (Card / Magic)
+
 ## Timers ##
 
-var timer = Timer.new()
-var current_showed_card_ref
+var timer = []
+var current_showed_card_ref = []
 
 ### MAIN EVENTS ###
 
@@ -118,9 +126,9 @@ func _ready():
 
 
 func TurnButtonPressed():
-	if turn == "enemy" and phase == "attack":
+	if turn == "enemy" and phase == "Attack":
 		turn = "player"
-		phase = "defense"
+		phase = "Defense"
 		get_tree().call_group("onTurnBegin", "Effect", "player")
 		get_tree().call_group("Card", "onTurnBegin", "player")
 		get_tree().call_group("Phase Mutation", "Effect")
@@ -134,17 +142,17 @@ func TurnButtonPressed():
 		
 		DrawOneCard()
 	
-	elif turn == "player" and phase == "defense":
-		phase = "attack"
+	elif turn == "player" and phase == "Defense":
+		phase = "Attack"
 		get_tree().call_group("onPhaseBegin", "Effect", "player")
 		get_tree().call_group("Card", "onPhaseBegin", "player")
 		get_tree().call_group("Phase Mutation", "Effect")
 		
 		get_tree().call_group("ClientInstance", "send_defense", player_defends)
 	
-	elif turn == "player" and phase == "attack":
+	elif turn == "player" and phase == "Attack":
 		turn = "enemy"
-		phase = "defense"
+		phase = "Defense"
 		get_tree().call_group("onTurnBegin", "Effect", "enemy")
 		get_tree().call_group("Card", "onTurnBegin", "enemy")
 		get_tree().call_group("Phase Mutation", "Effect")
@@ -154,8 +162,8 @@ func TurnButtonPressed():
 		
 		DrawEnemyCard()
 	
-	elif turn == "enemy" and phase == "defense":
-		phase = "attack"
+	elif turn == "enemy" and phase == "Defense":
+		phase = "Attack"
 		get_tree().call_group("onPhaseBegin", "Effect", "enemy")
 		get_tree().call_group("Card", "onPhaseBegin", "enemy")
 		get_tree().call_group("Phase Mutation", "Effect")
@@ -641,23 +649,61 @@ func MoveEnemyCard(old_pos, new_pos):
 	
 	get_tree().call_group("GUI_Manager", "_on_Update")
 
+func PlayEnemyMagic(id):
+	enemy_hand[-1].queue_free()
+	enemy_hand.remove_at(enemy_hand.size() - 1) # Remove card from enemy hand
+	
+	var scene = load("res://Scenes/Game/Cards/Magic.tscn") # Load card resources
+	var instance = scene.instantiate() # Instantiate card resources
+	
+	lymph -= instance.Cost # Update lymph used by enemy
+	
+	current_showed_card_ref.append(instance)
+	current_showed_card_ref[-1].CreateCard(CardsList.getCardInfo(int(id)), int(id)) # Getting starter values
+	current_showed_card_ref[-1].Team = "no" # avoid any type of interaction with the card
+	current_showed_card_ref[-1].position = Vector2(175,270)
+	current_showed_card_ref[-1].scale *= 2
+	
+	add_child(current_showed_card_ref[-1]) # Create card
+	
+	timer.append(Timer.new())
+	timer[-1].connect("timeout" , ShowCard)
+	timer[-1].wait_time = 1.5
+	timer[-1].one_shot = true
+	add_child(timer[-1])
+	timer[-1].start()
+	
+	UpdateEnemyHand()
+	
+	instance.get_node("MagicEffect").Effect("enemy") # Call the magic effect ot the played card
+	get_tree().call_group("OnMagic", "Effect", "enemy") # Call 'OnMagic' functions
+
+	get_tree().call_group("GUI_Manager", "_on_Update")
+
 # Specific Effect #
 
 func ShowOneCard(id): # Function called when played "Light on the dark" card
-	var scene = load("res://Scenes/Game/Cards/Card"+str(id)+".tscn") # Load card resources
-	current_showed_card_ref = scene.instantiate() # Instantiate card resources
+	var scene
+	if CardsList.getCardInfo(int(id))["magic"]:
+		scene = load("res://Scenes/Game/Cards/Magic.tscn") # Load card resources
+	else:
+		scene = load("res://Scenes/Game/Cards/Card.tscn") # Load card resources
+	current_showed_card_ref.append(scene.instantiate()) # Instantiate card resources
 	
-	current_showed_card_ref.Team = "no" # avoid any type of interaction with the card
-	current_showed_card_ref.position = Vector2(175,270)
-	current_showed_card_ref.scale *= 2
+	current_showed_card_ref[-1].CreateCard(CardsList.getCardInfo(int(id)), int(id)) # Getting starter values
+	current_showed_card_ref[-1].Team = "no" # avoid any type of interaction with the card
+	current_showed_card_ref[-1].position = Vector2(175,270)
+	current_showed_card_ref[-1].scale *= 2
 	
-	add_child(current_showed_card_ref) # Create card
+	add_child(current_showed_card_ref[-1]) # Create card
 	
-	timer.connect("timeout" , show_card)
-	timer.wait_time = 2.0
-	timer.one_shot = true
-	add_child(timer)
-	timer.start()
+	timer.append(Timer.new())
+	timer[-1].connect("timeout" , ShowCard)
+	timer[-1].wait_time = 1.5
+	timer[-1].one_shot = true
+	add_child(timer[-1])
+	timer[-1].start()
 
-func show_card(): # Delete the card after 2 seconds
-	current_showed_card_ref.queue_free()
+func ShowCard(): # Delete the card after 2 seconds
+	current_showed_card_ref[0].queue_free()
+	current_showed_card_ref.remove_at(0)
