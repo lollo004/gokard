@@ -8,7 +8,7 @@ var pos_y = 200 # start from 200 and add 150 each time
 var isReady = true
 
 var decks = {}
-var current_deck_pos = 1
+var current_deck_pos = "1"
 
 var currentGene = "Dwarf"
 var currentCost = 999
@@ -16,7 +16,10 @@ var currentCost = 999
 
 func _ready():
 	ShowCards(currentGene, currentCost)
-	decks[current_deck_pos] = []
+	
+	decks = Data.decks.duplicate()
+	
+	UpdateDeck()
 
 
 func ShowCards(gene, cost): # Select card to show
@@ -101,13 +104,20 @@ func UpdateDeck(): # Update UI
 	get_tree().call_group("Card UI", "queue_free") # delete existing cards
 	list_of_deck_cards.clear()
 	
+	for k in list_of_showed_cards: # reset the counter
+		k.times_in_deck[current_deck_pos] = 0
+	
 	for i in decks[current_deck_pos]:
+		for j in list_of_showed_cards: # for each card in your deck avoid player to select it too much times
+			if j.id == i:
+				j.times_in_deck[current_deck_pos] += 1
+		
 		var scene = load("res://Scenes/Game/Cards/DeckCardUI.tscn")
 		var instance = scene.instantiate()
-		var c_info = CardsList.getCardInfo(i)
+		var c_info = CardsList.getCardInfo(int(i))
 		
 		instance.CreateUID(i, c_info["name"], c_info["effect"])
-		instance.position = Vector2(890,150+(80*ctr))
+		instance.position = Vector2(890,150+(65*ctr))
 		
 		add_child(instance)
 		

@@ -9,6 +9,7 @@ var card_recurrences = {} # cards owned by the player
 var total_number_of_cards = 300 # total number of cards in all the game
 
 var deck = [] # cards used during game
+var decks = {} # all your decks
 var player_back = null # back of the card
 var initial_number_player_cards = 0 # number of cards when game start
 
@@ -25,27 +26,26 @@ func _ready():
 		c += 1
 	
 	## ONLY_FOR_DEBUG RANDOM HAND GEN ##
-	var scene
-	var instance
-	
-	if false: # able or disable debug deck creation
-		for i in 30:
-			var rng = RandomNumberGenerator.new()
-			var number = rng.randi_range(101, 144)
-			#var number = rng.randi_range(122, 122)
-			#var number = rng.randi_range(106, 106)
-			
-			var card_info = CardsList.getCardInfo(int(number))
-			
-			if card_info["magic"]:
-				scene = load("res://Scenes/Game/Cards/Magic.tscn")
-			else:
-				scene = load("res://Scenes/Game/Cards/Card.tscn")
-			instance = scene.instantiate()
-			instance.CreateCard(card_info, int(number))
-			instance.Team = "player"
-			
-			deck.append(instance)
+#	var scene
+#	var instance
+#
+#	for i in 30:
+#		var rng = RandomNumberGenerator.new()
+#		var number = rng.randi_range(101, 144)
+#		#var number = rng.randi_range(122, 122)
+#		#var number = rng.randi_range(106, 106)
+#
+#		var card_info = CardsList.getCardInfo(int(number))
+#
+#		if card_info["magic"]:
+#			scene = load("res://Scenes/Game/Cards/Magic.tscn")
+#		else:
+#			scene = load("res://Scenes/Game/Cards/Card.tscn")
+#		instance = scene.instantiate()
+#		instance.CreateCard(card_info, int(number))
+#		instance.Team = "player"
+#
+#		deck.append(instance)
 	
 	player_back = load("res://Scenes/Game/Cards/BackCard.tscn").instantiate()
 	
@@ -57,6 +57,33 @@ func _ready():
 		enemy_back_deck.append(load("res://Scenes/Game/Cards/BackCard.tscn").instantiate())
 	
 	initial_number_enemy_cards = 4
+	
+	## LOAD DECKS SAVED INTO CASH ##
+	
+	if not FileAccess.file_exists("user://quoreroccia.save"):
+		print("No saves to load!")
+	else:
+		var save_game = FileAccess.open("user://quoreroccia.save", FileAccess.READ)
+		var value = JSON.parse_string(save_game.get_line())
+		
+		for j in value: # save decks from cash
+			if j != "0":
+				decks[j] = value[j]
+		
+		for i in decks[value["0"]]: # current deck
+			var card_info = CardsList.getCardInfo(int(i))
+			var scene
+			
+			if card_info["magic"]:
+				scene = load("res://Scenes/Game/Cards/Magic.tscn")
+			else:
+				scene = load("res://Scenes/Game/Cards/Card.tscn")
+			
+			var instance = scene.instantiate()
+			instance.CreateCard(card_info, int(i))
+			instance.Team = "player"
+			
+			deck.append(instance)
 	
 	print("Game Ready!") # control account and related stats
 

@@ -63,7 +63,7 @@ var inGame = true # Variable used to check if the card is in game or showed to m
 
 var current_deck_ref # Variable used to show cards on your deck
 
-var times_in_deck = 0 # Variable used to remeber how many times you used a card
+var times_in_deck = {} # Variable used to remeber how many times you used a card
 
 ## Scale Variables ##
 
@@ -119,27 +119,29 @@ func _process(delta): # Function called every frame
 
 
 func _on_mouse_entered(): # Start override with mouse
-		sprite.scale = maxScale
-		isMouseOver = true
-		
+	sprite.scale = maxScale
+	isMouseOver = true
+	
+	if inGame:
 		sprite.z_index = 1
 		z_index = 2
-		
-		if Location == "hand":
-			sprite.offset.y -= 700
-			for objects in sprite.get_children():
-				objects.position.y -= 700
-		
-		if Team == "player" and inGame:
-			GameController.card_counter += 1
+	
+	if Location == "hand":
+		sprite.offset.y -= 700
+		for objects in sprite.get_children():
+			objects.position.y -= 700
+	
+	if Team == "player" and inGame:
+		GameController.card_counter += 1
 
 
 func _on_mouse_exited(): # Stop override with mouse
 	sprite.scale = minScale
 	isMouseOver = false
 	
-	sprite.z_index = 0
-	z_index = 1
+	if inGame:
+		sprite.z_index = 0
+		z_index = 1
 	
 	if Location == "hand":
 		sprite.offset.y += 700
@@ -668,14 +670,12 @@ func CreateCard(values, card_id): # Function only when the card is going to be c
 
 
 func SelectCardForDeck(): # Function called to add the card to the deck
-	if times_in_deck < card_tier and len(current_deck_ref.decks[current_deck_ref.current_deck_pos]) < 40:
+	if times_in_deck[current_deck_ref.current_deck_pos] < card_tier and len(current_deck_ref.decks[current_deck_ref.current_deck_pos]) < 40:
 		current_deck_ref.decks[current_deck_ref.current_deck_pos].append(id)
 		current_deck_ref.UpdateDeck()
-		
-		times_in_deck += 1
 
 
 func RemoveFromDeck(i): # Function called when you want to remove the card from the deck
 	if id == i:
-		times_in_deck -= 1
+		times_in_deck[current_deck_ref.current_deck_pos] -= 1
 

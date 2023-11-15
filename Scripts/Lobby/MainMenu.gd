@@ -2,7 +2,10 @@ extends Node
 
 
 func _on_play_button_pressed():
-	get_tree().change_scene_to_file("res://Scenes/Game/ClientInstance.tscn")
+	if len(Data.deck) == 40:
+		get_tree().change_scene_to_file("res://Scenes/Game/ClientInstance.tscn")
+	else:
+		print("Deck must contain 40 cards!")
 
 
 func _on_shop_button_pressed():
