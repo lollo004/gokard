@@ -9,6 +9,6 @@ func _ready():
 	card = get_parent().get_parent()
 
 
-func Effect(attacker, _target, _n): # When attacked by an enemy will protect himself anyway
-	if card.actionDuringDefense != "defende": #protect only if he's not already protecting himself
+func Effect(attacker, target, _n): # When attacked by an enemy will protect himself anyway
+	if card.actionDuringDefense != "defende" and card == target: #protect only if he's not already protecting himself
 		card.ProtectByEnemy(attacker)

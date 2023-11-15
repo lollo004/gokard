@@ -31,3 +31,5 @@ func Effect(team): # Draw a random dwarf that cost 2 lymph, but he’s cost is 0
 		GameController.player_hand[-1].UpdateStats(GameController.player_hand[-1])
 		
 		get_tree().call_group("ClientInstance", "send_draw") # Send to opponent you drawed
+		
+		get_tree().call_group("OnDraw", "Effect", "player") # Call 'OnDraw' functions

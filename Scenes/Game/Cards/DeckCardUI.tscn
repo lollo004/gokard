@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=3 uid="uid://cl018wpiprxuc"]
+
+[ext_resource type="Script" path="res://Scripts/Lobby/DeckCardUI.gd" id="1_ok32n"]
+[ext_resource type="Texture2D" uid="uid://05g30jsudqqg" path="res://icon.svg" id="2_5ui1d"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kv4aa"]
+size = Vector2(103.333, 103.333)
+
+[node name="Area2D" type="Area2D" node_paths=PackedStringArray("icon", "text") groups=["Card UI"]]
+z_index = -1
+scale = Vector2(0.6, 0.6)
+script = ExtResource("1_ok32n")
+icon = NodePath("Sprite2D")
+text = NodePath("Label")
+
+[node name="Sprite2D" type="Sprite2D" parent="." groups=["Icon"]]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_5ui1d")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(3.97364e-07, 3.97364e-07)
+shape = SubResource("RectangleShape2D_kv4aa")
+
+[node name="Label" type="Label" parent="." groups=["Text"]]
+offset_left = -248.0
+offset_top = -52.0
+offset_right = -68.0
+offset_bottom = 51.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "Name :
+Effect ..."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

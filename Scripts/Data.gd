@@ -17,28 +17,35 @@ var initial_number_enemy_cards = 0 # number of cards when game start
 
 
 func _ready():
+	var c = 0
+	
 	for i in total_number_of_cards:
-		card_recurrences[i] = 0 # when a player database will be ready then download number of card possessed
+		if c >= 101 and c <= 144:
+			card_recurrences[i] = 3 # when a player database will be ready then download number of card possessed
+		c += 1
 	
 	## ONLY_FOR_DEBUG RANDOM HAND GEN ##
 	var scene
 	var instance
 	
-	for i in 30:
-		var rng = RandomNumberGenerator.new()
-		var number = rng.randi_range(101, 144)
-		
-		var card_info = CardsList.getCardInfo(int(number))
-		
-		if card_info["magic"]:
-			scene = load("res://Scenes/Game/Cards/Magic.tscn")
-		else:
-			scene = load("res://Scenes/Game/Cards/Card.tscn")
-		instance = scene.instantiate()
-		instance.CreateCard(card_info, int(number))
-		instance.Team = "player"
-		
-		deck.append(instance)
+	if false: # able or disable debug deck creation
+		for i in 30:
+			var rng = RandomNumberGenerator.new()
+			var number = rng.randi_range(101, 144)
+			#var number = rng.randi_range(122, 122)
+			#var number = rng.randi_range(106, 106)
+			
+			var card_info = CardsList.getCardInfo(int(number))
+			
+			if card_info["magic"]:
+				scene = load("res://Scenes/Game/Cards/Magic.tscn")
+			else:
+				scene = load("res://Scenes/Game/Cards/Card.tscn")
+			instance = scene.instantiate()
+			instance.CreateCard(card_info, int(number))
+			instance.Team = "player"
+			
+			deck.append(instance)
 	
 	player_back = load("res://Scenes/Game/Cards/BackCard.tscn").instantiate()
 	

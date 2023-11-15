@@ -40,12 +40,14 @@ extends Area2D
 @export var fusion = false # does card have to fusion to be played
 @export var fusionid = [] # list of card's ids to fuse
 
+@export var card_tier = 3 # tier of the card (max repetition of a single cards)
+
 ## Management Variables ##
 
 var Position : String = "0" # Position on the field (1-9 => field | 10 => Leader | 0 => Invalid)
 var Location : String = "hand" # Location of the card (deck - hand - field - waste)
 
-var isFirstTurn : bool = true # Variable used to disable the card on the first turn you play it
+var turnInGame : int = 0 # Variable used to disable the card on the firsts turn you play it
 var isEnabled : bool = false # Variable to check if a card is enabled and you can interact with it
 
 var GameController # Game controller reference
@@ -54,6 +56,14 @@ var GameController # Game controller reference
 @export var mutation_id = 0 # If he has a mutations here's the new card's id
 
 var isDead = false # Variable used to avoid that cards can send multiple (inifinite) signals
+
+## Deck Creation Variables ##
+
+var inGame = true # Variable used to check if the card is in game or showed to make deck
+
+var current_deck_ref # Variable used to show cards on your deck
+
+var times_in_deck = 0 # Variable used to remeber how many times you used a card
 
 ## Scale Variables ##
 
@@ -72,6 +82,8 @@ var old_position # First position of the card
 var new_position # New position of the card
 var currentLoc : String = "" # Type on the field (attack - defense)
 
+var is_returned_to_hand = true # Used to check if you want to take back your card
+
 ## Attack Variables ##
 
 var isTargetSelected : bool = false
@@ -86,11 +98,15 @@ var actionDuringDefense : String = "" # The action that has been choosen to do w
 var isBlockedByAbility : bool = false # Variable to check if the card defended or uses special
 var hasAbilityBeenUsedThisTurn : bool = false # Variable to check if the card defended or uses special
 
+
 ### MAIN EVENTS ###
 
 
 func _ready(): # Function called only on start
-	GameController = get_tree().get_first_node_in_group("GameController")
+	if inGame:
+		GameController = get_tree().get_first_node_in_group("GameController")
+	else:
+		current_deck_ref = get_tree().get_first_node_in_group("Deck")
 
 
 func _process(delta): # Function called every frame
@@ -114,7 +130,7 @@ func _on_mouse_entered(): # Start override with mouse
 			for objects in sprite.get_children():
 				objects.position.y -= 700
 		
-		if Team == "player":
+		if Team == "player" and inGame:
 			GameController.card_counter += 1
 
 
@@ -130,7 +146,7 @@ func _on_mouse_exited(): # Stop override with mouse
 		for objects in sprite.get_children():
 			objects.position.y += 700
 	
-	if Team == "player":
+	if Team == "player" and inGame:
 		GameController.card_counter -= 1
 
 
@@ -149,6 +165,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 								and (GameController.turnType == "play" or GameController.turnType == "draw") # Right turn type
 								and Location == "hand" # Right card
 								and (Type == currentLoc or Type == "Versatile") # Right type
+								and not is_returned_to_hand # Right position
 								):
 									if (
 										(len(BaseId) == 0 and GameController.positionStatus[currentPos] == null) # free position
@@ -196,6 +213,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 								and (GameController.turnType == "play" or GameController.turnType == "draw") # Right turn type
 								and Location == "hand" # Right card
 								and (Type == currentLoc or Type == "Versatile") # Right type
+								and not is_returned_to_hand # Right position
 								and CheckForFusion() # Fusion cards are on the field
 								):
 									Location = "field"
@@ -234,6 +252,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 							and (Type == "Versatile" or GameController.phase == Type ) # Right phase
 							and (GameController.turnType == "play" or GameController.turnType == "draw") # Right turn type
 							and Location == "hand" # Right card
+							and not is_returned_to_hand # Right position
 							):
 								if isRandom:
 									GameController.lymph -= Cost
@@ -269,7 +288,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 					if Location == "hand" and GameController.card_counter == 1: # Taking the card
 						old_position = global_position
 						isCardSelected = true
-					if Location == "field" and not isTargetSelected and not isSearchingForEnemy and GameController.phase == "Attack" and currentLoc == "Attack" and not isFirstTurn and GameController.stress > GameController.player_current_stress: # Selecting the card to attack
+					if Location == "field" and not isTargetSelected and not isSearchingForEnemy and GameController.phase == "Attack" and currentLoc == "Attack" and turnInGame >= turnBlockedOnPlay and GameController.stress > GameController.player_current_stress: # Selecting the card to attack
 						GameController.started_attack_card = self
 						GameController.type_of_pointer = "Card"
 						isSearchingForEnemy = true
@@ -279,12 +298,12 @@ func _on_input_event(_viewport, event, _shape_idx):
 						add_child(instance)
 						
 						get_tree().call_group("Deactivable", "Enable", false)
-					if Location == "field" and isTargetSelected and not isSearchingForEnemy and GameController.phase == "Attack" and currentLoc == "Attack" and not isFirstTurn: # Deselecting the card to attack
+					if Location == "field" and isTargetSelected and not isSearchingForEnemy and GameController.phase == "Attack" and currentLoc == "Attack" and turnInGame >= turnBlockedOnPlay: # Deselecting the card to attack
 						GameController.CancelAttack(self)
 						isTargetSelected = false
 						
 						GameController.player_current_stress -= 1
-					if Location == "field" and not isChooseDone and not isChoosingToDefend and GameController.phase == "Defense" and currentLoc == "Defense" and not isFirstTurn and not isBlockedByAbility: # Choosing what to do with the card
+					if Location == "field" and not isChooseDone and not isChoosingToDefend and GameController.phase == "Defense" and currentLoc == "Defense" and turnInGame >= turnBlockedOnPlay and not isBlockedByAbility: # Choosing what to do with the card
 						GameController.started_defende_card = self
 						isChoosingToDefend = true
 						
@@ -294,7 +313,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 						
 						get_tree().call_group("Deactivable", "Enable", false)
 						instance.global_position = global_position
-					if Location == "field" and isChooseDone and not isChoosingToDefend and GameController.phase == "Defense" and currentLoc == "Defense" and not isFirstTurn and not isBlockedByAbility: # Cancel choose on the card
+					if Location == "field" and isChooseDone and not isChoosingToDefend and GameController.phase == "Defense" and currentLoc == "Defense" and turnInGame >= turnBlockedOnPlay and not isBlockedByAbility: # Cancel choose on the card
 						GameController.CancelDefense(self)
 						isChooseDone = false
 		if event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT and isMouseOver and isEnabled: # Click over a card with right mouse button
@@ -317,16 +336,18 @@ func _on_input_event(_viewport, event, _shape_idx):
 						GameController.positionStatus[Position] = self
 						
 						alreadyMoved = true
-						isFirstTurn = true
+						turnInGame = turnBlockedOnPlay - 1
 						
 						get_tree().call_group("ClientInstance", "send_move_card", oldPos, Position) # Send old and new position to opponent
 					else:
 						global_position = old_position
 					isCardSelected = false
 				else:
-					if Location == "field" and not isTargetSelected and not isSearchingForEnemy and not isChooseDone and not isChoosingToDefend and not alreadyMoved and GameController.phase == "Attack" and Type == "Versatile" and (GameController.turnType == "play" or GameController.turnType == "draw") and not isFirstTurn: # Move the card if it's versatile
+					if Location == "field" and not isTargetSelected and not isSearchingForEnemy and not isChooseDone and not isChoosingToDefend and not alreadyMoved and GameController.phase == "Attack" and Type == "Versatile" and (GameController.turnType == "play" or GameController.turnType == "draw") and turnInGame >= turnBlockedOnPlay: # Move the card if it's versatile
 						old_position = global_position
 						isCardSelected = true
+		if event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT and isMouseOver and not inGame:
+			SelectCardForDeck()
 
 
 ### COLLISION EVENTS ###
@@ -342,6 +363,10 @@ func _on_area_entered(area):
 		if area.get_groups()[0] == "Pointer": # Getting selected by the pointer
 			if Team == "enemy":
 				GameController.selected_card_to_attack = self
+				
+		if area.get_groups()[0] == "Player Hand": # Returning to hand
+			if Team == "player":
+				is_returned_to_hand = true
 
 
 func _on_area_exited(area):
@@ -352,6 +377,10 @@ func _on_area_exited(area):
 		if area.get_groups()[0] == "Pointer": # Exiting by getting selected by the pointer
 			if Team == "enemy":
 				GameController.selected_card_to_attack = null
+		
+		if area.get_groups()[0] == "Player Hand": # Returning to hand
+			if Team == "player":
+				is_returned_to_hand = false
 
 
 ### OTHER FUNCTIONS ###
@@ -501,7 +530,7 @@ func UpdateStats(who): # Function called when card's stats change
 func onTurnBegin(team): # Function called on turn start (team = player / enemy)
 	if Team == team:
 		if Location == "field":
-			isFirstTurn = false
+			turnInGame += 1
 			isTargetSelected = false #attack
 			isChooseDone = false #defense
 			alreadyMoved = false #movement
@@ -633,4 +662,20 @@ func CreateCard(values, card_id): # Function only when the card is going to be c
 	maxScale = sprite.scale * 2.75
 	
 	UpdateStats(self)
+
+
+### DECK CREATION VARIABLES ###
+
+
+func SelectCardForDeck(): # Function called to add the card to the deck
+	if times_in_deck < card_tier and len(current_deck_ref.decks[current_deck_ref.current_deck_pos]) < 40:
+		current_deck_ref.decks[current_deck_ref.current_deck_pos].append(id)
+		current_deck_ref.UpdateDeck()
+		
+		times_in_deck += 1
+
+
+func RemoveFromDeck(i): # Function called when you want to remove the card from the deck
+	if id == i:
+		times_in_deck -= 1
 

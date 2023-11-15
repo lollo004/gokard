@@ -29,7 +29,7 @@ func Effect(): # Phase / Turn Mutation
 			
 			instance.Position = card.Position # Set in-game position for new card
 			instance.Location = "field" # Set location for new card
-			instance.isFirstTurn = false
+			instance.turnBlockedOnPlay = 0
 			instance.position = card.position # Set real position for new card
 			
 			if card.Team == "player":

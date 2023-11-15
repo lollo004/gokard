@@ -1,10 +1,21 @@
-[gd_scene load_steps=2 format=3 uid="uid://crx0u55uof2gq"]
+[gd_scene load_steps=3 format=3 uid="uid://crx0u55uof2gq"]
 
+[ext_resource type="Script" path="res://Scripts/Lobby/BackButton.gd" id="1_bsowg"]
 [ext_resource type="Texture2D" uid="uid://8ifvl8oyqb3u" path="res://Resources/TurnSelector.png" id="1_wahxv"]
 
 [node name="Shop" type="Node"]
+script = ExtResource("1_bsowg")
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(475, 275)
 scale = Vector2(0.5, 0.588)
 texture = ExtResource("1_wahxv")
+
+[node name="Button" type="Button" parent="."]
+offset_left = 874.0
+offset_top = 22.0
+offset_right = 935.0
+offset_bottom = 83.0
+text = "BACK"
+
+[connection signal="pressed" from="Button" to="." method="_on_back_pressed"]
