@@ -1,16 +1,52 @@
-When the turn starts you can choose between 4 different choices:
- - play a card
- - draw a card
- - add 1 of lymph
- - add 1 of stress
+Lymph Lords: Dominion In The Grove
+
+--------------------------------------------------------------------------------------------------------
+
+GAME PREPARATION:
+
+A deck is made by 40 cards and to play a deck you have to choose a leader:
+Every leader has a gene and it will be the same of the cards in your deck except for the generic ones that can be played with every leader
+
+--------------------------------------------------------------------------------------------------------
+
+TURN PREPARATION:
+
+When the turn starts you will draw a card and then you can choose between 4 additional choices:
+ - Play a card from your hand;
+ - Draw an extra card from your deck;
+ - Add 1 of lymph;
+ - Add 1 of stress;
 
 Then the turn will be divided in two phases, defense and attack.
 
-During the defense phase you can select which of your defensive card will be used to defende, to use their special power or to don't do nothing.
-If you use the special power it will be activated when the attack phase starts and you will not be able to do nothing on your next turn.
+--------------------------------------------------------------------------------------------------------
 
-During the attack phase you can select which of your attacker card will be used to attack the enemy and every attacker will select an enemy that will be attacked when the enemy defense phase ends.
+DEFENSE:
 
-When you choose to defende with a card you will change the target of the enemy attackers and the fastest attacker will fight your fastest defender, but if you don't use enought defender to defend from the attack the attacker will attack their originary target.
- 
-The faster card is the one that have the higher stat of speed and in case of parity it will be considered the lower weight.
+During the defense phase you can select which of your defensive card will be used to do only one of these two action: 
+ - Defende from an enemy attack;
+ - Use the special power;
+
+When you choose to defende with a card you will change the target of the enemy attackers and the fastest attacker will fight your fastest defender, but if you don't use enought defender to defend from the attack the enemy attacker will attack their original target.
+
+If you use the special power it will be activated when the attack phase starts and you will not be able to interact with that card on your next turn.
+The fastest card is the one that have the higher stat of speed and in case of draw it will consider the lowest weight stat between the two cards.
+
+Only if a defender deflect an enemy attack he will be able to hurt the attacker, otherwise the enemy attacker won't receive any damage.
+
+--------------------------------------------------------------------------------------------------------
+
+ATTACK:
+
+During the attack phase you can select which of your attacker cards will be used to attack the enemy, every attacker has to select an enemy that will be attacked when the enemy defense phase ends.
+
+If an attack is deflected by a defender and the defender dies while deflecting the attack the excess damage will hurt the original target of the attacker.
+
+--------------------------------------------------------------------------------------------------------
+
+GAME ENDS:
+
+The game ends only in three different cases:
+ - One of the player quits;
+ - One of the player dies; (leader's health lower than 0)
+ - One of the player is stucked; (can't play card from his hand because it's empty, can't draw from his deck because it's empty, can't increment lymph or stress because they already reached maximum capacity)

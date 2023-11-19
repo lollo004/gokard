@@ -60,7 +60,7 @@ var enemy_deaths = [] # list of all enemy dead card's ids
 ## Attack Variables ##
 
 var started_attack_card # the card that is attacking
-var selected_card_to_attack # the card that is selected by the pointer
+var selected_card_to_attack # the card that is selected by the pointer during attack
 
 var player_attacks = {} # Dict with who is attacing who (attacker_pos : defender_pos)
 var enemy_attacks = {} # Dict with who is attacing who (attacker_pos : defender_pos)
@@ -81,6 +81,7 @@ var raw_enemy_defends = [] # List with who is defending
 ## Magic Variables ##
 
 var started_choosing_magic # the magic that is selecting
+var selected_card_to_target_with_magic # the card that is selected by the pointer during magics
 var type_of_pointer = "" # type of action for the pointer (Card / Magic)
 
 ## Timers ##
@@ -266,11 +267,9 @@ func UpdateHand():
 		i += 1
 		
 		if len(player_hand) % 2 == 0:
-			@warning_ignore("integer_division")
-			item.global_position = Vector2((540 - ((len(player_hand) / 2) * 55)) + (57.65*i), 510)
+			item.global_position = Vector2((470.0 - ((len(player_hand) / 2.0) * 55.0)) + (57.65*i), 510.0)
 		else:
-			@warning_ignore("integer_division")
-			item.global_position = Vector2((520 - (((len(player_hand) - 1) / 2) * 55)) + (57.65*i), 510)
+			item.global_position = Vector2((450.0 - (((len(player_hand) - 1.0) / 2.0) * 55.0)) + (57.65*i), 510.0)
 
 func ShuffleDeck():
 	player_deck.shuffle()
@@ -586,11 +585,9 @@ func UpdateEnemyHand():
 		i += 1
 		
 		if len(enemy_hand) % 2 == 0:
-			@warning_ignore("integer_division")
-			item.global_position = Vector2((540 - ((len(enemy_hand) / 2) * 48)) + (46*i), 20)
+			item.global_position = Vector2((470.0 - ((len(enemy_hand) / 2.0) * 48.0)) + (44.0*i), 20.0)
 		else:
-			@warning_ignore("integer_division")
-			item.global_position = Vector2((520 - (((len(enemy_hand) - 1) / 2) * 48)) + (46*i), 20)
+			item.global_position = Vector2((450.0 - (((len(enemy_hand) - 1.0) / 2.0) * 48.0)) + (44.0*i), 20.0)
 
 # Turn Selection #
 
@@ -621,7 +618,10 @@ func PlayEnemyCard(id, pos, stats):
 	add_child(enemy_cards[pos]) # Create card
 	
 	var positioner_pos = get_tree().get_first_node_in_group("EP"+str(pos)) # Get the right position
-	enemy_cards[pos].global_position = positioner_pos.global_position # Move card to the right position
+	enemy_cards[pos].global_position = positioner_pos.global_position - Vector2(0,20) # Move card to the right position
+	
+	enemy_cards[pos].SetOnMini()
+	enemy_cards[pos].ShiftBack()
 	
 	if stats != []: # Stats different to default
 		enemy_cards[pos].Health = stats[0]
@@ -675,7 +675,7 @@ func PlayEnemyMagic(id):
 	
 	UpdateEnemyHand()
 	
-	instance.get_node("MagicEffect").Effect("enemy") # Call the magic effect ot the played card
+	instance.get_node("MagicEffect").Effect("enemy") # Call the magic effect of the played card
 	get_tree().call_group("OnMagic", "Effect", "enemy") # Call 'OnMagic' functions
 
 	get_tree().call_group("GUI_Manager", "_on_Update")

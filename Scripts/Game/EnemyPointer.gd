@@ -23,7 +23,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 					get_tree().call_group("Card", "isAttackOk", GameController.started_attack_card, false)
 					GameController.AttackResult(false)
 			else: # magic effect system
-				if GameController.selected_card_to_attack: # If there is a target then target it
+				if GameController.selected_card_to_target_with_magic: # If there is a target then target it
 					get_tree().call_group("Card", "isMagicOk", GameController.started_choosing_magic, true)
 				else: # Otherwise deselect the target
 					get_tree().call_group("Card", "isMagicOk", GameController.started_choosing_magic, false)

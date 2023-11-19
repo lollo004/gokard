@@ -9,7 +9,7 @@ var card_recurrences = {} # cards owned by the player
 var total_number_of_cards = 300 # total number of cards in all the game
 
 var deck = [] # cards used during game
-var decks = {} # all your decks
+var decks = {"1":[]} # all your decks
 var player_back = null # back of the card
 var initial_number_player_cards = 0 # number of cards when game start
 
@@ -60,16 +60,26 @@ func _ready():
 	
 	## LOAD DECKS SAVED INTO CASH ##
 	
-	if not FileAccess.file_exists("user://quoreroccia.save"):
+	CreateCurrentDeck()
+	
+	print("Game Ready!") # control account and related stats
+
+
+func CreateCurrentDeck():
+	if not FileAccess.file_exists("user://leaflords.save"):
 		print("No saves to load!")
 	else:
-		var save_game = FileAccess.open("user://quoreroccia.save", FileAccess.READ)
+		print("Decks loaded!")
+		
+		deck.clear()
+		
+		var save_game = FileAccess.open("user://leaflords.save", FileAccess.READ)
 		var value = JSON.parse_string(save_game.get_line())
 		
 		for j in value: # save decks from cash
 			if j != "0":
 				decks[j] = value[j]
-		
+	
 		for i in decks[value["0"]]: # current deck
 			var card_info = CardsList.getCardInfo(int(i))
 			var scene
@@ -84,6 +94,4 @@ func _ready():
 			instance.Team = "player"
 			
 			deck.append(instance)
-	
-	print("Game Ready!") # control account and related stats
 

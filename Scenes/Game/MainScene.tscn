@@ -1,13 +1,15 @@
-[gd_scene load_steps=7 format=3 uid="uid://cn7qq6h6vk6m1"]
+[gd_scene load_steps=9 format=3 uid="uid://cn7qq6h6vk6m1"]
 
 [ext_resource type="PackedScene" uid="uid://haworbi8gah1" path="res://Scenes/Game/Positioner.tscn" id="1_kj4pf"]
 [ext_resource type="Script" path="res://Scripts/Game/GUIManagement.gd" id="2_1wmxs"]
 [ext_resource type="Script" path="res://Scripts/Game/GameController.gd" id="3_ovi4y"]
+[ext_resource type="Texture2D" uid="uid://fvqxycbydvr2" path="res://Resources/Background.png" id="4_7teis"]
 [ext_resource type="PackedScene" uid="uid://c3ccrckpghnpv" path="res://Scenes/Game/TurnSelecter.tscn" id="4_fkvir"]
+[ext_resource type="Texture2D" uid="uid://bml2v6ykeg5i2" path="res://Resources/BlackScreen.png" id="5_8ofge"]
 [ext_resource type="PackedScene" uid="uid://bc04oldvebs2w" path="res://Scenes/Game/Leader.tscn" id="5_cjfwb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fyicb"]
-size = Vector2(807, 58)
+size = Vector2(958.5, 58)
 
 [node name="Main Scene" type="Node"]
 
@@ -36,10 +38,15 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Turn Button" type="Button" parent="GUI/Management" groups=["Deactivable", "Turn"]]
-offset_left = 820.0
-offset_top = 255.0
-offset_right = 948.0
-offset_bottom = 295.0
+anchors_preset = -1
+anchor_left = 0.921
+anchor_top = 0.574
+anchor_right = 0.921
+anchor_bottom = 0.574
+offset_left = -64.16
+offset_top = -19.96
+offset_right = 63.84
+offset_bottom = 20.04
 text = "Opponent Turn"
 metadata/_edit_use_anchors_ = true
 
@@ -58,19 +65,31 @@ position = Vector2(500, 280)
 [node name="Player Hand Trigger" type="Area2D" parent="GUI/Management" groups=["Player Hand"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GUI/Management/Player Hand Trigger"]
-position = Vector2(555, 530)
+position = Vector2(480, 530)
 shape = SubResource("RectangleShape2D_fyicb")
+
+[node name="Background" type="Sprite2D" parent="GUI/Management"]
+z_index = -5
+position = Vector2(508, 271)
+scale = Vector2(1.1657, 1.0253)
+texture = ExtResource("4_7teis")
+
+[node name="Black Screen" type="Sprite2D" parent="GUI/Management"]
+z_index = -10
+position = Vector2(508, 271)
+scale = Vector2(1.35885, 1.05125)
+texture = ExtResource("5_8ofge")
 
 [node name="Player" type="Node" parent="GUI"]
 
 [node name="Player" parent="GUI/Player" groups=["PLAYER"] instance=ExtResource("5_cjfwb")]
-position = Vector2(75, 490)
+position = Vector2(76, 447)
 id = 1
 
 [node name="Player Name" type="Label" parent="GUI/Player" groups=["Player_Name"]]
-offset_top = 385.0
+offset_top = 352.0
 offset_right = 150.0
-offset_bottom = 440.0
+offset_bottom = 407.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -95,40 +114,40 @@ metadata/_edit_use_anchors_ = true
 [node name="Card Position" type="Node" parent="GUI/Player"]
 
 [node name="Player Positioner 1" parent="GUI/Player/Card Position" groups=["1", "Attack", "PP1", "Player"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(300, 330)
+z_index = -3
+position = Vector2(149, 343)
 
 [node name="Player Positioner 2" parent="GUI/Player/Card Position" groups=["2", "Defense", "PP2", "Player"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(365, 430)
+z_index = -3
+position = Vector2(230, 396)
 
 [node name="Player Positioner 3" parent="GUI/Player/Card Position" groups=["3", "Attack", "PP3", "Player"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(430, 330)
+z_index = -3
+position = Vector2(323, 363)
 
 [node name="Player Positioner 4" parent="GUI/Player/Card Position" groups=["4", "Defense", "PP4", "Player"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(495, 430)
+z_index = -3
+position = Vector2(395, 413)
 
 [node name="Player Positioner 5" parent="GUI/Player/Card Position" groups=["5", "Attack", "PP5", "Player"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(560, 330)
+z_index = -3
+position = Vector2(469, 365)
 
 [node name="Player Positioner 6" parent="GUI/Player/Card Position" groups=["6", "Defense", "PP6", "Player"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(625, 430)
+z_index = -3
+position = Vector2(558, 415)
 
 [node name="Player Positioner 7" parent="GUI/Player/Card Position" groups=["7", "Attack", "PP7", "Player"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(690, 330)
+z_index = -3
+position = Vector2(631, 376)
 
 [node name="Player Positioner 8" parent="GUI/Player/Card Position" groups=["8", "Defense", "PP8", "Player"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(755, 430)
+z_index = -3
+position = Vector2(727, 427)
 
 [node name="Player Positioner 9" parent="GUI/Player/Card Position" groups=["9", "Attack", "PP9", "Player"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(820, 330)
+z_index = -3
+position = Vector2(804, 388)
 
 [node name="Enemy" type="Node" parent="GUI"]
 
@@ -165,39 +184,39 @@ metadata/_edit_use_anchors_ = true
 [node name="Card Position" type="Node" parent="GUI/Enemy"]
 
 [node name="Enemy Positioner 1" parent="GUI/Enemy/Card Position" groups=["1", "Attack", "EP1", "Enemy"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(300, 220)
+z_index = -3
+position = Vector2(159, 232)
 
 [node name="Enemy Positioner 2" parent="GUI/Enemy/Card Position" groups=["2", "Defense", "EP2", "Enemy"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(365, 120)
+z_index = -3
+position = Vector2(253, 194)
 
 [node name="Enemy Positioner 3" parent="GUI/Enemy/Card Position" groups=["3", "Attack", "EP3", "Enemy"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(430, 220)
+z_index = -3
+position = Vector2(320, 232)
 
 [node name="Enemy Positioner 4" parent="GUI/Enemy/Card Position" groups=["4", "Defense", "EP4", "Enemy"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(495, 120)
+z_index = -3
+position = Vector2(408, 186)
 
 [node name="Enemy Positioner 5" parent="GUI/Enemy/Card Position" groups=["5", "Attack", "EP5", "Enemy"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(560, 220)
+z_index = -3
+position = Vector2(469, 224)
 
 [node name="Enemy Positioner 6" parent="GUI/Enemy/Card Position" groups=["6", "Defense", "EP6", "Enemy"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(625, 120)
+z_index = -3
+position = Vector2(566, 177)
 
 [node name="Enemy Positioner 7" parent="GUI/Enemy/Card Position" groups=["7", "Attack", "EP7", "Enemy"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(690, 220)
+z_index = -3
+position = Vector2(647, 232)
 
 [node name="Enemy Positioner 8" parent="GUI/Enemy/Card Position" groups=["8", "Defense", "EP8", "Enemy"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(755, 120)
+z_index = -3
+position = Vector2(736, 180)
 
 [node name="Enemy Positioner 9" parent="GUI/Enemy/Card Position" groups=["9", "Attack", "EP9", "Enemy"] instance=ExtResource("1_kj4pf")]
-z_index = -10
-position = Vector2(820, 220)
+z_index = -3
+position = Vector2(812, 226)
 
 [connection signal="pressed" from="GUI/Management/Turn Button" to="GUI/Management" method="_on_turn_button_pressed"]

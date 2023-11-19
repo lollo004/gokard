@@ -3,4 +3,6 @@ Animations and feedbacks
 (131) add hyena !!
 
 
-check: if the ui card is on the scroll collider otherwise disable it ...
+fix: when added a new card on deck don't move cards up
+
+send stats with cards

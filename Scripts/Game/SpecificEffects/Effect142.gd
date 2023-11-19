@@ -30,7 +30,11 @@ func Effect(team): # Summon a random dead ally dwarf
 			for a in GameController.player_deaths: #divide deaths by type
 				var scene = load("res://Scenes/Game/Cards/Card.tscn") # Load card resources
 				var instance = scene.instantiate() # Instantiate card resources
+				
 				instance.CreateCard(CardsList.getCardInfo(int(a)), int(a)) # Getting starter values
+				
+				instance.ShiftBack()
+				instance.SetOnMini()
 				
 				if instance.Type == "Attack":
 					death_attackers.append(instance)

@@ -1,21 +1,22 @@
 [gd_scene load_steps=3 format=3 uid="uid://dvhnqxoa21jvg"]
 
-[ext_resource type="Texture2D" uid="uid://bxfkla8c0yfuh" path="res://Resources/BackCard.png" id="1_4g83e"]
+[ext_resource type="Texture2D" uid="uid://q72wnm78epgo" path="res://Resources/BackCard.png" id="1_4g83e"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_ccvkq"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("1_4g83e")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sksay"]
+size = Vector2(600, 1020)
 
 [node name="BackCard" type="Area2D"]
-scale = Vector2(0.06, 0.06)
+scale = Vector2(0.07, 0.07)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.5, 0.5)
-sprite_frames = SubResource("SpriteFrames_ccvkq")
+[node name="Collider" type="CollisionShape2D" parent="." groups=["Hand Collider"]]
+z_index = -7
+position = Vector2(-2.29478e-05, 2.81632e-05)
+scale = Vector2(0.999999, 0.999999)
+shape = SubResource("RectangleShape2D_sksay")
+
+[node name="Sprite" type="Sprite2D" parent="." groups=["Border", "Total"]]
+z_index = -3
+z_as_relative = false
+position = Vector2(1.52588e-05, 4.57764e-05)
+scale = Vector2(1.01695, 1.01695)
+texture = ExtResource("1_4g83e")

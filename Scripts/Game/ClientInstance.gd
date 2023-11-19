@@ -18,7 +18,6 @@ var GUI_Manager # GUI manager reference
 
 func _ready():
 	socket.connect_to_url("ws://192.168.1.81:8765")
-	#socket.connect_to_url("ws://127.0.0.1:8765")
 
 
 func _process(_delta):
@@ -202,10 +201,10 @@ func handle_new_message(message): # Check message type and choose what to do
 				c.BoostByPos(c.Position, "health", -c.Health, "player") # Kill
 			return
 		if message["action"] == "139": # Opponent tell you who he boosted
-			if message["card"] == "player":
-				message["card"].BoostByPos(message["card"].Position, "health", 3, "enemy") # Boost health
+			if message["team"] == "player":
+				get_tree().call_group("Card", "BoostByPos", message["pos"], "health", 3, "enemy") # Boost health
 			else:
-				message["card"].BoostByPos(message["card"].Position, "health", 3, "player") # Boost health
+				get_tree().call_group("Card", "BoostByPos", message["pos"], "health", 3, "player") # Boost health
 		if message["action"] == "140": # Opponent tell you that he increased the stress
 			if GameController.stress < GameController.max_stress:
 				GameController.stress += 1
@@ -501,7 +500,7 @@ func send_effect_139(card, team): # Function called when you play card with id 1
 		"type": "game_effect",
 		"action": "139",
 		"id": client_id,
-		"card": card,
+		"pos": card,
 		"team": team
 	}
 	

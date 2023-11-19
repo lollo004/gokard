@@ -1,188 +1,431 @@
-[gd_scene load_steps=5 format=3 uid="uid://bp6kelnxloeu"]
+[gd_scene load_steps=8 format=3 uid="uid://bp6kelnxloeu"]
 
 [ext_resource type="Script" path="res://Scripts/Game/Card.gd" id="1_oo0sj"]
-[ext_resource type="Texture2D" uid="uid://rf6sp07qeavm" path="res://Resources/Card.png" id="2_gkp3r"]
-[ext_resource type="Texture2D" uid="uid://05g30jsudqqg" path="res://icon.svg" id="3_ydow4"]
+[ext_resource type="Texture2D" uid="uid://de4ys11e1mlox" path="res://Resources/Card.png" id="2_gkp3r"]
+[ext_resource type="Texture2D" uid="uid://brpi8icm35mnd" path="res://Resources/Images/Card0.png" id="3_t58ka"]
+[ext_resource type="FontFile" uid="uid://b4cn53nlm347x" path="res://MoriaCitadel.TTF" id="4_451og"]
+[ext_resource type="Texture2D" uid="uid://c8gg00c35k182" path="res://Resources/GameCard_Up.png" id="5_o87nf"]
+[ext_resource type="Texture2D" uid="uid://b8be2r4qvylo3" path="res://Resources/GameCard_Down.png" id="6_8kj53"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yvtci"]
-size = Vector2(769, 1024)
+size = Vector2(600, 820.001)
 
 [node name="Card" type="Area2D" groups=["Card", "Deactivable"]]
-top_level = true
 visibility_layer = 3
-z_index = 1
+z_as_relative = false
 scale = Vector2(0.1, 0.1)
 script = ExtResource("1_oo0sj")
 metadata/_edit_vertical_guides_ = [-222.0]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1.5, 0)
+z_index = -7
+position = Vector2(-2.29478e-05, 2.38419e-05)
+scale = Vector2(0.999999, 0.999999)
 shape = SubResource("RectangleShape2D_yvtci")
 
-[node name="Border" type="Sprite2D" parent="." groups=["Border"]]
-visibility_layer = 3
+[node name="Border Total" type="Sprite2D" parent="." groups=["Border", "Total"]]
+z_index = -3
+z_as_relative = false
 position = Vector2(1.24176e-07, 0)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_gkp3r")
 
-[node name="Sprite" type="Sprite2D" parent="Border" groups=["Sprite"]]
+[node name="Sprite" type="Sprite2D" parent="Border Total" groups=["Sprite"]]
 visibility_layer = 3
-z_index = -1
-position = Vector2(0, -400)
-scale = Vector2(1.1, 1.1)
-texture = ExtResource("3_ydow4")
+z_index = -4
+z_as_relative = false
+position = Vector2(0, -200)
+scale = Vector2(1.21953, 1.21953)
+texture = ExtResource("3_t58ka")
 
-[node name="Attack" type="Label" parent="Border" groups=["Attack"]]
-offset_left = -620.0
-offset_top = 720.0
-offset_right = -420.0
-offset_bottom = 920.0
+[node name="Attack" type="Label" parent="Border Total" groups=["Attack"]]
+z_index = -2
+z_as_relative = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1191.0
+offset_top = -660.0
+offset_right = -991.0
+offset_bottom = -460.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("4_451og")
 theme_override_font_sizes/font_size = 100
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Health" type="Label" parent="Border" groups=["Health"]]
-offset_left = 420.0
-offset_top = 720.0
-offset_right = 620.0
-offset_bottom = 920.0
+[node name="Health" type="Label" parent="Border Total" groups=["Health"]]
+z_index = -2
+z_as_relative = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -216.0
+offset_top = -660.0
+offset_right = -16.0
+offset_bottom = -460.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("4_451og")
 theme_override_font_sizes/font_size = 100
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Speed" type="Label" parent="Border" groups=["Speed"]]
-offset_left = -340.0
-offset_top = 570.0
-offset_right = -240.0
-offset_bottom = 670.0
+[node name="Speed" type="Label" parent="Border Total" groups=["Speed"]]
+z_index = -2
+z_as_relative = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1146.0
+offset_top = -215.0
+offset_right = -1046.0
+offset_bottom = -115.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("4_451og")
 theme_override_font_sizes/font_size = 70
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Weight" type="Label" parent="Border" groups=["Weight"]]
-offset_left = 240.0
-offset_top = 570.0
-offset_right = 340.0
-offset_bottom = 670.0
+[node name="Weight" type="Label" parent="Border Total" groups=["Weight"]]
+z_index = -2
+z_as_relative = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -166.0
+offset_top = -215.0
+offset_right = -66.0
+offset_bottom = -115.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("4_451og")
 theme_override_font_sizes/font_size = 70
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Cost" type="Label" parent="Border" groups=["Cost"]]
-offset_left = -70.0
-offset_top = -940.0
-offset_right = 80.0
-offset_bottom = -790.0
+[node name="Cost" type="Label" parent="Border Total" groups=["Cost"]]
+z_index = -2
+z_as_relative = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1136.0
+offset_top = -1980.0
+offset_right = -986.0
+offset_bottom = -1830.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("4_451og")
 theme_override_font_sizes/font_size = 85
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Name" type="Label" parent="Border" groups=["Name"]]
-offset_left = -220.0
-offset_top = -70.0
-offset_right = 180.0
-offset_bottom = 80.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+[node name="Name" type="Label" parent="Border Total" groups=["Name"]]
+z_index = -2
+z_as_relative = false
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.073
+anchor_right = 0.5
+anchor_bottom = 0.073
+offset_left = -966.0
+offset_top = -1066.92
+offset_right = -246.0
+offset_bottom = -973.92
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 50
+theme_override_fonts/font = ExtResource("4_451og")
+theme_override_font_sizes/font_size = 45
 text = "Name"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Gene" type="Label" parent="Border" groups=["Gene"]]
-offset_left = -200.0
-offset_top = 780.0
-offset_right = 200.0
-offset_bottom = 930.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+[node name="Gene" type="Label" parent="Border Total" groups=["Gene"]]
+z_index = -2
+z_as_relative = false
+anchors_preset = -1
+anchor_left = 0.294
+anchor_top = 0.73
+anchor_right = 0.294
+anchor_bottom = 0.73
+offset_left = -756.328
+offset_top = -1049.2
+offset_right = -456.328
+offset_bottom = -989.2
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 75
+theme_override_fonts/font = ExtResource("4_451og")
+theme_override_font_sizes/font_size = 35
 text = "Gene"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Deviation" type="Label" parent="Border" groups=["Deviation"]]
-offset_left = -150.0
-offset_top = 700.0
-offset_right = 150.0
-offset_bottom = 800.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+[node name="Deviation" type="Label" parent="Border Total" groups=["Deviation"]]
+z_index = -2
+z_as_relative = false
+anchors_preset = -1
+anchor_left = 0.706
+anchor_top = 0.73
+anchor_right = 0.706
+anchor_bottom = 0.73
+offset_left = -755.672
+offset_top = -1055.2
+offset_right = -455.672
+offset_bottom = -983.2
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 60
+theme_override_fonts/font = ExtResource("4_451og")
+theme_override_font_sizes/font_size = 35
 text = "Deviation"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Effect" type="Label" parent="Border" groups=["Effect"]]
-offset_left = -600.0
-offset_top = 120.0
-offset_right = 600.0
-offset_bottom = 520.0
+[node name="Effect" type="Label" parent="Border Total" groups=["Effect"]]
+z_index = -2
+z_as_relative = false
+anchors_preset = -1
+anchor_left = 0.450495
+anchor_top = 0.833196
+anchor_right = 0.533003
+anchor_bottom = 0.843
+offset_left = -986.0
+offset_top = -1159.72
+offset_right = -206.0
+offset_bottom = -879.72
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 65
+theme_override_fonts/font = ExtResource("4_451og")
+theme_override_font_sizes/font_size = 40
 text = "Effect..."
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Type" type="Label" parent="Border" groups=["Type"]]
-offset_left = 400.0
-offset_top = -1000.0
-offset_right = 700.0
-offset_bottom = -900.0
+[node name="Type" type="Label" parent="Border Total" groups=["Type"]]
+z_index = -2
+z_as_relative = false
+anchors_preset = -1
+anchor_left = 0.88
+anchor_top = 0.064
+anchor_right = 0.88
+anchor_bottom = 0.064
+offset_left = -666.56
+offset_top = -1070.56
+offset_right = -546.56
+offset_bottom = -970.56
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 50
+theme_override_fonts/font = ExtResource("4_451og")
+theme_override_font_sizes/font_size = 30
 text = "Type"
-horizontal_alignment = 2
+horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Base" type="Label" parent="Border" groups=["Base"]]
-offset_left = -680.0
-offset_top = -1000.0
-offset_right = -380.0
-offset_bottom = -900.0
+[node name="Base" type="Label" parent="Border Total" groups=["Base"]]
+z_index = -2
+z_as_relative = false
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.937
+anchor_right = 0.5
+anchor_bottom = 0.937
+offset_left = -866.0
+offset_top = -1049.48
+offset_right = -346.0
+offset_bottom = -989.48
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.286275, 0.152941, 0.0509804, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_451og")
+theme_override_font_sizes/font_size = 35
+text = "Base"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Border Up" type="Sprite2D" parent="." groups=["Border", "Up"]]
+visible = false
+z_index = -3
+z_as_relative = false
+scale = Vector2(0.795213, 0.795213)
+texture = ExtResource("5_o87nf")
+
+[node name="Sprite" type="Sprite2D" parent="Border Up" groups=["Sprite"]]
+visibility_layer = 3
+z_index = -4
+z_as_relative = false
+position = Vector2(0, -12.5753)
+scale = Vector2(0.735356, 0.75182)
+texture = ExtResource("3_t58ka")
+
+[node name="Border Down" type="Sprite2D" parent="Border Up" groups=["Border", "Down"]]
+visibility_layer = 3
+z_index = -7
+z_as_relative = false
+texture = ExtResource("6_8kj53")
+
+[node name="Attack" type="Label" parent="Border Up" groups=["Attack"]]
+z_index = -2
+z_as_relative = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -753.258
+offset_top = -1040.16
+offset_right = -553.258
+offset_bottom = -840.161
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("4_451og")
+theme_override_font_sizes/font_size = 65
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Health" type="Label" parent="Border Up" groups=["Health"]]
+z_index = -2
+z_as_relative = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -187.371
+offset_top = -1040.16
+offset_right = 12.6289
+offset_bottom = -840.161
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("4_451og")
+theme_override_font_sizes/font_size = 65
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Speed" type="Label" parent="Border Up" groups=["Speed"]]
+z_index = -6
+z_as_relative = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -728.107
+offset_top = -147.318
+offset_right = -628.107
+offset_bottom = -47.3176
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("4_451og")
 theme_override_font_sizes/font_size = 50
-text = "Base"
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Weight" type="Label" parent="Border Up" groups=["Weight"]]
+z_index = -6
+z_as_relative = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -124.495
+offset_top = -147.318
+offset_right = -24.4951
+offset_bottom = -47.3176
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("4_451og")
+theme_override_font_sizes/font_size = 50
+text = "0"
+horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 

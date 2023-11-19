@@ -1,42 +1,60 @@
-[gd_scene load_steps=5 format=3 uid="uid://bcmlon3r0nwd2"]
+[gd_scene load_steps=6 format=3 uid="uid://bcmlon3r0nwd2"]
 
 [ext_resource type="Script" path="res://Scripts/Game/Card.gd" id="1_ynf8k"]
-[ext_resource type="Texture2D" uid="uid://rf6sp07qeavm" path="res://Resources/Card.png" id="2_bjo51"]
-[ext_resource type="Texture2D" uid="uid://05g30jsudqqg" path="res://icon.svg" id="3_n4gdc"]
+[ext_resource type="Texture2D" uid="uid://de4ys11e1mlox" path="res://Resources/Card.png" id="2_bjo51"]
+[ext_resource type="Texture2D" uid="uid://brpi8icm35mnd" path="res://Resources/Images/Card0.png" id="3_lrrds"]
+[ext_resource type="FontFile" uid="uid://b4cn53nlm347x" path="res://MoriaCitadel.TTF" id="4_cnn61"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qakxp"]
-size = Vector2(769, 1024)
+size = Vector2(600, 1000)
 
 [node name="Area2D" type="Area2D" groups=["Card", "Deactivable"]]
+z_as_relative = false
+position = Vector2(-1, 2)
 scale = Vector2(0.1, 0.1)
 script = ExtResource("1_ynf8k")
 isMagic = true
+metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1.5, 0)
+z_index = -7
+position = Vector2(1.43051e-05, 1.49012e-05)
 shape = SubResource("RectangleShape2D_qakxp")
 
-[node name="Border" type="Sprite2D" parent="." groups=["Border"]]
-visibility_layer = 3
+[node name="Border" type="Sprite2D" parent="." groups=["Border", "Total"]]
+z_index = -3
+z_as_relative = false
 position = Vector2(1.24176e-07, 0)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_bjo51")
 
 [node name="Sprite" type="Sprite2D" parent="Border" groups=["Sprite"]]
 visibility_layer = 3
-z_index = -1
-position = Vector2(0, -400)
-scale = Vector2(1.1, 1.1)
-texture = ExtResource("3_n4gdc")
+z_index = -4
+z_as_relative = false
+position = Vector2(0, -200)
+scale = Vector2(1.22, 1.22)
+texture = ExtResource("3_lrrds")
 
 [node name="Cost" type="Label" parent="Border" groups=["Cost"]]
-offset_left = -70.0
-offset_top = -940.0
-offset_right = 80.0
-offset_bottom = -790.0
+z_index = -2
+z_as_relative = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1136.0
+offset_top = -1980.0
+offset_right = -986.0
+offset_bottom = -1830.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("4_cnn61")
 theme_override_font_sizes/font_size = 85
 text = "0"
 horizontal_alignment = 1
@@ -44,42 +62,96 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Name" type="Label" parent="Border" groups=["Name"]]
-offset_left = -220.0
-offset_top = -70.0
-offset_right = 180.0
-offset_bottom = 80.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+z_index = -2
+z_as_relative = false
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.067
+anchor_right = 0.5
+anchor_bottom = 0.067
+offset_left = -966.0
+offset_top = -1076.68
+offset_right = -246.0
+offset_bottom = -961.68
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 50
+theme_override_fonts/font = ExtResource("4_cnn61")
+theme_override_font_sizes/font_size = 45
 text = "Name"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Gene" type="Label" parent="Border" groups=["Gene"]]
-offset_left = -200.0
-offset_top = 780.0
-offset_right = 200.0
-offset_bottom = 930.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+z_index = -2
+z_as_relative = false
+anchors_preset = -1
+anchor_left = 0.294
+anchor_top = 0.73
+anchor_right = 0.294
+anchor_bottom = 0.73
+offset_left = -746.328
+offset_top = -1049.2
+offset_right = -466.328
+offset_bottom = -989.2
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 75
+theme_override_fonts/font = ExtResource("4_cnn61")
+theme_override_font_sizes/font_size = 35
 text = "Gene"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
+[node name="Deviation" type="Label" parent="Border" groups=["Deviation"]]
+z_index = -2
+z_as_relative = false
+anchors_preset = -1
+anchor_left = 0.706
+anchor_top = 0.73
+anchor_right = 0.706
+anchor_bottom = 0.73
+offset_left = -755.672
+offset_top = -1049.2
+offset_right = -455.672
+offset_bottom = -989.2
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_cnn61")
+theme_override_font_sizes/font_size = 35
+text = "Deviation"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
 [node name="Effect" type="Label" parent="Border" groups=["Effect"]]
-offset_left = -600.0
-offset_top = 120.0
-offset_right = 600.0
-offset_bottom = 520.0
+z_index = -2
+z_as_relative = false
+anchors_preset = -1
+anchor_left = 0.450495
+anchor_top = 0.828196
+anchor_right = 0.533003
+anchor_bottom = 0.847804
+offset_left = -986.0
+offset_top = -1149.52
+offset_right = -206.0
+offset_bottom = -889.52
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 65
+theme_override_fonts/font = ExtResource("4_cnn61")
+theme_override_font_sizes/font_size = 40
 text = "Effect..."
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -87,16 +159,50 @@ autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="Type" type="Label" parent="Border" groups=["Type"]]
-offset_left = 400.0
-offset_top = -1000.0
-offset_right = 700.0
-offset_bottom = -900.0
+z_index = -2
+z_as_relative = false
+anchors_preset = -1
+anchor_left = 0.885
+anchor_top = 0.064
+anchor_right = 0.885
+anchor_bottom = 0.064
+offset_left = -659.62
+offset_top = -1070.56
+offset_right = -552.62
+offset_bottom = -970.56
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 50
+theme_override_fonts/font = ExtResource("4_cnn61")
+theme_override_font_sizes/font_size = 30
 text = "Type"
-horizontal_alignment = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Base" type="Label" parent="Border" groups=["Base"]]
+z_index = -2
+z_as_relative = false
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.934
+anchor_right = 0.5
+anchor_bottom = 0.934
+offset_left = -866.0
+offset_top = -1055.36
+offset_right = -346.0
+offset_bottom = -983.36
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.341176, 0.184314, 0.0666667, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_cnn61")
+theme_override_font_sizes/font_size = 35
+text = "Base"
+horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 

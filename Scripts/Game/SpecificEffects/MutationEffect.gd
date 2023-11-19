@@ -24,7 +24,6 @@ func Effect(): # Phase / Turn Mutation
 		if current_phase >= max_phase:
 			var scene = load("res://Scenes/Game/Cards/Card.tscn") # Load card resources
 			var instance = scene.instantiate() # Instantiate card resources
-			
 			instance.CreateCard(CardsList.getCardInfo(card.mutation_id), card.mutation_id)
 			
 			instance.Position = card.Position # Set in-game position for new card
@@ -41,6 +40,10 @@ func Effect(): # Phase / Turn Mutation
 				GameController.enemy_field_cards.erase(card)
 				GameController.enemy_field_cards.append(instance)
 			
+			instance.ShiftBack()
+			instance.SetOnMini()
+			
 			GameController.add_child(instance) # Create card
 			
 			card.queue_free() #Delete the old one
+

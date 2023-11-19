@@ -55,6 +55,9 @@ var GameController # Game controller reference
 @export var phase_or_turn_mutation = 0 # If he has a mutation here's the number of phases/turns
 @export var mutation_id = 0 # If he has a mutations here's the new card's id
 
+var UI_Objects_OnTop = [] # List of all UI objects of the card (setted by the engine)
+var UI_Objects_OnDown = [] # List of all UI objects of the card (setted by the engine)
+
 var isDead = false # Variable used to avoid that cards can send multiple (inifinite) signals
 
 ## Deck Creation Variables ##
@@ -69,7 +72,7 @@ var times_in_deck = {} # Variable used to remeber how many times you used a card
 
 var minScale
 var maxScale
-var sprite
+var sprite = [null,null,null,null,null] # The three sprites to manage in game and in hand card's forms
 
 ## Movement and Selection Variables ##
 
@@ -77,12 +80,13 @@ var isMouseOver : bool = false
 var isCardSelected : bool = false
 var alreadyMoved : bool = false
 
-var currentPos : String = "0" # Current position on the field (1-9 => field | 10 => Leader | 0 => Invalid)
+var currentPos = [] # Current position on the field (1-9 => field | 10 => Leader | 0 => Invalid)
 var old_position # First position of the card
-var new_position # New position of the card
 var currentLoc : String = "" # Type on the field (attack - defense)
 
 var is_returned_to_hand = true # Used to check if you want to take back your card
+
+var glowing_positioner = [] # Variable used to ref to the current positioner
 
 ## Attack Variables ##
 
@@ -112,23 +116,34 @@ func _ready(): # Function called only on start
 func _process(delta): # Function called every frame
 	if isCardSelected and isEnabled: # Drag card with mouse
 		global_position = lerp(global_position, get_global_mouse_position(), 25 * delta)
-		sprite.scale = minScale
+		sprite[0].scale = minScale
 
 
 ### MOUSE EVENTS ###
 
 
 func _on_mouse_entered(): # Start override with mouse
-	sprite.scale = maxScale
+	if Location == "field":
+		SetOnMax()
+		
+	sprite[0].scale = maxScale
 	isMouseOver = true
-	
-	if inGame:
-		sprite.z_index = 1
-		z_index = 2
+	print(Location)
+	if Location == "hand" or Location == "lobby":
+		sprite[0].z_index = 4 # border
+		sprite[3].z_index = 3 # image of the card
+	else:
+		sprite[1].z_index = 4 # top part of the border
+		sprite[2].z_index = 0 # bottom part of the border
+		sprite[4].z_index = 3 # image of the card
+		for u in UI_Objects_OnDown:
+			u.z_index = 1 # bottom parts of the card
+	for u in UI_Objects_OnTop:
+		u.z_index = 5 # upper parts of the card
 	
 	if Location == "hand":
-		sprite.offset.y -= 700
-		for objects in sprite.get_children():
+		sprite[0].offset.y -= 700
+		for objects in sprite[0].get_children():
 			objects.position.y -= 700
 	
 	if Team == "player" and inGame:
@@ -136,16 +151,27 @@ func _on_mouse_entered(): # Start override with mouse
 
 
 func _on_mouse_exited(): # Stop override with mouse
-	sprite.scale = minScale
+	if Location == "field":
+		SetOnMini()
+	
+	sprite[0].scale = minScale
 	isMouseOver = false
 	
-	if inGame:
-		sprite.z_index = 0
-		z_index = 1
+	if Location == "hand" or Location == "lobby":
+		sprite[0].z_index = -3 # border
+		sprite[3].z_index = -4 # image of the card
+	else:
+		sprite[1].z_index = -3 # top part of the border
+		sprite[2].z_index = -7 # bottom part of the border
+		sprite[4].z_index = -4 # image of the card
+		for u in UI_Objects_OnDown:
+			u.z_index = -6 # bottom parts of the card
+	for u in UI_Objects_OnTop:
+		u.z_index = -2 # upper parts of the card
 	
 	if Location == "hand":
-		sprite.offset.y += 700
-		for objects in sprite.get_children():
+		sprite[0].offset.y += 700
+		for objects in sprite[0].get_children():
 			objects.position.y += 700
 	
 	if Team == "player" and inGame:
@@ -155,12 +181,12 @@ func _on_mouse_exited(): # Stop override with mouse
 func _on_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT and isMouseOver and isEnabled: # Click over a card with left mouse button
-			if Team == "player" and GameController.turn == "player":
-				if isCardSelected: # Dropping the card
+			if Team == "player" and GameController.turn == "player" and GameController.card_counter == 1:
+				if isCardSelected: # Dropping the cardwd
 					if not isMagic: # It's not a magic
 						if not fusion:
 							if (
-								currentPos != "0" # Right position
+								len(currentPos) > 0 # Right position
 								and GameController.lymph >= Cost # Enough lymph 
 								and GameController.turn == "player" # Right turn
 								#and GameController.phase == "attack" # Right phase
@@ -170,18 +196,18 @@ func _on_input_event(_viewport, event, _shape_idx):
 								and not is_returned_to_hand # Right position
 								):
 									if (
-										(len(BaseId) == 0 and GameController.positionStatus[currentPos] == null) # free position
+										(len(BaseId) == 0 and GameController.positionStatus[currentPos[-1]] == null) # free position
 										or 
-										(len(BaseId) > 0 and GameController.positionStatus[currentPos] != null and GameController.positionStatus[currentPos].id in BaseId) # his base his on this position
+										(len(BaseId) > 0 and GameController.positionStatus[currentPos[-1]] != null and GameController.positionStatus[currentPos[-1]].id in BaseId) # his base his on this position
 									):
-										if len(BaseId) > 0 and GameController.positionStatus[currentPos].id in BaseId: # delete the old one
-											GameController.player_field_cards.erase(GameController.positionStatus[currentPos])
-											GameController.positionStatus[currentPos].queue_free()
+										if len(BaseId) > 0 and GameController.positionStatus[currentPos[-1]].id in BaseId: # delete the old one
+											GameController.player_field_cards.erase(GameController.positionStatus[currentPos[-1]])
+											GameController.positionStatus[currentPos[-1]].queue_free()
 											GameController.card_counter = 1 # remove the deleted card
 										
 										Location = "field"
-										global_position = new_position
-										Position = currentPos
+										global_position = glowing_positioner[-1].global_position - Vector2(0,20)
+										Position = currentPos[-1]
 										GameController.positionStatus[Position] = self
 										
 										GameController.lymph -= Cost
@@ -189,9 +215,14 @@ func _on_input_event(_viewport, event, _shape_idx):
 										GameController.player_hand.erase(self)
 										GameController.UpdateHand()
 										
-										sprite.offset.y += 700 # Adjusting card offset
-										for objects in sprite.get_children(): # Adjusting statistics offset
+										glowing_positioner[-1].hide()
+										ShiftBack()
+										
+										sprite[0].offset.y += 700 # Adjusting card offset
+										for objects in sprite[0].get_children(): # Adjusting statistics offset
 											objects.position.y += 700
+										
+										SetOnMini()
 										
 										get_tree().call_group("GUI_Manager", "_on_Update")
 										
@@ -208,7 +239,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 								global_position = old_position
 						else: # It's a fusion
 							if (
-								currentPos != "0" # Right position
+								len(currentPos) > 0 # Right position
 								and GameController.lymph >= Cost # Enough lymph 
 								and GameController.turn == "player" # Right turn
 								and GameController.phase == "attack" # Right phase
@@ -219,8 +250,8 @@ func _on_input_event(_viewport, event, _shape_idx):
 								and CheckForFusion() # Fusion cards are on the field
 								):
 									Location = "field"
-									global_position = new_position
-									Position = currentPos
+									global_position = glowing_positioner[-1].global_position - Vector2(0,20)
+									Position = currentPos[-1]
 									GameController.positionStatus[Position] = self
 									
 									GameController.lymph -= Cost
@@ -228,9 +259,14 @@ func _on_input_event(_viewport, event, _shape_idx):
 									GameController.player_hand.erase(self)
 									GameController.UpdateHand()
 									
-									sprite.offset.y += 700 # Adjusting card offset
-									for objects in sprite.get_children(): # Adjusting statistics offset
+									glowing_positioner[-1].hide()
+									ShiftBack()
+									
+									sprite[0].offset.y += 700 # Adjusting card offset
+									for objects in sprite[0].get_children(): # Adjusting statistics offset
 										objects.position.y += 700
+									
+									SetOnMini()
 									
 									get_tree().call_group("GUI_Manager", "_on_Update")
 									
@@ -269,25 +305,26 @@ func _on_input_event(_viewport, event, _shape_idx):
 									
 									get_tree().call_group("ClientInstance", "send_play_magic", id) # Send card and position to opponent
 									
-									GameController.card_counter = 0
+									GameController.card_counter -= 1
 									
 									queue_free()
 								else:
 									GameController.started_choosing_magic = self
 									GameController.type_of_pointer = "Magic"
+									GameController.selected_card_to_target_with_magic = null
 									
 									var scene = load("res://Scenes/Game/RuntimeScenes/EnemyPointer.tscn")
 									var instance = scene.instantiate()
 									add_child(instance)
 									
-									sprite.hide()
+									sprite[0].hide()
 									
 									get_tree().call_group("Deactivable", "Enable", false)
 						else:
 							global_position = old_position
 					isCardSelected = false
-				else:
-					if Location == "hand" and GameController.card_counter == 1: # Taking the card
+				elif GameController.card_counter == 1:
+					if Location == "hand": # Taking the card
 						old_position = global_position
 						isCardSelected = true
 					if Location == "field" and not isTargetSelected and not isSearchingForEnemy and GameController.phase == "Attack" and currentLoc == "Attack" and turnInGame >= turnBlockedOnPlay and GameController.stress > GameController.player_current_stress: # Selecting the card to attack
@@ -322,8 +359,8 @@ func _on_input_event(_viewport, event, _shape_idx):
 			if Team == "player" and GameController.turn == "player":
 				if isCardSelected: # Dropping the card
 					if (
-						currentPos != "0" # Right position
-						and GameController.positionStatus[currentPos] == null
+						len(currentPos) > 0 # Right position
+						and GameController.positionStatus[currentPos[-1]] == null
 						and GameController.turn == "player" # Right turn
 						and GameController.phase == "Attack" # Right phase
 						and (GameController.turnType == "play" or GameController.turnType == "draw") # Right turn type
@@ -331,14 +368,16 @@ func _on_input_event(_viewport, event, _shape_idx):
 						and Type == "Versatile" # Right type
 						):
 						
-						global_position = new_position
+						global_position = glowing_positioner[-1].global_position - Vector2(0,20)
 						var oldPos = Position
 						GameController.positionStatus[oldPos] = null
-						Position = currentPos
+						Position = currentPos[-1]
 						GameController.positionStatus[Position] = self
 						
 						alreadyMoved = true
 						turnInGame = turnBlockedOnPlay - 1
+						
+						SetOnMini()
 						
 						get_tree().call_group("ClientInstance", "send_move_card", oldPos, Position) # Send old and new position to opponent
 					else:
@@ -357,15 +396,20 @@ func _on_input_event(_viewport, event, _shape_idx):
 
 func _on_area_entered(area):
 	if area.get_groups():
-		if area.get_groups()[0] == "Positioner" and area.get_groups()[4] == "Player" and not isSearchingForEnemy and not isChoosingToDefend: # Dropping the card on a valid position
-			currentPos = String(area.get_groups()[1])
+		if area.get_groups()[0] == "Positioner" and area.get_groups()[4] == "Player" and not isSearchingForEnemy and not isChoosingToDefend and Location == "hand": # Dropping the card on a valid position
+			currentPos.append(String(area.get_groups()[1]))
 			currentLoc = String(area.get_groups()[2])
-			new_position = area.global_position
+			glowing_positioner.append(area)
+			for i in glowing_positioner:
+				i.hide()
+			glowing_positioner[-1].show()
 		
 		if area.get_groups()[0] == "Pointer": # Getting selected by the pointer
 			if Team == "enemy":
 				GameController.selected_card_to_attack = self
-				
+			if self != GameController.started_choosing_magic:
+				GameController.selected_card_to_target_with_magic = self
+		
 		if area.get_groups()[0] == "Player Hand": # Returning to hand
 			if Team == "player":
 				is_returned_to_hand = true
@@ -373,12 +417,18 @@ func _on_area_entered(area):
 
 func _on_area_exited(area):
 	if area.get_groups():
-		if area.get_groups()[0] == "Positioner" and not isSearchingForEnemy and not isChoosingToDefend and currentPos == String(area.get_groups()[1]): # Exiting by dropping the card on a valid position
-			currentPos = "0"
+		if area.get_groups()[0] == "Positioner" and not isSearchingForEnemy and not isChoosingToDefend and String(area.get_groups()[1]) in currentPos and Location == "hand": # Exiting by dropping the card on a valid position
+			currentPos.erase(String(area.get_groups()[1]))
+			area.hide()
+			glowing_positioner.erase(area)
+			if len(glowing_positioner) > 0:
+				glowing_positioner[-1].show()
 			
 		if area.get_groups()[0] == "Pointer": # Exiting by getting selected by the pointer
 			if Team == "enemy":
 				GameController.selected_card_to_attack = null
+			if self != GameController.started_choosing_magic:
+				GameController.selected_card_to_target_with_magic = null
 		
 		if area.get_groups()[0] == "Player Hand": # Returning to hand
 			if Team == "player":
@@ -402,6 +452,40 @@ func Enable(flag : bool): # Function called when a menu is appearing or disappea
 	isEnabled = flag
 
 
+func SetOnMini(): # Function to minimize the card
+	sprite[0].hide()
+	if sprite[1] and sprite[2]:
+		sprite[1].show()
+		sprite[2].show()
+
+
+func SetOnMax(): # Function to maximize the card
+	sprite[0].show()
+	if sprite[1] and sprite[2]:
+		sprite[1].hide()
+		sprite[2].hide()
+
+
+func ShiftForward(): # Function called to change z_index of all part of the card (forward)
+	sprite[1].z_index = 4 # top part of the border
+	sprite[2].z_index = 0 # bottom part of the border
+	sprite[4].z_index = 3 # image of the card
+	for u in UI_Objects_OnDown:
+		u.z_index = 1 # bottom parts of the card
+	for u in UI_Objects_OnTop:
+		u.z_index = 5 # upper parts of the card
+
+
+func ShiftBack(): # Function called to change z_index of all part of the card (back)
+	sprite[1].z_index = -3 # top part of the border
+	sprite[2].z_index = -7 # bottom part of the border
+	sprite[4].z_index = -4 # image of the card
+	for u in UI_Objects_OnDown:
+		u.z_index = -6 # bottom parts of the card
+	for u in UI_Objects_OnTop:
+		u.z_index = -2 # upper parts of the card
+
+
 func isMagicOk(who, flag : bool): # Fuction called when a pointer is going to be deleted
 	if who == self:
 		if flag:
@@ -421,10 +505,11 @@ func isMagicOk(who, flag : bool): # Fuction called when a pointer is going to be
 			
 			queue_free()
 		else:
+			print("failed")
 			global_position = old_position
 			isCardSelected = false
 			
-			sprite.show()
+			sprite[0].show()
 
 
 func isAttackOk(who, flag : bool): # Fuction called when a pointer is going to be deleted
@@ -486,6 +571,7 @@ func UpdateStats(who): # Function called when card's stats change
 					GameController.player_attacks.erase(self.Position)
 					GameController.started_attack_card = null
 					GameController.selected_card_to_attack = null
+					GameController.selected_card_to_target_with_magic = null
 				
 				GameController.player_deaths.append(id)
 			else:
@@ -611,6 +697,7 @@ func CreateCard(values, card_id): # Function only when the card is going to be c
 	Cost = values["cost"]
 	Name = values["name"]
 	Gene = values["gene"]
+	Deviation = values["deviation"]
 	Type = values["type"]
 	Effect = values["effect"]
 	isMagic = values["magic"]
@@ -623,7 +710,6 @@ func CreateCard(values, card_id): # Function only when the card is going to be c
 		Weight = values["weight"]
 		Base = values["base"]
 		BaseId = values["baseid"]
-		Deviation = values["deviation"]
 		canAttackEnemies = values["cae"]
 		canAttackLeader = values["cal"]
 		phase_or_turn_mutation = values["ptm"]
@@ -649,21 +735,36 @@ func CreateCard(values, card_id): # Function only when the card is going to be c
 						else:
 							y.set_script(load("res://Scripts/Game/SpecificEffects/Effect"+str(card_id)+".gd"))
 		
-	for x in self.get_children(): # get texture reference and load card image
-		if "Border" in x.get_groups():
-			sprite = x
-			for y in sprite.get_children():
-				if "Sprite" in y.get_groups():
+	for x in self.get_children(): # get texture references and load card image
+		if "Border" in x.get_groups() and "Total" in x.get_groups():
+			sprite[0] = x
+			for y in x.get_children():
+				if y.z_index == -4:
 					y.set_texture(load("res://Resources/Images/Card"+str(card_id)+".png"))
-					break
-			break
+					sprite[3] = y
+				elif y.z_index == -2:
+					UI_Objects_OnTop.append(y)
+		if "Border" in x.get_groups() and "Up" in x.get_groups():
+			sprite[1] = x
+			for y in x.get_children():
+				if y.z_index == -4:
+					y.set_texture(load("res://Resources/Images/Card"+str(card_id)+".png"))
+					sprite[4] = y
+				elif y.z_index == -7:
+					sprite[2] = y
+				elif y.z_index == -2:
+					UI_Objects_OnTop.append(y)
+				elif y.z_index == -6:
+					UI_Objects_OnDown.append(y)
 	
-	scale /= 1.33 # 1.35 to separete the card correctly
+	scale /= 1.05 # 1.35 to separete the card correctly
 	
-	minScale = sprite.scale
-	maxScale = sprite.scale * 2.75
+	minScale = sprite[0].scale
+	maxScale = sprite[0].scale * 2.75
 	
 	UpdateStats(self)
+	
+	SetOnMax()
 
 
 ### DECK CREATION VARIABLES ###

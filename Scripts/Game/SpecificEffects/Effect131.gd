@@ -10,8 +10,9 @@ func _ready():
 
 
 func Effect(): # When he dies summon a hyena 7/7/10/34
-	var scene = load("res://Scenes/Game/Cards/Card101.tscn") # Load card resources //CHANGE WITH HYENA
+	var scene = load("res://Scenes/Game/Cards/Card101.tscn") # Load card resources //CHANGE WITH HYENA !!
 	var instance = scene.instantiate() # Instantiate card resources
+	instance.CreateCard(CardsList.getCardInfo(101), 101) #//CHANGE WITH HYENA !!
 	
 	instance.Position = card.Position # Set in-game position for new card
 	instance.Location = "field" # Set location for new card
@@ -27,4 +28,8 @@ func Effect(): # When he dies summon a hyena 7/7/10/34
 		GameController.enemy_field_cards.erase(card)
 		GameController.enemy_field_cards.append(instance)
 	
+	instance.ShiftBack()
+	instance.SetOnMini()
+	
 	GameController.add_child(instance) # Create card
+

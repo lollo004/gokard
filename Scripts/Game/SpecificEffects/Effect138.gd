@@ -8,7 +8,7 @@ func _ready():
 	GameController = get_tree().get_first_node_in_group("GameController")
 
 
-func Effect(team): # Destroy 2 random enemies that has less then 10 attack
+func Effect(team): # Destroy all enemies that has less then 10 attack
 	if team == "player":
 		array_temp = [] + GameController.enemy_field_cards
 		

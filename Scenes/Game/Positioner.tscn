@@ -1,19 +1,45 @@
-[gd_scene load_steps=3 format=3 uid="uid://haworbi8gah1"]
+[gd_scene load_steps=8 format=3 uid="uid://haworbi8gah1"]
 
-[ext_resource type="Texture2D" uid="uid://05g30jsudqqg" path="res://icon.svg" id="2_xbu1p"]
+[ext_resource type="Texture2D" uid="uid://05g30jsudqqg" path="res://icon.svg" id="1_wgvnm"]
+[ext_resource type="Texture2D" uid="uid://brpi8icm35mnd" path="res://Resources/Images/Card0.png" id="2_x1yh4"]
+[ext_resource type="Shader" path="res://Resources/Shaders/Positioner.gdshader" id="2_xlvyk"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_s2bts"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ctkg5"]
+size = Vector2(27.6, 12.8)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_2csup"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ykq78"]
+width = 64
+height = 64
+seamless = true
+noise = SubResource("FastNoiseLite_2csup")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r2eqx"]
+shader = ExtResource("2_xlvyk")
+shader_parameter/n = SubResource("NoiseTexture2D_ykq78")
 
 [node name="Positioner" type="Area2D" groups=["Positioner"]]
+visible = false
+z_as_relative = false
 scale = Vector2(0.1, 0.1)
 metadata/_edit_vertical_guides_ = [-222.0]
-metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+z_as_relative = false
 scale = Vector2(3, 3)
-texture = ExtResource("2_xbu1p")
+texture = ExtResource("1_wgvnm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1.5, 0)
+z_as_relative = false
+position = Vector2(4.99997, -1.43051e-05)
 scale = Vector2(25, 25)
-shape = SubResource("CircleShape2D_s2bts")
+shape = SubResource("RectangleShape2D_ctkg5")
+
+[node name="Light" type="Sprite2D" parent="."]
+z_index = -9
+z_as_relative = false
+material = SubResource("ShaderMaterial_r2eqx")
+scale = Vector2(1.2, 0.5)
+texture = ExtResource("2_x1yh4")

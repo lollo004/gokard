@@ -5,9 +5,10 @@ var list_of_deck_cards = []
 
 var pos_x = 280 # start from 280 and add 160 each time
 var pos_y = 200 # start from 200 and add 150 each time
+
 var isReady = true
 
-var decks = {}
+var decks = {"1":[]}
 var current_deck_pos = "1"
 
 var currentGene = "Dwarf"
@@ -17,7 +18,8 @@ var currentCost = 999
 func _ready():
 	ShowCards(currentGene, currentCost)
 	
-	decks = Data.decks.duplicate()
+	if FileAccess.file_exists("user://leaflords.save"):
+		decks = Data.decks.duplicate()
 	
 	UpdateDeck()
 
@@ -117,7 +119,7 @@ func UpdateDeck(): # Update UI
 		var c_info = CardsList.getCardInfo(int(i))
 		
 		instance.CreateUID(i, c_info["name"], c_info["effect"])
-		instance.position = Vector2(890,150+(65*ctr))
+		instance.position = Vector2(890, 150 + (65 * ctr))
 		
 		add_child(instance)
 		

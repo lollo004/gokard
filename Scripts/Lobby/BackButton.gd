@@ -26,10 +26,14 @@ func _on_back_pressed():
 	
 	# PERSISTENT DATA SAVE
 	
-	var save_game = FileAccess.open("user://quoreroccia.save", FileAccess.WRITE)
+	var save_game = FileAccess.open("user://leaflords.save", FileAccess.WRITE)
 	var json_string = JSON.stringify(d.decks)
 	
 	save_game.store_line(json_string) # Store the save dictionary as a new line in the save file.
 	
+	get_tree().change_scene_to_file("res://Scenes/Lobby/MainMenu.tscn")
+
+
+func _on_button_pressed():
 	get_tree().change_scene_to_file("res://Scenes/Lobby/MainMenu.tscn")
 

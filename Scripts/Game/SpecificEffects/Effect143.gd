@@ -16,11 +16,15 @@ func Effect(team): # Fill your attack field with Loyal Drudges
 				
 				var scene = load("res://Scenes/Game/Cards/Card.tscn") # Load card resources
 				var instance = scene.instantiate() # Instantiate card resources
+				
 				GameController.player_field_cards.append(instance) # Save card instance
 				GameController.player_field_cards[-1].CreateCard(CardsList.getCardInfo(134), 134) # Getting starter values
 				GameController.player_field_cards[-1].Team = "player" # Set team for new card
 				GameController.player_field_cards[-1].Position = i # Set position for new card
 				GameController.player_field_cards[-1].Location = "field" # Set location for new card
+				
+				GameController.player_field_cards[-1].ShiftBack()
+				GameController.player_field_cards[-1].SetOnMini()
 				
 				GameController.add_child(GameController.player_field_cards[-1]) # Create card
 				
