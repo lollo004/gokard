@@ -1,141 +1,150 @@
-[gd_scene load_steps=6 format=3 uid="uid://cb7nrwxcdgpnv"]
+[gd_scene load_steps=7 format=3 uid="uid://cb7nrwxcdgpnv"]
 
 [ext_resource type="Script" path="res://Scripts/Lobby/Deck.gd" id="1_b36q7"]
-[ext_resource type="Texture2D" uid="uid://brpi8icm35mnd" path="res://Resources/Images/Card0.png" id="2_s8tus"]
+[ext_resource type="Texture2D" uid="uid://v2b701ybofyy" path="res://Resources/Brown.png" id="2_e6yb0"]
+[ext_resource type="Texture2D" uid="uid://drnfbfupe13lk" path="res://Resources/DeckBackground.png" id="3_l1vwa"]
 [ext_resource type="Script" path="res://Scripts/Lobby/BackButton.gd" id="3_o3ch7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_elvmd"]
-size = Vector2(657, 415)
+size = Vector2(737.5, 412.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_domgk"]
-size = Vector2(80, 422)
+size = Vector2(61, 408)
 
 [node name="Deck" type="Node" groups=["Deck"]]
 script = ExtResource("1_b36q7")
 
-[node name="Background" type="Sprite2D" parent="."]
-z_index = -10
+[node name="Brown" type="Sprite2D" parent="."]
+z_index = -6
+z_as_relative = false
 position = Vector2(481, 271)
-scale = Vector2(1.02292, -0.554688)
-texture = ExtResource("2_s8tus")
+scale = Vector2(1.005, 1.005)
+texture = ExtResource("2_e6yb0")
+
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -1
+z_as_relative = false
+position = Vector2(481, 270)
+scale = Vector2(1.005, 1.005)
+texture = ExtResource("3_l1vwa")
 
 [node name="Total" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Total"]
-position = Vector2(490.5, 322.5)
+position = Vector2(492.25, 296.75)
 shape = SubResource("RectangleShape2D_elvmd")
 
 [node name="Deck" type="Area2D" parent="." groups=["Current Deck Collider"]]
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Deck"]
-position = Vector2(893, 322)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Deck"]
+position = Vector2(890, 300)
 shape = SubResource("RectangleShape2D_domgk")
 
 [node name="Back" type="Button" parent="."]
-offset_left = 851.0
-offset_top = 25.0
-offset_right = 932.0
-offset_bottom = 103.0
-text = "BACK"
+offset_left = 870.0
+offset_top = 45.0
+offset_right = 910.0
+offset_bottom = 85.0
+text = "X"
 script = ExtResource("3_o3ch7")
 
 [node name="Decks" type="Node" parent="."]
 
 [node name="Deck 1" type="Button" parent="Decks"]
-offset_left = 150.0
-offset_top = 27.0
-offset_right = 298.0
-offset_bottom = 100.0
+offset_left = 175.0
+offset_top = 45.0
+offset_right = 295.0
+offset_bottom = 85.0
 
 [node name="Deck 2" type="Button" parent="Decks"]
-offset_left = 322.0
-offset_top = 26.0
-offset_right = 470.0
-offset_bottom = 99.0
+offset_left = 345.0
+offset_top = 45.0
+offset_right = 465.0
+offset_bottom = 85.0
 
 [node name="Deck 3" type="Button" parent="Decks"]
-offset_left = 494.0
-offset_top = 26.0
-offset_right = 642.0
-offset_bottom = 99.0
+offset_left = 515.0
+offset_top = 45.0
+offset_right = 635.0
+offset_bottom = 85.0
 
 [node name="Deck 4" type="Button" parent="Decks"]
-offset_left = 670.0
-offset_top = 27.0
-offset_right = 818.0
-offset_bottom = 100.0
+offset_left = 695.0
+offset_top = 45.0
+offset_right = 815.0
+offset_bottom = 85.0
 
 [node name="Genes" type="Node" parent="."]
 
 [node name="Dwarf" type="Button" parent="Genes"]
-offset_left = 13.0
-offset_top = 123.0
-offset_right = 67.0
-offset_bottom = 175.0
+offset_left = 40.0
+offset_top = 100.0
+offset_right = 115.0
+offset_bottom = 130.0
 theme_override_font_sizes/font_size = 10
 text = "Dwarf"
 
 [node name="Human" type="Button" parent="Genes"]
-offset_left = 85.0
-offset_top = 123.0
-offset_right = 139.0
-offset_bottom = 175.0
+offset_left = 40.0
+offset_top = 140.0
+offset_right = 115.0
+offset_bottom = 170.0
 theme_override_font_sizes/font_size = 10
 text = "Human"
 
 [node name="Elf" type="Button" parent="Genes"]
-offset_left = 13.0
-offset_top = 195.0
-offset_right = 67.0
-offset_bottom = 247.0
+offset_left = 40.0
+offset_top = 180.0
+offset_right = 115.0
+offset_bottom = 210.0
 theme_override_font_sizes/font_size = 10
 text = "Elf"
 
 [node name="Spirit" type="Button" parent="Genes"]
-offset_left = 88.0
-offset_top = 194.0
-offset_right = 142.0
-offset_bottom = 246.0
+offset_left = 40.0
+offset_top = 220.0
+offset_right = 115.0
+offset_bottom = 250.0
 theme_override_font_sizes/font_size = 10
 text = "Spirit"
 
 [node name="Skeleton" type="Button" parent="Genes"]
-offset_left = 14.0
-offset_top = 268.0
-offset_right = 68.0
-offset_bottom = 320.0
+offset_left = 40.0
+offset_top = 260.0
+offset_right = 115.0
+offset_bottom = 290.0
 theme_override_font_sizes/font_size = 10
 text = "Skeleton"
 
 [node name="Flora" type="Button" parent="Genes"]
-offset_left = 90.0
-offset_top = 267.0
-offset_right = 144.0
-offset_bottom = 319.0
+offset_left = 40.0
+offset_top = 300.0
+offset_right = 115.0
+offset_bottom = 330.0
 theme_override_font_sizes/font_size = 10
 text = "Flora"
 
 [node name="Fauna" type="Button" parent="Genes"]
-offset_left = 14.0
-offset_top = 341.0
-offset_right = 68.0
-offset_bottom = 393.0
+offset_left = 40.0
+offset_top = 340.0
+offset_right = 115.0
+offset_bottom = 370.0
 theme_override_font_sizes/font_size = 10
 text = "Fauna"
 
 [node name="Giant" type="Button" parent="Genes"]
-offset_left = 92.0
-offset_top = 342.0
-offset_right = 146.0
-offset_bottom = 394.0
+offset_left = 40.0
+offset_top = 380.0
+offset_right = 115.0
+offset_bottom = 410.0
 theme_override_font_sizes/font_size = 10
 text = "Giant"
 
 [node name="Generic" type="Button" parent="Genes"]
-offset_left = 51.0
-offset_top = 415.0
-offset_right = 105.0
-offset_bottom = 467.0
+offset_left = 40.0
+offset_top = 420.0
+offset_right = 115.0
+offset_bottom = 450.0
 theme_override_font_sizes/font_size = 10
 text = "Generic"
 

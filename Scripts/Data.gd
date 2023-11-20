@@ -9,7 +9,7 @@ var card_recurrences = {} # cards owned by the player
 var total_number_of_cards = 300 # total number of cards in all the game
 
 var deck = [] # cards used during game
-var decks = {"1":[]} # all your decks
+var decks = {"1":[], "2":[], "3":[], "4":[]} # all your decks
 var player_back = null # back of the card
 var initial_number_player_cards = 0 # number of cards when game start
 

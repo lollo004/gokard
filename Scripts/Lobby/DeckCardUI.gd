@@ -1,7 +1,7 @@
 extends Area2D
 
 @export var icon : Sprite2D
-@export var text : Label
+@export var text : Sprite2D
 
 var id = 0
 
@@ -20,7 +20,7 @@ func CreateUID(i, n, e):
 	id = i
 	
 	icon.texture = load("res://Resources/Images/Card"+str(i)+".png")
-	text.text = n + ":\n" + e
+	text.get_child(-1).text = n + ":\n" + e
 	
 	text.hide()
 

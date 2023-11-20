@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://di3yqxlhkmhtb"
-path="res://.godot/imported/Card.png-e67727064a7eb17ade7a992f60b83e94.ctex"
+uid="uid://drnfbfupe13lk"
+path="res://.godot/imported/DeckBackground.png-714eadc5897b997c819e10eb1078d644.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/Card.png"
-dest_files=["res://.godot/imported/Card.png-e67727064a7eb17ade7a992f60b83e94.ctex"]
+source_file="res://Resources/DeckBackground.png"
+dest_files=["res://.godot/imported/DeckBackground.png-714eadc5897b997c819e10eb1078d644.ctex"]
 
 [params]
 

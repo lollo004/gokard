@@ -4,8 +4,8 @@ extends Node
 
 @export var player_health : int = 30
 @export var enemy_health : int = 30
-@export var lymph : int = 100
-@export var stress : int = 5
+@export var lymph : int = 1
+@export var stress : int = 0
 @export var turn : String = ""
 @export var phase : String = ""
 
@@ -101,6 +101,8 @@ func _ready():
 	initial_number_player_cards = get_tree().get_first_node_in_group("Data").initial_number_player_cards
 	initial_number_enemy_cards = get_tree().get_first_node_in_group("Data").initial_number_enemy_cards
 	enemy_deck = get_tree().get_first_node_in_group("Data").enemy_back_deck
+	
+	ShuffleDeck()
 	
 	for i in initial_number_player_cards:
 		add_child(player_deck[i])
@@ -615,8 +617,6 @@ func PlayEnemyCard(id, pos, stats):
 	enemy_cards[pos].Position = pos # Set position for new card
 	enemy_cards[pos].Location = "field" # Set location for new card
 	
-	add_child(enemy_cards[pos]) # Create card
-	
 	var positioner_pos = get_tree().get_first_node_in_group("EP"+str(pos)) # Get the right position
 	enemy_cards[pos].global_position = positioner_pos.global_position - Vector2(0,20) # Move card to the right position
 	
@@ -628,6 +628,12 @@ func PlayEnemyCard(id, pos, stats):
 		enemy_cards[pos].Attack = stats[1]
 		enemy_cards[pos].Speed = stats[2]
 		enemy_cards[pos].Weight = stats[3]
+		enemy_cards[pos].Cost = stats[4]
+		enemy_cards[pos].stats_has_been_modified = true
+	
+	add_child(enemy_cards[pos]) # Create card
+	
+	enemy_cards[pos].UpdateStats(enemy_cards[pos])
 	
 	lymph -= enemy_cards[pos].Cost # Update lymph used by enemy
 	
@@ -656,13 +662,13 @@ func PlayEnemyMagic(id):
 	var scene = load("res://Scenes/Game/Cards/Magic.tscn") # Load card resources
 	var instance = scene.instantiate() # Instantiate card resources
 	
-	lymph -= instance.Cost # Update lymph used by enemy
-	
 	current_showed_card_ref.append(instance)
 	current_showed_card_ref[-1].CreateCard(CardsList.getCardInfo(int(id)), int(id)) # Getting starter values
 	current_showed_card_ref[-1].Team = "no" # avoid any type of interaction with the card
 	current_showed_card_ref[-1].position = Vector2(175,270)
 	current_showed_card_ref[-1].scale *= 2
+	
+	lymph -= instance.Cost # Update lymph used by enemy
 	
 	add_child(current_showed_card_ref[-1]) # Create card
 	
@@ -692,18 +698,18 @@ func ShowOneCard(id): # Function called when played "Light on the dark" card
 	
 	current_showed_card_ref[-1].CreateCard(CardsList.getCardInfo(int(id)), int(id)) # Getting starter values
 	current_showed_card_ref[-1].Team = "no" # avoid any type of interaction with the card
-	current_showed_card_ref[-1].position = Vector2(175,270)
+	current_showed_card_ref[-1].position = Vector2(70,110)
 	current_showed_card_ref[-1].scale *= 2
 	
 	add_child(current_showed_card_ref[-1]) # Create card
 	
 	timer.append(Timer.new())
 	timer[-1].connect("timeout" , ShowCard)
-	timer[-1].wait_time = 1.5
+	timer[-1].wait_time = 3.5
 	timer[-1].one_shot = true
 	add_child(timer[-1])
 	timer[-1].start()
 
-func ShowCard(): # Delete the card after 2 seconds
+func ShowCard(): # Delete the card after 3.5 seconds
 	current_showed_card_ref[0].queue_free()
 	current_showed_card_ref.remove_at(0)

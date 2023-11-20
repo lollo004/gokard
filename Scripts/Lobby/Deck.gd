@@ -8,11 +8,13 @@ var pos_y = 200 # start from 200 and add 150 each time
 
 var isReady = true
 
-var decks = {"1":[]}
+var decks = {"1":[], "2":[], "3":[], "4":[]}
 var current_deck_pos = "1"
 
 var currentGene = "Dwarf"
 var currentCost = 999
+
+var offset = {"1":0, "2":0, "3":0, "4":0}
 
 
 func _ready():
@@ -47,7 +49,9 @@ func ShowCards(gene, cost): # Select card to show
 			instance.inGame = false
 			instance.z_index = -2
 			
-			instance.position = Vector2(280 + 160*(counter%4), 200 + 150*floor(counter/4.0))
+			instance.position = Vector2(210 + 140*(counter%5), 200 + 200*floor(counter/5.0))
+			instance.scale *= 2
+			
 			add_child(instance)
 			
 			list_of_showed_cards.append(instance)
@@ -61,19 +65,21 @@ func _on_input_event(_viewport, event, _shape_idx, type): # Player mouse scroll
 	if event is InputEventMouseButton:
 		if event.is_pressed() and isReady:
 			if len(list_of_showed_cards) > 0 and type == "Total":
-				if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and list_of_showed_cards[-1].position.y >= 200:
+				if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and list_of_showed_cards[-1].position.y >= 420:
 					for i in list_of_showed_cards:
 						i.position.y = lerp(i.position.y, i.position.y - 50, 0.5)
-				if event.button_index == MOUSE_BUTTON_WHEEL_UP and list_of_showed_cards[0].position.y <= 200:
+				if event.button_index == MOUSE_BUTTON_WHEEL_UP and list_of_showed_cards[0].position.y <= 180:
 					for i in list_of_showed_cards:
 						i.position.y = lerp(i.position.y, i.position.y + 50, 0.5)
 			if len(list_of_deck_cards) > 0 and type == "Deck":
-				if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and list_of_deck_cards[-1].position.y >= 150:
+				if event.button_index == MOUSE_BUTTON_WHEEL_DOWN and list_of_deck_cards[-1].position.y >= 480:
 					for i in list_of_deck_cards:
 						i.position.y = lerp(i.position.y, i.position.y - 50, 0.5)
-				if event.button_index == MOUSE_BUTTON_WHEEL_UP and list_of_deck_cards[0].position.y <= 150:
+					offset[current_deck_pos] = lerp(offset[current_deck_pos], offset[current_deck_pos] - 50, 0.5)
+				if event.button_index == MOUSE_BUTTON_WHEEL_UP and list_of_deck_cards[0].position.y <= 120:
 					for i in list_of_deck_cards:
 						i.position.y = lerp(i.position.y, i.position.y + 50, 0.5)
+					offset[current_deck_pos] = lerp(offset[current_deck_pos], offset[current_deck_pos] + 50, 0.5)
 
 
 func _on_gene_pressed(gene): # Change gene
@@ -119,7 +125,11 @@ func UpdateDeck(): # Update UI
 		var c_info = CardsList.getCardInfo(int(i))
 		
 		instance.CreateUID(i, c_info["name"], c_info["effect"])
-		instance.position = Vector2(890, 150 + (65 * ctr))
+		instance.position = Vector2(890, 130 + (50 * ctr) + offset[current_deck_pos])
+		
+		if instance.position.x > 550 or instance.position.x < 100:
+			instance.isInCollider = false
+			instance.hide()
 		
 		add_child(instance)
 		

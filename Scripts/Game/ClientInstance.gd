@@ -17,7 +17,7 @@ var GUI_Manager # GUI manager reference
 
 
 func _ready():
-	socket.connect_to_url("ws://192.168.1.81:8765")
+	socket.connect_to_url("ws://192.168.97.220:8765")
 
 
 func _process(_delta):
@@ -223,6 +223,9 @@ func handle_new_message(message): # Check message type and choose what to do
 			GameController.enemy_cards[message["pos"]].Position = str(message["pos"]) # Set position for new card
 			GameController.enemy_cards[message["pos"]].Location = "field" # Set location for new card
 			
+			GameController.enemy_cards[message["pos"]].ShiftBack()
+			GameController.enemy_cards[message["pos"]].SetOnMini()
+			
 			GameController.add_child(GameController.enemy_cards[message["pos"]]) # Create card
 			
 			var positioner_pos = get_tree().get_first_node_in_group("EP"+str(message["pos"])) # Get the right position
@@ -233,7 +236,7 @@ func handle_new_message(message): # Check message type and choose what to do
 			GameController.enemy_field_cards.append(GameController.enemy_cards[message["pos"]]) # Add card to the array to simplify the founding of it
 			
 			return # stop the for loop
-		if message["action"] == "143": # todo
+		if message["action"] == "143": # Opponent tell you to spawn the servants
 			for i in message["cards"]:
 				var scene = load("res://Scenes/Game/Cards/Card.tscn") # Load card resources
 				var instance = scene.instantiate() # Instantiate card resources
@@ -242,6 +245,9 @@ func handle_new_message(message): # Check message type and choose what to do
 				GameController.enemy_cards[i].Team = "enemy" # Set team for new card
 				GameController.enemy_cards[i].Position = i # Set position for new card
 				GameController.enemy_cards[i].Location = "field" # Set location for new card
+				
+				GameController.enemy_cards[i].ShiftBack()
+				GameController.enemy_cards[i].SetOnMini()
 				
 				GameController.add_child(GameController.enemy_cards[i]) # Create card
 				

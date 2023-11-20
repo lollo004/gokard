@@ -27,7 +27,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 3
 		},
 	101: {
 		"health" : 1,
@@ -54,7 +55,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 3
 		},
 	102: {
 		"health" : 2,
@@ -81,7 +83,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 3
 		},
 	103: {
 		"health" : 2,
@@ -108,7 +111,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 3
 		},
 	104: {
 		"health" : 1,
@@ -135,7 +139,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 3
 		},
 	105: {
 		"health" : 2,
@@ -162,7 +167,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 3
 		},
 	106: {
 		"health" : 4,
@@ -189,7 +195,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 2
 		},
 	107: {
 		"health" : 3,
@@ -216,7 +223,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 3
 		},
 	108: {
 		"health" : 2,
@@ -243,7 +251,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 3
 		},
 	109: {
 		"health" : 2,
@@ -270,7 +279,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 2
 		},
 	110: {
 		"health" : 4,
@@ -297,7 +307,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 3
 		},
 	111: {
 		"health" : 2,
@@ -324,7 +335,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 2
 		},
 	112: {
 		"health" : 4,
@@ -351,7 +363,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 3
 		},
 	113: {
 		"health" : 4,
@@ -378,7 +391,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : false
+		"canBePlayed" : false,
+		"tier" : 3
 		},
 	114: {
 		"health" : 3,
@@ -405,7 +419,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 2
 		},
 	115: {
 		"health" : 6,
@@ -432,7 +447,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 2
 		},
 	116: {
 		"health" : 5,
@@ -459,7 +475,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 1
 		},
 	117: {
 		"health" : 4,
@@ -486,7 +503,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 2
 		},
 	118: {
 		"health" : 5,
@@ -513,7 +531,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : false
+		"canBePlayed" : false,
+		"tier" : 2
 		},
 	119: {
 		"health" : 4,
@@ -540,7 +559,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 2
 		},
 	120: {
 		"health" : 6,
@@ -567,7 +587,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 3
 		},
 	121: {
 		"health" : 3,
@@ -594,7 +615,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 3
 		},
 	122: {
 		"health" : 6,
@@ -621,7 +643,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 2
 		},
 	123: {
 		"health" : 5,
@@ -648,7 +671,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 3
 		},
 	124: {
 		"health" : 7,
@@ -675,7 +699,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 2
 		},
 	125: {
 		"health" : 5,
@@ -702,7 +727,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 1
 		},
 	126: {
 		"health" : 7,
@@ -729,7 +755,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 2
 		},
 	127: {
 		"health" : 6,
@@ -756,7 +783,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 1
 		},
 	128: {
 		"health" : 10,
@@ -783,7 +811,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 2
 		},
 	129: {
 		"health" : 7,
@@ -810,7 +839,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 2
 		},
 	130: {
 		"health" : 8,
@@ -837,7 +867,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 2
 		},
 	131: {
 		"health" : 5,
@@ -864,7 +895,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 2
 		},
 	132: {
 		"health" : 6,
@@ -891,7 +923,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 1
 		},
 	133: {
 		"health" : 10,
@@ -918,7 +951,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : false
+		"canBePlayed" : false,
+		"tier" : 1
 		},
 	134: {
 		"health" : 3,
@@ -945,7 +979,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"magic" : false, "random" : true,
 		"fusion" : false,
 		"fusionid": [],
-		"canBePlayed" : false
+		"canBePlayed" : false,
+		"tier" : 3
 		},
 	135: {
 		"cost" : 1,
@@ -955,7 +990,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"type" : "Attack",
 		"effect" : "Deal 1 damage to 2 random enemy",
 		"magic" : true, "random" : true,
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 3
 		},
 	136: {
 		"cost" : 2,
@@ -965,7 +1001,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"type" : "Versatile",
 		"effect" : "+1 attack to 2 random ally dwarfs",
 		"magic" : true, "random" : true,
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 3
 		},
 	137: {
 		"cost" : 2,
@@ -975,7 +1012,7 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"type" : "Versatile",
 		"effect" : "Draw a random dwarf that cost 2 lymph, but he’s cost is 0  and has +1 attack and +1 health",
 		"magic" : true, "random" : true,
-		"canBePlayed" : true
+		"canBePlayed" : true,"tier" : 2
 		},
 	138: {
 		"cost" : 4,
@@ -985,7 +1022,7 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"type" : "Attack",
 		"effect" : "Destroy all enemies that has less then 10 attack",
 		"magic" : true, "random" : true,
-		"canBePlayed" : true
+		"canBePlayed" : true,"tier" : 1
 		},
 	139: {
 		"cost" : 3,
@@ -995,7 +1032,7 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"type" : "Versatile",
 		"effect" : "+3 health to a dwarf",
 		"magic" : true, "random" : false,
-		"canBePlayed" : true
+		"canBePlayed" : true,"tier" : 2
 		},
 	140: {
 		"cost" : 3,
@@ -1005,7 +1042,7 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"type" : "Attack",
 		"effect" : "Increment stress by 1",
 		"magic" : true, "random" : true,
-		"canBePlayed" : true
+		"canBePlayed" : true,"tier" : 1
 		},
 	141: {
 		"cost" : 4,
@@ -1015,7 +1052,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"type" : "Defense",
 		"effect" : "+2 attack and +1 health to 2 random ally dwarf",
 		"magic" : true, "random" : true,
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 2
 		},
 	142: {
 		"cost" : 5,
@@ -1025,7 +1063,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"type" : "Versatile",
 		"effect" : "Summon a random dead ally dwarf",
 		"magic" : true, "random" : true,
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 2
 		},
 	143: {
 		"cost" : 7,
@@ -1035,7 +1074,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"type" : "Versatile",
 		"effect" : "Fill your attack field with Loyal Drudges",
 		"magic" : true, "random" : true,
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 2
 		},
 	144: {
 		"cost" : 10,
@@ -1045,7 +1085,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"type" : "Versatile",
 		"effect" : "Give +5 attack and +2 health to all the dwarfs in your field",
 		"magic" : true, "random" : true,
-		"canBePlayed" : true
+		"canBePlayed" : true,
+		"tier" : 1
 		}
 }
 

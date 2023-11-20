@@ -2,7 +2,4 @@ Animations and feedbacks
 
 (131) add hyena !!
 
-
-fix: when added a new card on deck don't move cards up
-
-send stats with cards
+OPTIMIZE LOADING SCREENS AND EFFECTS

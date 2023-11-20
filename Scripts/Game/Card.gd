@@ -40,7 +40,7 @@ extends Area2D
 @export var fusion = false # does card have to fusion to be played
 @export var fusionid = [] # list of card's ids to fuse
 
-@export var card_tier = 3 # tier of the card (max repetition of a single cards)
+@export var Tier = 0 # tier of the card (max repetition of a single cards)
 
 ## Management Variables ##
 
@@ -60,13 +60,17 @@ var UI_Objects_OnDown = [] # List of all UI objects of the card (setted by the e
 
 var isDead = false # Variable used to avoid that cards can send multiple (inifinite) signals
 
+var stats_has_been_modified = false # Variable used to send stats with card if they have been modifies
+
+@export var shadow : Sprite2D = null
+
 ## Deck Creation Variables ##
 
 var inGame = true # Variable used to check if the card is in game or showed to make deck
 
 var current_deck_ref # Variable used to show cards on your deck
 
-var times_in_deck = {} # Variable used to remeber how many times you used a card
+var times_in_deck = {"1": 0, "2": 0, "3": 0, "4": 0} # Variable used to remeber how many times you used a card
 
 ## Scale Variables ##
 
@@ -82,7 +86,7 @@ var alreadyMoved : bool = false
 
 var currentPos = [] # Current position on the field (1-9 => field | 10 => Leader | 0 => Invalid)
 var old_position # First position of the card
-var currentLoc : String = "" # Type on the field (attack - defense)
+var currentLoc  = [] # Type on the field (attack - defense)
 
 var is_returned_to_hand = true # Used to check if you want to take back your card
 
@@ -123,12 +127,12 @@ func _process(delta): # Function called every frame
 
 
 func _on_mouse_entered(): # Start override with mouse
+	shadow.show()
+	shadow.process_mode = Node.PROCESS_MODE_INHERIT
+	
 	if Location == "field":
 		SetOnMax()
-		
-	sprite[0].scale = maxScale
-	isMouseOver = true
-	print(Location)
+	
 	if Location == "hand" or Location == "lobby":
 		sprite[0].z_index = 4 # border
 		sprite[3].z_index = 3 # image of the card
@@ -140,22 +144,29 @@ func _on_mouse_entered(): # Start override with mouse
 			u.z_index = 1 # bottom parts of the card
 	for u in UI_Objects_OnTop:
 		u.z_index = 5 # upper parts of the card
+	shadow.z_index = 1
 	
 	if Location == "hand":
 		sprite[0].offset.y -= 700
 		for objects in sprite[0].get_children():
 			objects.position.y -= 700
+		
+		sprite[0].scale = maxScale
+	else:
+		sprite[0].scale = maxScale / 2
+		shadow.scale *= 1.4
+	isMouseOver = true
 	
 	if Team == "player" and inGame:
 		GameController.card_counter += 1
 
 
 func _on_mouse_exited(): # Stop override with mouse
+	shadow.hide()
+	shadow.process_mode = Node.PROCESS_MODE_DISABLED
+	
 	if Location == "field":
 		SetOnMini()
-	
-	sprite[0].scale = minScale
-	isMouseOver = false
 	
 	if Location == "hand" or Location == "lobby":
 		sprite[0].z_index = -3 # border
@@ -168,11 +179,16 @@ func _on_mouse_exited(): # Stop override with mouse
 			u.z_index = -6 # bottom parts of the card
 	for u in UI_Objects_OnTop:
 		u.z_index = -2 # upper parts of the card
+	shadow.z_index = -4
 	
 	if Location == "hand":
 		sprite[0].offset.y += 700
 		for objects in sprite[0].get_children():
 			objects.position.y += 700
+	
+	sprite[0].scale = minScale
+	shadow.scale /= 1.4
+	isMouseOver = false
 	
 	if Team == "player" and inGame:
 		GameController.card_counter -= 1
@@ -192,7 +208,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 								#and GameController.phase == "attack" # Right phase
 								and (GameController.turnType == "play" or GameController.turnType == "draw") # Right turn type
 								and Location == "hand" # Right card
-								and (Type == currentLoc or Type == "Versatile") # Right type
+								and (Type == currentLoc[-1] or Type == "Versatile") # Right type
 								and not is_returned_to_hand # Right position
 								):
 									if (
@@ -232,7 +248,10 @@ func _on_input_event(_viewport, event, _shape_idx):
 										
 										GameController.player_field_cards.append(self)
 										
-										get_tree().call_group("ClientInstance", "send_play_card", id, Position) # Send card and position to opponent
+										if stats_has_been_modified:
+											get_tree().call_group("ClientInstance", "send_play_card", id, Position, [Health, Attack, Speed, Weight, Cost]) # Send card and position to opponent
+										else:
+											get_tree().call_group("ClientInstance", "send_play_card", id, Position) # Send card and position to opponent
 									else:
 										global_position = old_position
 							else:
@@ -245,7 +264,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 								and GameController.phase == "attack" # Right phase
 								and (GameController.turnType == "play" or GameController.turnType == "draw") # Right turn type
 								and Location == "hand" # Right card
-								and (Type == currentLoc or Type == "Versatile") # Right type
+								and (Type == currentLoc[-1] or Type == "Versatile") # Right type
 								and not is_returned_to_hand # Right position
 								and CheckForFusion() # Fusion cards are on the field
 								):
@@ -282,7 +301,10 @@ func _on_input_event(_viewport, event, _shape_idx):
 									
 									GameController.player_field_cards.append(self)
 									
-									get_tree().call_group("ClientInstance", "send_play_card", id, Position) # Send card and position to opponent
+									if stats_has_been_modified:
+										get_tree().call_group("ClientInstance", "send_play_card", id, Position, [Health, Attack, Speed, Weight, Cost]) # Send card and position to opponent
+									else:
+										get_tree().call_group("ClientInstance", "send_play_card", id, Position) # Send card and position to opponent
 					else: # It's a magic
 						if (
 							GameController.lymph >= Cost # Enough lymph 
@@ -327,7 +349,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 					if Location == "hand": # Taking the card
 						old_position = global_position
 						isCardSelected = true
-					if Location == "field" and not isTargetSelected and not isSearchingForEnemy and GameController.phase == "Attack" and currentLoc == "Attack" and turnInGame >= turnBlockedOnPlay and GameController.stress > GameController.player_current_stress: # Selecting the card to attack
+					if Location == "field" and not isTargetSelected and not isSearchingForEnemy and GameController.phase == "Attack" and currentLoc[-1] == "Attack" and turnInGame >= turnBlockedOnPlay and GameController.stress > GameController.player_current_stress: # Selecting the card to attack
 						GameController.started_attack_card = self
 						GameController.type_of_pointer = "Card"
 						isSearchingForEnemy = true
@@ -337,12 +359,12 @@ func _on_input_event(_viewport, event, _shape_idx):
 						add_child(instance)
 						
 						get_tree().call_group("Deactivable", "Enable", false)
-					if Location == "field" and isTargetSelected and not isSearchingForEnemy and GameController.phase == "Attack" and currentLoc == "Attack" and turnInGame >= turnBlockedOnPlay: # Deselecting the card to attack
+					if Location == "field" and isTargetSelected and not isSearchingForEnemy and GameController.phase == "Attack" and currentLoc[-1] == "Attack" and turnInGame >= turnBlockedOnPlay: # Deselecting the card to attack
 						GameController.CancelAttack(self)
 						isTargetSelected = false
 						
 						GameController.player_current_stress -= 1
-					if Location == "field" and not isChooseDone and not isChoosingToDefend and GameController.phase == "Defense" and currentLoc == "Defense" and turnInGame >= turnBlockedOnPlay and not isBlockedByAbility: # Choosing what to do with the card
+					if Location == "field" and not isChooseDone and not isChoosingToDefend and GameController.phase == "Defense" and currentLoc[-1] == "Defense" and turnInGame >= turnBlockedOnPlay and not isBlockedByAbility: # Choosing what to do with the card
 						GameController.started_defende_card = self
 						isChoosingToDefend = true
 						
@@ -398,7 +420,7 @@ func _on_area_entered(area):
 	if area.get_groups():
 		if area.get_groups()[0] == "Positioner" and area.get_groups()[4] == "Player" and not isSearchingForEnemy and not isChoosingToDefend and Location == "hand": # Dropping the card on a valid position
 			currentPos.append(String(area.get_groups()[1]))
-			currentLoc = String(area.get_groups()[2])
+			currentLoc.append(String(area.get_groups()[2]))
 			glowing_positioner.append(area)
 			for i in glowing_positioner:
 				i.hide()
@@ -419,6 +441,7 @@ func _on_area_exited(area):
 	if area.get_groups():
 		if area.get_groups()[0] == "Positioner" and not isSearchingForEnemy and not isChoosingToDefend and String(area.get_groups()[1]) in currentPos and Location == "hand": # Exiting by dropping the card on a valid position
 			currentPos.erase(String(area.get_groups()[1]))
+			currentLoc.erase(String(area.get_groups()[2]))
 			area.hide()
 			glowing_positioner.erase(area)
 			if len(glowing_positioner) > 0:
@@ -609,10 +632,10 @@ func UpdateStats(who): # Function called when card's stats change
 				i.text = Deviation
 			if "Effect" in i.get_groups():
 				i.text = Effect
-			if "Type" in i.get_groups():
-				i.text = Type
 			if "Base" in i.get_groups():
 				i.text = Base
+			if "Tier" in i.get_groups():
+				i.text = str(Tier)
 
 
 func onTurnBegin(team): # Function called on turn start (team = player / enemy)
@@ -672,6 +695,7 @@ func AttackEnemyByExcess(enemy, value): # Function called when the card has to a
 
 func BoostByPos(pos, stat, value, team): # Function called when a card must change one of his main values
 	if Position == pos and Team == team:
+		stats_has_been_modified = true
 		match stat:
 			"health":
 				Health += value
@@ -688,6 +712,7 @@ func BoostByPos(pos, stat, value, team): # Function called when a card must chan
 			"cost":
 				Cost += value
 				get_tree().call_group("OnBoost", "Effect", "cost", value, self)
+		
 		UpdateStats(self)
 
 
@@ -702,6 +727,7 @@ func CreateCard(values, card_id): # Function only when the card is going to be c
 	Effect = values["effect"]
 	isMagic = values["magic"]
 	isRandom = values["random"]
+	Tier = values["tier"]
 	
 	if not isMagic:
 		Health = values["health"]
@@ -744,6 +770,8 @@ func CreateCard(values, card_id): # Function only when the card is going to be c
 					sprite[3] = y
 				elif y.z_index == -2:
 					UI_Objects_OnTop.append(y)
+				if "Type" in y.get_groups():
+					y.set_texture(load("res://Resources/"+Type+".png"))
 		if "Border" in x.get_groups() and "Up" in x.get_groups():
 			sprite[1] = x
 			for y in x.get_children():
@@ -771,7 +799,7 @@ func CreateCard(values, card_id): # Function only when the card is going to be c
 
 
 func SelectCardForDeck(): # Function called to add the card to the deck
-	if times_in_deck[current_deck_ref.current_deck_pos] < card_tier and len(current_deck_ref.decks[current_deck_ref.current_deck_pos]) < 40:
+	if times_in_deck[current_deck_ref.current_deck_pos] < Tier and len(current_deck_ref.decks[current_deck_ref.current_deck_pos]) < 40:
 		current_deck_ref.decks[current_deck_ref.current_deck_pos].append(id)
 		current_deck_ref.UpdateDeck()
 
