@@ -64,6 +64,8 @@ var stats_has_been_modified = false # Variable used to send stats with card if t
 
 @export var shadow : Sprite2D = null
 
+var error_label : Label # Text label to say the user why he can't play a card
+
 ## Deck Creation Variables ##
 
 var inGame = true # Variable used to check if the card is in game or showed to make deck
@@ -83,6 +85,7 @@ var sprite = [null,null,null,null,null] # The three sprites to manage in game an
 var isMouseOver : bool = false
 var isCardSelected : bool = false
 var alreadyMoved : bool = false
+var isMoving : bool = false
 
 var currentPos = [] # Current position on the field (1-9 => field | 10 => Leader | 0 => Invalid)
 var old_position # First position of the card
@@ -106,13 +109,13 @@ var actionDuringDefense : String = "" # The action that has been choosen to do w
 var isBlockedByAbility : bool = false # Variable to check if the card defended or uses special
 var hasAbilityBeenUsedThisTurn : bool = false # Variable to check if the card defended or uses special
 
-
 ### MAIN EVENTS ###
 
 
 func _ready(): # Function called only on start
 	if inGame:
 		GameController = get_tree().get_first_node_in_group("GameController")
+		error_label = GameController.error_label
 	else:
 		current_deck_ref = get_tree().get_first_node_in_group("Deck")
 
@@ -127,68 +130,85 @@ func _process(delta): # Function called every frame
 
 
 func _on_mouse_entered(): # Start override with mouse
-	shadow.show()
-	shadow.process_mode = Node.PROCESS_MODE_INHERIT
+	if Team == "player":
+		if isTargetSelected:
+			shadow.set_texture(load("res://Resources/CardOnAttack.png"))
+		elif isChooseDone:
+			match actionDuringDefense:
+				"defende":
+					shadow.set_texture(load("res://Resources/CardOnDefende.png"))
+				"special":
+					shadow.set_texture(load("res://Resources/CardOnSpecial.png"))
+		else:
+			shadow.set_texture(load("res://Resources/CardGlow.png"))
+		shadow.show()
+		shadow.process_mode = Node.PROCESS_MODE_INHERIT
 	
-	if Location == "field":
-		SetOnMax()
-	
-	if Location == "hand" or Location == "lobby":
-		sprite[0].z_index = 4 # border
-		sprite[3].z_index = 3 # image of the card
-	else:
-		sprite[1].z_index = 4 # top part of the border
-		sprite[2].z_index = 0 # bottom part of the border
-		sprite[4].z_index = 3 # image of the card
-		for u in UI_Objects_OnDown:
-			u.z_index = 1 # bottom parts of the card
-	for u in UI_Objects_OnTop:
-		u.z_index = 5 # upper parts of the card
-	shadow.z_index = 1
-	
-	if Location == "hand":
-		sprite[0].offset.y -= 700
-		for objects in sprite[0].get_children():
-			objects.position.y -= 700
-		
-		sprite[0].scale = maxScale
-	else:
-		sprite[0].scale = maxScale / 2
-		shadow.scale *= 1.4
 	isMouseOver = true
+	
+	shadow.z_index = 1
+	for u in UI_Objects_OnTop: # always zoom on upper parts of the cards
+		u.z_index = 5
+	match Location:
+		"hand":
+			sprite[0].offset.y = -700 # move up the entire card
+			shadow.offset.y = -60 # move up shadow
+			
+			for objects in sprite[0].get_children(): # move up all the stats
+				objects.position.y -= 700
+			
+			sprite[0].z_index = 4 # border
+			sprite[3].z_index = 3 # image of the card
+			
+			sprite[0].scale = maxScale
+		"field":
+			SetOnMax()
+			
+			sprite[0].scale = maxScale
+		"lobby":
+			sprite[0].scale *= 1.4
+			shadow.scale *= 0.5
+			
+			sprite[0].z_index = 4 # border
+			sprite[3].z_index = 3 # image of the card
 	
 	if Team == "player" and inGame:
 		GameController.card_counter += 1
 
 
 func _on_mouse_exited(): # Stop override with mouse
-	shadow.hide()
-	shadow.process_mode = Node.PROCESS_MODE_DISABLED
+	if Team == "player":
+		shadow.hide()
+		shadow.process_mode = Node.PROCESS_MODE_DISABLED
 	
-	if Location == "field":
-		SetOnMini()
+	isMouseOver = false
 	
-	if Location == "hand" or Location == "lobby":
-		sprite[0].z_index = -3 # border
-		sprite[3].z_index = -4 # image of the card
-	else:
-		sprite[1].z_index = -3 # top part of the border
-		sprite[2].z_index = -7 # bottom part of the border
-		sprite[4].z_index = -4 # image of the card
-		for u in UI_Objects_OnDown:
-			u.z_index = -6 # bottom parts of the card
+	shadow.z_index = -4
 	for u in UI_Objects_OnTop:
 		u.z_index = -2 # upper parts of the card
-	shadow.z_index = -4
 	
-	if Location == "hand":
-		sprite[0].offset.y += 700
-		for objects in sprite[0].get_children():
-			objects.position.y += 700
-	
-	sprite[0].scale = minScale
-	shadow.scale /= 1.4
-	isMouseOver = false
+	match Location:
+		"hand":
+			sprite[0].offset.y = 0 # move down the entire card
+			shadow.offset.y = 0 # move down the shadow
+			
+			for objects in sprite[0].get_children(): # move down all the stats
+				objects.position.y += 700
+				
+			sprite[0].z_index = -3 # border
+			sprite[3].z_index = -4 # image of the card
+			
+			sprite[0].scale = minScale
+		"field":
+			SetOnMini()
+			
+			sprite[0].scale = minScale
+		"lobby":
+			sprite[0].scale /= 1.4
+			shadow.scale /= 0.5
+			
+			sprite[0].z_index = -3 # border
+			sprite[3].z_index = -4 # image of the card
 	
 	if Team == "player" and inGame:
 		GameController.card_counter -= 1
@@ -196,219 +216,254 @@ func _on_mouse_exited(): # Stop override with mouse
 
 func _on_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
-		if event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT and isMouseOver and isEnabled: # Click over a card with left mouse button
+		if event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT and isMouseOver and isEnabled and not isMoving: # Click over a card with left mouse button
 			if Team == "player" and GameController.turn == "player" and GameController.card_counter == 1:
-				if isCardSelected: # Dropping the cardwd
-					if not isMagic: # It's not a magic
-						if not fusion:
-							if (
-								len(currentPos) > 0 # Right position
-								and GameController.lymph >= Cost # Enough lymph 
-								and GameController.turn == "player" # Right turn
-								#and GameController.phase == "attack" # Right phase
-								and (GameController.turnType == "play" or GameController.turnType == "draw") # Right turn type
-								and Location == "hand" # Right card
-								and (Type == currentLoc[-1] or Type == "Versatile") # Right type
-								and not is_returned_to_hand # Right position
-								):
-									if (
-										(len(BaseId) == 0 and GameController.positionStatus[currentPos[-1]] == null) # free position
-										or 
-										(len(BaseId) > 0 and GameController.positionStatus[currentPos[-1]] != null and GameController.positionStatus[currentPos[-1]].id in BaseId) # his base his on this position
-									):
-										if len(BaseId) > 0 and GameController.positionStatus[currentPos[-1]].id in BaseId: # delete the old one
-											GameController.player_field_cards.erase(GameController.positionStatus[currentPos[-1]])
-											GameController.positionStatus[currentPos[-1]].queue_free()
-											GameController.card_counter = 1 # remove the deleted card
-										
-										Location = "field"
-										global_position = glowing_positioner[-1].global_position - Vector2(0,20)
-										Position = currentPos[-1]
-										GameController.positionStatus[Position] = self
-										
-										GameController.lymph -= Cost
-										
-										GameController.player_hand.erase(self)
-										GameController.UpdateHand()
-										
-										glowing_positioner[-1].hide()
-										ShiftBack()
-										
-										sprite[0].offset.y += 700 # Adjusting card offset
-										for objects in sprite[0].get_children(): # Adjusting statistics offset
-											objects.position.y += 700
-										
-										SetOnMini()
-										
-										get_tree().call_group("GUI_Manager", "_on_Update")
-										
-										if get_node_or_null("Common Effects/Rise").get_script():
-											get_node("Common Effects/Rise").Effect(Team, Position) # Call 'Rise' function of the played card
-										get_tree().call_group("OnDeploy", "Effect", Team, Position, self) # Call 'OnDeploy' functions
-										
-										GameController.player_field_cards.append(self)
-										
-										if stats_has_been_modified:
-											get_tree().call_group("ClientInstance", "send_play_card", id, Position, [Health, Attack, Speed, Weight, Cost]) # Send card and position to opponent
+				if isCardSelected: # Dropping the card
+					shadow.scale *= 2.8
+					if Location == "hand": # Right cardif not isMagic: # It's not a magic
+						shadow.hide()
+						if not isMagic: # It's not a magic
+							if len(currentPos) > 0: # Right position
+								if GameController.turnType == "play": # Right turn type
+									if GameController.lymph >= Cost: # Enough lymph
+										if Type == "Versatile" or Type == currentLoc[-1]: # Right type
+											if not is_returned_to_hand: # Right position
+												if (
+													(len(BaseId) == 0 and GameController.positionStatus[currentPos[-1]] == null) # free position
+													or 
+													(len(BaseId) > 0 and GameController.positionStatus[currentPos[-1]] != null and GameController.positionStatus[currentPos[-1]].id in BaseId) # his base his on this position
+												):
+													if len(BaseId) > 0: # If it's an evolution remove the base card
+														if GameController.positionStatus[currentPos[-1]].id in BaseId:
+															GameController.player_field_cards.erase(GameController.positionStatus[currentPos[-1]])
+															GameController.positionStatus[currentPos[-1]].queue_free()
+															GameController.card_counter = 1
+														else:
+															UserError("Evolution base missing")
+															global_position = old_position
+													
+													if fusion: # If it's a fusion remove the fusionable cards
+														if CheckForFusion():
+															for i in GameController.player_field_cards: # remove bases of fusion
+																if i.id in fusionid:
+																	GameController.player_field_cards.erase(i)
+																	GameController.positionStatus[i.Position] = null
+																	i.queue_free()
+														else:
+															UserError("Fusion cards missing")
+															global_position = old_position
+													
+													Location = "field"
+													global_position = glowing_positioner[-1].global_position - Vector2(0,20)
+													Position = currentPos[-1]
+													GameController.positionStatus[Position] = self
+													
+													GameController.lymph -= Cost
+													
+													GameController.player_hand.erase(self)
+													GameController.UpdateHand()
+													
+													glowing_positioner[-1].hide()
+													shadow.offset.y = 0
+													shadow.scale.x = maxScale.x * 9
+													shadow.scale.y = maxScale.y * 11
+													ShiftBack()
+													
+													sprite[0].offset.y += 700 # Adjusting card offset
+													for objects in sprite[0].get_children(): # Adjusting statistics offset
+														objects.position.y += 700
+													
+													SetOnMini()
+													
+													get_tree().call_group("GUI_Manager", "_on_Update")
+													
+													if get_node_or_null("Common Effects/Rise").get_script():
+														get_node("Common Effects/Rise").Effect(Team, Position) # Call 'Rise' function of the played card
+													get_tree().call_group("OnDeploy", "Effect", Team, Position, self) # Call 'OnDeploy' functions
+													
+													GameController.player_field_cards.append(self)
+													
+													if stats_has_been_modified:
+														get_tree().call_group("ClientInstance", "send_play_card", id, Position, [Health, Attack, Speed, Weight, Cost]) # Send card and position to opponent
+													else:
+														get_tree().call_group("ClientInstance", "send_play_card", id, Position) # Send card and position to opponent
+												else:
+													if len(BaseId) == 0:
+														UserError("Can't position card here")
+													else:
+														UserError("Evolution base missing")
+													global_position = old_position
+											else:
+												global_position = old_position
 										else:
-											get_tree().call_group("ClientInstance", "send_play_card", id, Position) # Send card and position to opponent
+											UserError("Can't position a "+Type.to_lower()+" card here")
+											global_position = old_position
 									else:
+										UserError("Not enough lymph")
 										global_position = old_position
+								else:
+									UserError("Can play card only if you choose to play")
+									global_position = old_position
 							else:
 								global_position = old_position
-						else: # It's a fusion
-							if (
-								len(currentPos) > 0 # Right position
-								and GameController.lymph >= Cost # Enough lymph 
-								and GameController.turn == "player" # Right turn
-								and GameController.phase == "attack" # Right phase
-								and (GameController.turnType == "play" or GameController.turnType == "draw") # Right turn type
-								and Location == "hand" # Right card
-								and (Type == currentLoc[-1] or Type == "Versatile") # Right type
-								and not is_returned_to_hand # Right position
-								and CheckForFusion() # Fusion cards are on the field
-								):
-									Location = "field"
-									global_position = glowing_positioner[-1].global_position - Vector2(0,20)
-									Position = currentPos[-1]
-									GameController.positionStatus[Position] = self
-									
-									GameController.lymph -= Cost
-									
-									GameController.player_hand.erase(self)
-									GameController.UpdateHand()
-									
-									glowing_positioner[-1].hide()
-									ShiftBack()
-									
-									sprite[0].offset.y += 700 # Adjusting card offset
-									for objects in sprite[0].get_children(): # Adjusting statistics offset
-										objects.position.y += 700
-									
-									SetOnMini()
-									
-									get_tree().call_group("GUI_Manager", "_on_Update")
-									
-									if get_node_or_null("Common Effects/Rise").get_script():
-										get_node("Common Effects/Rise").Effect(Team, Position) # Call 'Rise' function of the played card
-									get_tree().call_group("OnDeploy", "Effect", Team, Position, self) # Call 'OnDeploy' functions
-									
-									for i in GameController.player_field_cards: # remove bases of fusion
-										if i.id in fusionid:
-											GameController.player_field_cards.erase(i)
-											GameController.positionStatus[i.Position] = null
-											i.queue_free()
-									
-									GameController.player_field_cards.append(self)
-									
-									if stats_has_been_modified:
-										get_tree().call_group("ClientInstance", "send_play_card", id, Position, [Health, Attack, Speed, Weight, Cost]) # Send card and position to opponent
+						else: # It's a magic
+							if GameController.turnType == "play": # Right turn type
+								if Type == "Versatile" or GameController.phase == Type: # Right phase
+									if GameController.lymph >= Cost: # Enough lymph 
+										if not is_returned_to_hand: # Right position
+											if isRandom:
+												GameController.lymph -= Cost
+												
+												GameController.player_hand.erase(self)
+												GameController.UpdateHand()
+												
+												get_tree().call_group("GUI_Manager", "_on_Update")
+												
+												get_node("MagicEffect").Effect("player") # Call the magic effect ot the played card
+												get_tree().call_group("OnMagic", "Effect", Team) # Call 'OnMagic' functions
+												
+												get_tree().call_group("ClientInstance", "send_play_magic", id) # Send card and position to opponent
+												
+												GameController.card_counter -= 1
+												
+												queue_free()
+											else:
+												GameController.started_choosing_magic = self
+												GameController.type_of_pointer = "Magic"
+												GameController.selected_card_to_target_with_magic = null
+												
+												var scene = load("res://Scenes/Game/RuntimeScenes/EnemyPointer.tscn")
+												var instance = scene.instantiate()
+												add_child(instance)
+												
+												sprite[0].hide()
+												
+												get_tree().call_group("Deactivable", "Enable", false)
+										else:
+											global_position = old_position
 									else:
-										get_tree().call_group("ClientInstance", "send_play_card", id, Position) # Send card and position to opponent
-					else: # It's a magic
-						if (
-							GameController.lymph >= Cost # Enough lymph 
-							and GameController.turn == "player" # Right turn
-							and (Type == "Versatile" or GameController.phase == Type ) # Right phase
-							and (GameController.turnType == "play" or GameController.turnType == "draw") # Right turn type
-							and Location == "hand" # Right card
-							and not is_returned_to_hand # Right position
-							):
-								if isRandom:
-									GameController.lymph -= Cost
-									
-									GameController.player_hand.erase(self)
-									GameController.UpdateHand()
-									
-									get_tree().call_group("GUI_Manager", "_on_Update")
-									
-									get_node("MagicEffect").Effect("player") # Call the magic effect ot the played card
-									get_tree().call_group("OnMagic", "Effect", Team) # Call 'OnMagic' functions
-									
-									get_tree().call_group("ClientInstance", "send_play_magic", id) # Send card and position to opponent
-									
-									GameController.card_counter -= 1
-									
-									queue_free()
+										UserError("Not enough lymph")
+										global_position = old_position
 								else:
-									GameController.started_choosing_magic = self
-									GameController.type_of_pointer = "Magic"
-									GameController.selected_card_to_target_with_magic = null
-									
-									var scene = load("res://Scenes/Game/RuntimeScenes/EnemyPointer.tscn")
-									var instance = scene.instantiate()
-									add_child(instance)
-									
-									sprite[0].hide()
-									
-									get_tree().call_group("Deactivable", "Enable", false)
-						else:
-							global_position = old_position
+									UserError("Can't play a "+Type.to_lower()+" magic during "+GameController.phase+" phase")
+									global_position = old_position
+							else:
+								UserError("Can play card only if you choose to play")
+								global_position = old_position
 					isCardSelected = false
 				elif GameController.card_counter == 1:
 					if Location == "hand": # Taking the card
 						old_position = global_position
 						isCardSelected = true
-					if Location == "field" and not isTargetSelected and not isSearchingForEnemy and GameController.phase == "Attack" and currentLoc[-1] == "Attack" and turnInGame >= turnBlockedOnPlay and GameController.stress > GameController.player_current_stress: # Selecting the card to attack
-						GameController.started_attack_card = self
-						GameController.type_of_pointer = "Card"
-						isSearchingForEnemy = true
-						
-						var scene = load("res://Scenes/Game/RuntimeScenes/EnemyPointer.tscn")
-						var instance = scene.instantiate()
-						add_child(instance)
-						
-						get_tree().call_group("Deactivable", "Enable", false)
-					if Location == "field" and isTargetSelected and not isSearchingForEnemy and GameController.phase == "Attack" and currentLoc[-1] == "Attack" and turnInGame >= turnBlockedOnPlay: # Deselecting the card to attack
-						GameController.CancelAttack(self)
-						isTargetSelected = false
-						
-						GameController.player_current_stress -= 1
-					if Location == "field" and not isChooseDone and not isChoosingToDefend and GameController.phase == "Defense" and currentLoc[-1] == "Defense" and turnInGame >= turnBlockedOnPlay and not isBlockedByAbility: # Choosing what to do with the card
-						GameController.started_defende_card = self
-						isChoosingToDefend = true
-						
-						var scene = load("res://Scenes/Game/RuntimeScenes/DefenseChoosing.tscn")
-						var instance = scene.instantiate()
-						add_child(instance)
-						
-						get_tree().call_group("Deactivable", "Enable", false)
-						instance.global_position = global_position
-					if Location == "field" and isChooseDone and not isChoosingToDefend and GameController.phase == "Defense" and currentLoc == "Defense" and turnInGame >= turnBlockedOnPlay and not isBlockedByAbility: # Cancel choose on the card
-						GameController.CancelDefense(self)
-						isChooseDone = false
+						shadow.scale /= 2.8
+					if Location == "field":
+						if not isTargetSelected and not isSearchingForEnemy and currentLoc[-1] == "Attack": # Selecting the card to attack
+							if GameController.phase == "Attack":
+								if turnInGame >= turnBlockedOnPlay:
+									if GameController.stress > GameController.player_current_stress:
+										GameController.started_attack_card = self
+										GameController.type_of_pointer = "Card"
+										isSearchingForEnemy = true
+										
+										var scene = load("res://Scenes/Game/RuntimeScenes/EnemyPointer.tscn")
+										var instance = scene.instantiate()
+										add_child(instance)
+										
+										get_tree().call_group("Deactivable", "Enable", false)
+									else:
+										UserError("Not enough stress")
+								else:
+									UserError("The card is still sleeping")
+							else:
+								UserError("Can't attack during defense phase")
+						if isTargetSelected and not isSearchingForEnemy and GameController.phase == "Attack" and currentLoc[-1] == "Attack" and turnInGame >= turnBlockedOnPlay: # Deselecting the card to attack
+							GameController.CancelAttack(self)
+							isTargetSelected = false
+							
+							GameController.player_current_stress -= 1
+							
+							shadow.set_texture(load("res://Resources/CardGlow.png"))
+						if not isChooseDone and not isChoosingToDefend  and currentLoc[-1] == "Defense": # Choosing what to do with the card
+							if GameController.phase == "Defense":
+								if turnInGame >= turnBlockedOnPlay:
+									if not isBlockedByAbility:
+										GameController.started_defende_card = self
+										isChoosingToDefend = true
+										
+										var scene = load("res://Scenes/Game/RuntimeScenes/DefenseChoosing.tscn")
+										var instance = scene.instantiate()
+										add_child(instance)
+										
+										get_tree().call_group("Deactivable", "Enable", false)
+										instance.global_position = global_position
+									else:
+										UserError("Blocked by ability")
+								else:
+									UserError("The card is still sleeping")
+							else:
+								UserError("Can't defende during attack phase")
+						if isChooseDone and not isChoosingToDefend and GameController.phase == "Defense" and currentLoc[-1] == "Defense" and turnInGame >= turnBlockedOnPlay and not isBlockedByAbility: # Cancel choose on the card
+							GameController.CancelDefense(self)
+							isChooseDone = false
+							
+							shadow.set_texture(load("res://Resources/CardGlow.png"))
 		if event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT and isMouseOver and isEnabled: # Click over a card with right mouse button
 			if Team == "player" and GameController.turn == "player":
-				if isCardSelected: # Dropping the card
-					if (
-						len(currentPos) > 0 # Right position
-						and GameController.positionStatus[currentPos[-1]] == null
-						and GameController.turn == "player" # Right turn
-						and GameController.phase == "Attack" # Right phase
-						and (GameController.turnType == "play" or GameController.turnType == "draw") # Right turn type
-						and Location == "field" # Right card
-						and Type == "Versatile" # Right type
-						):
-						
-						global_position = glowing_positioner[-1].global_position - Vector2(0,20)
-						var oldPos = Position
-						GameController.positionStatus[oldPos] = null
-						Position = currentPos[-1]
-						GameController.positionStatus[Position] = self
-						
-						alreadyMoved = true
-						turnInGame = turnBlockedOnPlay - 1
-						
-						SetOnMini()
-						
-						get_tree().call_group("ClientInstance", "send_move_card", oldPos, Position) # Send old and new position to opponent
+				if Location == "field":
+					if Type == "Versatile":
+						if isCardSelected: # Dropping the card
+							shadow.hide()
+							if isMoving:
+								shadow.scale *= 2.8
+								if len(currentPos) > 0:
+									if GameController.turnType == "play" or GameController.turnType == "draw": # Right turn type
+										if GameController.positionStatus[currentPos[-1]] == null:
+											global_position = glowing_positioner[-1].global_position - Vector2(0,20)
+											var oldPos = Position
+											GameController.positionStatus[oldPos] = null
+											Position = currentPos[-1]
+											GameController.positionStatus[Position] = self
+											
+											alreadyMoved = true
+											turnInGame = turnBlockedOnPlay - 1
+											
+											glowing_positioner[-1].hide()
+											shadow.offset.y = 0
+											shadow.scale.x = maxScale.x * 9
+											shadow.scale.y = maxScale.y * 11
+											ShiftBack()
+											SetOnMini()
+											
+											get_tree().call_group("OnMove", "Effect", self) # Call 'OnMove' functions
+											
+											get_tree().call_group("ClientInstance", "send_move_card", oldPos, Position) # Send old and new position to opponent
+										else:
+											UserError("Can't position card here")
+											global_position = old_position
+									else:
+										UserError("Can move card only if you choose to play or draw")
+										global_position = old_position
+								else:
+									global_position = old_position
+								isCardSelected = false
+								isMoving = false
+						else:
+							if not isTargetSelected and not isSearchingForEnemy and not isChooseDone and not isChoosingToDefend and not isMoving: # Move the card if it's versatile
+								if not alreadyMoved:
+									if turnInGame >= turnBlockedOnPlay:
+										if GameController.turnType == "play" or GameController.turnType == "draw":
+											old_position = global_position
+											isCardSelected = true
+											isMoving = true
+											shadow.scale /= 2.8
+										else:
+											UserError("Can move card only if you choose to play or draw")
+									else:
+										UserError("The card is still sleeping")
+								else:
+									UserError("Card already moved this turn")
 					else:
-						global_position = old_position
-					isCardSelected = false
-				else:
-					if Location == "field" and not isTargetSelected and not isSearchingForEnemy and not isChooseDone and not isChoosingToDefend and not alreadyMoved and GameController.phase == "Attack" and Type == "Versatile" and (GameController.turnType == "play" or GameController.turnType == "draw") and turnInGame >= turnBlockedOnPlay: # Move the card if it's versatile
-						old_position = global_position
-						isCardSelected = true
+						UserError("Can move card only if it's versatile")
 		if event.is_pressed() and event.button_index == MOUSE_BUTTON_LEFT and isMouseOver and not inGame:
 			SelectCardForDeck()
 
@@ -418,7 +473,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 
 func _on_area_entered(area):
 	if area.get_groups():
-		if area.get_groups()[0] == "Positioner" and area.get_groups()[4] == "Player" and not isSearchingForEnemy and not isChoosingToDefend and Location == "hand": # Dropping the card on a valid position
+		if area.get_groups()[0] == "Positioner" and area.get_groups()[4] == "Player" and not isSearchingForEnemy and not isChoosingToDefend and (Location == "hand" or isMoving): # Dropping the card on a valid position
 			currentPos.append(String(area.get_groups()[1]))
 			currentLoc.append(String(area.get_groups()[2]))
 			glowing_positioner.append(area)
@@ -439,7 +494,7 @@ func _on_area_entered(area):
 
 func _on_area_exited(area):
 	if area.get_groups():
-		if area.get_groups()[0] == "Positioner" and not isSearchingForEnemy and not isChoosingToDefend and String(area.get_groups()[1]) in currentPos and Location == "hand": # Exiting by dropping the card on a valid position
+		if area.get_groups()[0] == "Positioner" and not isSearchingForEnemy and not isChoosingToDefend and String(area.get_groups()[1]) in currentPos and (Location == "hand" or isMoving): # Exiting by dropping the card on a valid position
 			currentPos.erase(String(area.get_groups()[1]))
 			currentLoc.erase(String(area.get_groups()[2]))
 			area.hide()
@@ -468,6 +523,16 @@ func get_all_children(in_node, arr:=[]):
 	return arr
 
 
+func UserError(t):
+	error_label.text = t
+	error_label.modulate.a = 0
+	
+	var tween = get_tree().create_tween() # show and then hide the error message
+	tween.tween_property(error_label, "modulate", Color(1,0,0,1), 1.5) # visible red
+	tween.tween_property(error_label, "modulate", Color(1,0,0,0), 2.5) # transparent red
+
+
+
 ### GROUP RELATED ASYNC SIGNALS ###
 
 
@@ -489,14 +554,14 @@ func SetOnMax(): # Function to maximize the card
 		sprite[2].hide()
 
 
-func ShiftForward(): # Function called to change z_index of all part of the card (forward)
-	sprite[1].z_index = 4 # top part of the border
-	sprite[2].z_index = 0 # bottom part of the border
-	sprite[4].z_index = 3 # image of the card
-	for u in UI_Objects_OnDown:
-		u.z_index = 1 # bottom parts of the card
-	for u in UI_Objects_OnTop:
-		u.z_index = 5 # upper parts of the card
+#func ShiftForward(): # Function called to change z_index of all part of the card (forward)
+#	sprite[1].z_index = 4 # top part of the border
+#	sprite[2].z_index = 0 # bottom part of the border
+#	sprite[4].z_index = 3 # image of the card
+#	for u in UI_Objects_OnDown:
+#		u.z_index = 1 # bottom parts of the card
+#	for u in UI_Objects_OnTop:
+#		u.z_index = 5 # upper parts of the card
 
 
 func ShiftBack(): # Function called to change z_index of all part of the card (back)
@@ -519,16 +584,16 @@ func isMagicOk(who, flag : bool): # Fuction called when a pointer is going to be
 			
 			get_tree().call_group("GUI_Manager", "_on_Update")
 			
-			get_node("MagicEffect").Effect("player") # Call the magic effect ot the played card
+			get_node("MagicEffect").Effect("player") # Call the magic effect to the played card
 			get_tree().call_group("OnMagic", "Effect", Team) # Call 'OnMagic' functions
 			
 			get_tree().call_group("ClientInstance", "send_play_magic", id) # Send card and position to opponent
 			
-			GameController.card_counter = 0
+			if GameController.card_counter != 1:
+				GameController.card_counter -= 1
 			
 			queue_free()
 		else:
-			print("failed")
 			global_position = old_position
 			isCardSelected = false
 			
@@ -789,6 +854,8 @@ func CreateCard(values, card_id): # Function only when the card is going to be c
 	
 	minScale = sprite[0].scale
 	maxScale = sprite[0].scale * 2.75
+	shadow.scale.x = maxScale.x * 9
+	shadow.scale.y = maxScale.y * 11
 	
 	UpdateStats(self)
 	

@@ -1,6 +1,6 @@
 extends Node
 
-@export var client_id = "client1"
+@export var client_id = "client1" + str(randi_range(1,10000))
 
 var socket = WebSocketPeer.new()
 
@@ -17,7 +17,7 @@ var GUI_Manager # GUI manager reference
 
 
 func _ready():
-	socket.connect_to_url("ws://192.168.97.220:8765")
+	socket.connect_to_url("ws://192.168.1.81:8765")
 
 
 func _process(_delta):

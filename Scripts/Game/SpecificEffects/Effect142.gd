@@ -71,7 +71,7 @@ func Effect(team): # Summon a random dead ally dwarf
 					GameController.add_child(GameController.player_field_cards[-1]) # Create card
 					
 					var positioner_pos = get_tree().get_first_node_in_group("PP"+str(i)) # Get the right position
-					GameController.player_field_cards[-1].global_position = positioner_pos.global_position # Move card to the right position
+					GameController.player_field_cards[-1].global_position = positioner_pos.global_position - Vector2(0,20) # Move card to the right position
 					
 					GameController.positionStatus[str(i)] = GameController.player_field_cards[-1]
 					

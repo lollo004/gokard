@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cn7qq6h6vk6m1"]
+[gd_scene load_steps=11 format=3 uid="uid://cn7qq6h6vk6m1"]
 
 [ext_resource type="PackedScene" uid="uid://haworbi8gah1" path="res://Scenes/Game/Positioner.tscn" id="1_kj4pf"]
 [ext_resource type="Script" path="res://Scripts/Game/GUIManagement.gd" id="2_1wmxs"]
@@ -7,9 +7,12 @@
 [ext_resource type="PackedScene" uid="uid://c3ccrckpghnpv" path="res://Scenes/Game/TurnSelecter.tscn" id="4_fkvir"]
 [ext_resource type="Texture2D" uid="uid://bml2v6ykeg5i2" path="res://Resources/BlackScreen.png" id="5_8ofge"]
 [ext_resource type="PackedScene" uid="uid://bc04oldvebs2w" path="res://Scenes/Game/Leader.tscn" id="5_cjfwb"]
+[ext_resource type="FontFile" uid="uid://b4cn53nlm347x" path="res://MoriaCitadel.TTF" id="6_8scj8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fyicb"]
 size = Vector2(958.5, 58)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_dp5o3"]
 
 [node name="Main Scene" type="Node"]
 
@@ -50,12 +53,13 @@ offset_bottom = 20.04
 text = "Opponent Turn"
 metadata/_edit_use_anchors_ = true
 
-[node name="Game Manager" type="Node" parent="GUI/Management" groups=["Deactivable", "GameController"]]
+[node name="Game Manager" type="Node" parent="GUI/Management" node_paths=PackedStringArray("error_label") groups=["Deactivable", "GameController"]]
 script = ExtResource("3_ovi4y")
 turn = "player"
 phase = "Defense"
 player_name = "player_name"
 enemy_name = "enemy_name"
+error_label = NodePath("../User Error")
 
 [node name="TurnSelector" parent="GUI/Management" instance=ExtResource("4_fkvir")]
 visibility_layer = 7
@@ -79,6 +83,22 @@ z_index = -10
 position = Vector2(508, 271)
 scale = Vector2(1.35885, 1.05125)
 texture = ExtResource("5_8ofge")
+
+[node name="User Error" type="Label" parent="GUI/Management"]
+material = SubResource("CanvasItemMaterial_dp5o3")
+offset_left = 355.0
+offset_top = 268.0
+offset_right = 655.0
+offset_bottom = 318.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("6_8scj8")
+theme_override_font_sizes/font_size = 15
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
 
 [node name="Player" type="Node" parent="GUI"]
 

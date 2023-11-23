@@ -21,7 +21,7 @@ visibility_layer = 3
 z_as_relative = false
 scale = Vector2(0.1, 0.1)
 script = ExtResource("1_oo0sj")
-shadow = NodePath("Shadow Total")
+shadow = NodePath("Basic Shadow")
 metadata/_edit_vertical_guides_ = [-222.0]
 metadata/_edit_group_ = true
 
@@ -32,7 +32,6 @@ scale = Vector2(0.999999, 0.999999)
 shape = SubResource("RectangleShape2D_yvtci")
 
 [node name="Border Total" type="Sprite2D" parent="." groups=["Border", "Total"]]
-visible = false
 z_index = -3
 z_as_relative = false
 position = Vector2(1.24176e-07, 0)
@@ -324,17 +323,17 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Shadow Total" type="Sprite2D" parent="." groups=["Shadow"]]
+[node name="Basic Shadow" type="Sprite2D" parent="." groups=["Shadow"]]
 process_mode = 4
 visible = false
 z_index = -4
 z_as_relative = false
 material = SubResource("ShaderMaterial_xxu44")
-position = Vector2(0, -1.52588e-05)
 scale = Vector2(4.5, 5.45)
 texture = ExtResource("7_3gh8o")
 
 [node name="Border Up" type="Sprite2D" parent="." groups=["Border", "Up"]]
+visible = false
 z_index = -3
 z_as_relative = false
 scale = Vector2(0.795213, 0.795213)
@@ -499,6 +498,8 @@ metadata/_edit_use_anchors_ = true
 [node name="OnDeploy" type="Node" parent="Common Effects" groups=["OnDeploy"]]
 
 [node name="OnBoost" type="Node" parent="Common Effects" groups=["OnBoost"]]
+
+[node name="OnMove" type="Node" parent="Common Effects" groups=["OnMove"]]
 
 [node name="Zippy" type="Node" parent="Common Effects" groups=["Zippy"]]
 

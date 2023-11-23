@@ -2,4 +2,8 @@ Animations and feedbacks
 
 (131) add hyena !!
 
-OPTIMIZE LOADING SCREENS AND EFFECTS
+OPTIMIZE LOADING SCREENS
+
+check connection messages...
+
+(make more order on resources sub-folder)

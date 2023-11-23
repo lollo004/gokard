@@ -22,6 +22,8 @@ var max_stress : int = 5
 
 var turnType : String = "" # Action to do in current turn (play, draw, lymph, stress)
 
+@export var error_label : Label
+
 ## Leaders Variables ##
 
 var player_leader_special_effect # Special effect's script
@@ -649,9 +651,21 @@ func PlayEnemyCard(id, pos, stats):
 
 func MoveEnemyCard(old_pos, new_pos):
 	var positioner_pos = get_tree().get_first_node_in_group("EP"+str(new_pos))
-	enemy_cards[old_pos].global_position = positioner_pos.global_position # Swap cards position
+	enemy_cards[old_pos].global_position = positioner_pos.global_position - Vector2(0,20) # Swap cards position
 	enemy_cards[new_pos] = enemy_cards[old_pos] # Add new position to card dict
 	enemy_cards.erase(old_pos) # Remove old position from card dict
+	
+	enemy_cards[new_pos].Position = new_pos
+	
+	enemy_cards[new_pos].SetOnMini()
+	enemy_cards[new_pos].ShiftBack()
+	
+	for i in player_attacks: # if someone was attacking him than keep doing it
+		if player_attacks[i] == old_pos:
+			player_attacks[i] = new_pos
+			break
+	
+	get_tree().call_group("OnMove", "Effect", self) # Call 'OnMove' functions
 	
 	get_tree().call_group("GUI_Manager", "_on_Update")
 
@@ -713,3 +727,4 @@ func ShowOneCard(id): # Function called when played "Light on the dark" card
 func ShowCard(): # Delete the card after 3.5 seconds
 	current_showed_card_ref[0].queue_free()
 	current_showed_card_ref.remove_at(0)
+

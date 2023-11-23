@@ -11,15 +11,16 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qakxp"]
 size = Vector2(600, 1000)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8kgr5"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nw844"]
 shader = ExtResource("2_u24so")
 
-[node name="Area2D" type="Area2D" groups=["Card", "Deactivable"]]
+[node name="Area2D" type="Area2D" node_paths=PackedStringArray("shadow") groups=["Card", "Deactivable"]]
 z_as_relative = false
 position = Vector2(-1, 2)
 scale = Vector2(0.1, 0.1)
 script = ExtResource("1_ynf8k")
 isMagic = true
+shadow = NodePath("Basic Shadow")
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -27,13 +28,12 @@ z_index = -7
 position = Vector2(1.43051e-05, 1.49012e-05)
 shape = SubResource("RectangleShape2D_qakxp")
 
-[node name="Shadow" type="Sprite2D" parent="." groups=["Shadow"]]
+[node name="Basic Shadow" type="Sprite2D" parent="." groups=["Shadow"]]
 process_mode = 4
 visible = false
 z_index = -4
 z_as_relative = false
-material = SubResource("ShaderMaterial_8kgr5")
-position = Vector2(0, -1.52588e-05)
+material = SubResource("ShaderMaterial_nw844")
 scale = Vector2(4.5, 5.45)
 texture = ExtResource("3_kdmwl")
 
