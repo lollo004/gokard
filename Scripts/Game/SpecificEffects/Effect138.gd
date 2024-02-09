@@ -19,5 +19,16 @@ func Effect(team): # Destroy all enemies that has less then 10 attack
 		for c in array_temp: # for each one copy the field position
 			c.BoostByPos(c.Position, "health", -c.Health, "enemy") # Kill
 		
-		get_tree().call_group("ClientInstance", "send_effect_138") # Send to opponent cards to boost
+		#get_tree().call_group("ClientInstance", "send_effect_138") # Send to opponent cards to boost
+	if team == "enemy":
+		array_temp = [] + GameController.player_field_cards
+		
+		for o in array_temp: # remove object with more than 9 attack
+			if o.Attack >= 10:
+				array_temp.erase(o)
+		
+		for c in array_temp: # for each one copy the field position
+			c.BoostByPos(c.Position, "health", -c.Health, "player") # Kill
+		
+		#get_tree().call_group("ClientInstance", "send_effect_138") # Send to opponent cards to boost
 

@@ -452,7 +452,7 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		},
 	116: {
 		"health" : 5,
-		"attack" : 2,
+		"attack" : 0,
 		"speed" : 5,
 		"weight" : 72,
 		"cost" : 4,
@@ -955,8 +955,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 1
 		},
 	134: {
-		"health" : 3,
-		"attack" : 4,
+		"health" : 2,
+		"attack" : 1,
 		"speed" : 5,
 		"weight" : 36,
 		"cost" : 4,
@@ -1015,7 +1015,7 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"canBePlayed" : true,"tier" : 2
 		},
 	138: {
-		"cost" : 4,
+		"cost" : 6,
 		"name" : "Landslide",
 		"gene" : "Dwarf",
 		"deviation" : "Miner",

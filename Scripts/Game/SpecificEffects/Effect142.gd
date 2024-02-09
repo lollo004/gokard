@@ -26,7 +26,6 @@ func Effect(team): # Summon a random dead ally dwarf
 					else: #attackers
 						free_def = true
 			
-			
 			for a in GameController.player_deaths: #divide deaths by type
 				var scene = load("res://Scenes/Game/Cards/Card.tscn") # Load card resources
 				var instance = scene.instantiate() # Instantiate card resources
@@ -49,17 +48,19 @@ func Effect(team): # Summon a random dead ally dwarf
 				final_array += death_defenders
 			final_array += death_versatiles
 			
-			var rnd = randi_range(0, len(final_array) - 1)
-			
-			GameController.player_field_cards.append(final_array[rnd]) # Save card instance
+			if len(final_array) != 0:
+				if len(final_array) == 1:
+					GameController.player_field_cards.append(final_array[0]) # Save card instance
+				else:
+					GameController.player_field_cards.append(final_array[Data.RANDOM.randi_range(0, len(final_array) - 1)]) # Save card instance
 			
 			for i in range(1,10): # 1-9
 				if (
 					GameController.positionStatus[str(i)] == null and 
 					(
-						(final_array[rnd].Type == "Attack" and i % 2 != 0) or
-						(final_array[rnd].Type == "Defense" and i % 2 == 0) or
-						final_array[rnd].Type == "Versatile"
+						(GameController.player_field_cards[-1].Type == "Attack" and i % 2 != 0) or
+						(GameController.player_field_cards[-1].Type == "Defense" and i % 2 == 0) or
+						GameController.player_field_cards[-1].Type == "Versatile"
 					)
 					):
 					pos_to_send = i
@@ -75,7 +76,12 @@ func Effect(team): # Summon a random dead ally dwarf
 					
 					GameController.positionStatus[str(i)] = GameController.player_field_cards[-1]
 					
-					get_tree().call_group("ClientInstance", "send_effect_142", pos_to_send, final_array[rnd].id) # Send to opponent cards to spawn
+					var rnd_seed = Data.RANDOM.randi_range(1,100000)
+					Data.RANDOM.set_seed(hash(rnd_seed)) # randomize seed according to other client
 					
-					return # stop the 'for loop'
+					get_tree().call_group("ClientInstance", "send_effect_142", pos_to_send, GameController.player_field_cards[-1].id, rnd_seed) # Send to opponent cards to spawn
+					
+					break # stop the 'for loop'
+#	else:
+#		Data.RANDOM.randi_range(0,1) # Sync clients seed
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://v2b701ybofyy"
-path="res://.godot/imported/Brown.png-c15c00a47a011d70774acda4e2b4a076.ctex"
+uid="uid://428x1x6n3rvw"
+path="res://.godot/imported/EnemyPointer.png-90fa24209f025e85cd543616db1838b7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/Brown.png"
-dest_files=["res://.godot/imported/Brown.png-c15c00a47a011d70774acda4e2b4a076.ctex"]
+source_file="res://Resources/MainScene/EnemyPointer.png"
+dest_files=["res://.godot/imported/EnemyPointer.png-90fa24209f025e85cd543616db1838b7.ctex"]
 
 [params]
 

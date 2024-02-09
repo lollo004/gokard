@@ -12,6 +12,4 @@ func Effect(_team): # Increment stress by 1
 		GameController.stress += 1
 		
 		get_tree().call_group("GUI_Manager", "_on_Update")
-		
-		get_tree().call_group("ClientInstance", "send_effect_140") # Send to opponent cards to boost
 

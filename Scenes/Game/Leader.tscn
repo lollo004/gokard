@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://Scripts/Game/Leader.gd" id="1_lpvsh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bncrx"]
-size = Vector2(1531, 1023)
+size = Vector2(970, 1023)
 
 [node name="Hero" type="Area2D" groups=["Leader"]]
 scale = Vector2(0.1, 0.1)
@@ -12,11 +12,10 @@ script = ExtResource("1_lpvsh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(1.52588e-05, 0)
-scale = Vector2(1.58333, 1)
 texture = ExtResource("1_dp78f")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-0.5, 3.5)
+scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_bncrx")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

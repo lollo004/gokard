@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://drnfbfupe13lk"
-path="res://.godot/imported/DeckBackground.png-714eadc5897b997c819e10eb1078d644.ctex"
+uid="uid://ci7df55rv1i7o"
+path="res://.godot/imported/CardGlow.png-51135d646e3b19f10272b968857ac144.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/DeckBackground.png"
-dest_files=["res://.godot/imported/DeckBackground.png-714eadc5897b997c819e10eb1078d644.ctex"]
+source_file="res://Resources/CardCreation/CardGlow.png"
+dest_files=["res://.godot/imported/CardGlow.png-51135d646e3b19f10272b968857ac144.ctex"]
 
 [params]
 

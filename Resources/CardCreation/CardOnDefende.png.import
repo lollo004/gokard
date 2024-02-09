@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bwoo5mfx3pr61"
-path="res://.godot/imported/CardGlow.png-d3620f499bedc7bd4a5fede46280f560.ctex"
+uid="uid://be3wpj1ymauvy"
+path="res://.godot/imported/CardOnDefende.png-7851580656fce6080667ca1016ba0cb7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/CardGlow.png"
-dest_files=["res://.godot/imported/CardGlow.png-d3620f499bedc7bd4a5fede46280f560.ctex"]
+source_file="res://Resources/CardCreation/CardOnDefende.png"
+dest_files=["res://.godot/imported/CardOnDefende.png-7851580656fce6080667ca1016ba0cb7.ctex"]
 
 [params]
 

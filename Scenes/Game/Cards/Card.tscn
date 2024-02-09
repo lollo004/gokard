@@ -1,14 +1,14 @@
 [gd_scene load_steps=12 format=3 uid="uid://bp6kelnxloeu"]
 
 [ext_resource type="Script" path="res://Scripts/Game/Card.gd" id="1_oo0sj"]
-[ext_resource type="Texture2D" uid="uid://di3yqxlhkmhtb" path="res://Resources/Card.png" id="2_gkp3r"]
+[ext_resource type="Texture2D" uid="uid://cb283xrwlkwgt" path="res://Resources/CardCreation/Card.png" id="2_whff6"]
 [ext_resource type="Texture2D" uid="uid://brpi8icm35mnd" path="res://Resources/Images/Card0.png" id="3_t58ka"]
 [ext_resource type="FontFile" uid="uid://b4cn53nlm347x" path="res://MoriaCitadel.TTF" id="4_451og"]
-[ext_resource type="Texture2D" uid="uid://c8gg00c35k182" path="res://Resources/GameCard_Up.png" id="5_o87nf"]
-[ext_resource type="Texture2D" uid="uid://blcge2560xji5" path="res://Resources/Versatile.png" id="5_q0jmw"]
-[ext_resource type="Texture2D" uid="uid://b8be2r4qvylo3" path="res://Resources/GameCard_Down.png" id="6_8kj53"]
-[ext_resource type="Texture2D" uid="uid://bwoo5mfx3pr61" path="res://Resources/CardGlow.png" id="7_3gh8o"]
+[ext_resource type="Texture2D" uid="uid://c181aqdh62aff" path="res://Resources/CardCreation/Versatile.png" id="5_c42ws"]
+[ext_resource type="Texture2D" uid="uid://ci7df55rv1i7o" path="res://Resources/CardCreation/CardGlow.png" id="7_0iupl"]
 [ext_resource type="Shader" path="res://Resources/Shaders/Card.gdshader" id="8_06pnw"]
+[ext_resource type="Texture2D" uid="uid://cqyp8b7xy4h35" path="res://Resources/CardCreation/GameCard_Up.png" id="8_30f0g"]
+[ext_resource type="Texture2D" uid="uid://bux42wt5sjjk2" path="res://Resources/CardCreation/GameCard_Down.png" id="9_aly8h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yvtci"]
 size = Vector2(600, 820.001)
@@ -36,7 +36,7 @@ z_index = -3
 z_as_relative = false
 position = Vector2(1.24176e-07, 0)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_gkp3r")
+texture = ExtResource("2_whff6")
 
 [node name="Sprite" type="Sprite2D" parent="Border Total" groups=["Sprite"]]
 visibility_layer = 3
@@ -61,11 +61,11 @@ offset_bottom = -460.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_outline_size = 5
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 30
 theme_override_fonts/font = ExtResource("4_451og")
-theme_override_font_sizes/font_size = 100
+theme_override_font_sizes/font_size = 175
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -86,11 +86,11 @@ offset_bottom = -460.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_outline_size = 5
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 30
 theme_override_fonts/font = ExtResource("4_451og")
-theme_override_font_sizes/font_size = 100
+theme_override_font_sizes/font_size = 175
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -111,11 +111,11 @@ offset_bottom = -115.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_outline_size = 5
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 30
 theme_override_fonts/font = ExtResource("4_451og")
-theme_override_font_sizes/font_size = 70
+theme_override_font_sizes/font_size = 175
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -136,11 +136,11 @@ offset_bottom = -115.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_outline_size = 5
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 30
 theme_override_fonts/font = ExtResource("4_451og")
-theme_override_font_sizes/font_size = 70
+theme_override_font_sizes/font_size = 175
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -161,11 +161,11 @@ offset_bottom = -1830.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_outline_size = 5
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 30
 theme_override_fonts/font = ExtResource("4_451og")
-theme_override_font_sizes/font_size = 85
+theme_override_font_sizes/font_size = 175
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -188,6 +188,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 10
 theme_override_fonts/font = ExtResource("4_451og")
 theme_override_font_sizes/font_size = 45
 text = "Name"
@@ -212,6 +213,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 10
 theme_override_fonts/font = ExtResource("4_451og")
 theme_override_font_sizes/font_size = 35
 text = "Gene"
@@ -236,6 +238,7 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 10
 theme_override_fonts/font = ExtResource("4_451og")
 theme_override_font_sizes/font_size = 35
 text = "Deviation"
@@ -272,8 +275,8 @@ metadata/_edit_use_anchors_ = true
 z_index = -2
 z_as_relative = false
 position = Vector2(460, -885)
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("5_q0jmw")
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("5_c42ws")
 
 [node name="Base" type="Label" parent="Border Total" groups=["Base"]]
 z_index = -2
@@ -314,10 +317,11 @@ offset_bottom = -979.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 15
 theme_override_fonts/font = ExtResource("4_451og")
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 75
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -330,14 +334,14 @@ z_index = -4
 z_as_relative = false
 material = SubResource("ShaderMaterial_xxu44")
 scale = Vector2(4.5, 5.45)
-texture = ExtResource("7_3gh8o")
+texture = ExtResource("7_0iupl")
 
 [node name="Border Up" type="Sprite2D" parent="." groups=["Border", "Up"]]
 visible = false
 z_index = -3
 z_as_relative = false
 scale = Vector2(0.795213, 0.795213)
-texture = ExtResource("5_o87nf")
+texture = ExtResource("8_30f0g")
 
 [node name="Sprite" type="Sprite2D" parent="Border Up" groups=["Sprite"]]
 visibility_layer = 3
@@ -351,7 +355,7 @@ texture = ExtResource("3_t58ka")
 visibility_layer = 3
 z_index = -7
 z_as_relative = false
-texture = ExtResource("6_8kj53")
+texture = ExtResource("9_aly8h")
 
 [node name="Attack" type="Label" parent="Border Up" groups=["Attack"]]
 z_index = -2
@@ -368,11 +372,11 @@ offset_bottom = -840.161
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_outline_size = 5
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 30
 theme_override_fonts/font = ExtResource("4_451og")
-theme_override_font_sizes/font_size = 65
+theme_override_font_sizes/font_size = 135
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -393,17 +397,18 @@ offset_bottom = -840.161
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_outline_size = 5
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 30
 theme_override_fonts/font = ExtResource("4_451og")
-theme_override_font_sizes/font_size = 65
+theme_override_font_sizes/font_size = 135
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Speed" type="Label" parent="Border Up" groups=["Speed"]]
+visible = false
 z_index = -6
 z_as_relative = false
 anchors_preset = 8
@@ -418,17 +423,18 @@ offset_bottom = -47.3176
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_outline_size = 5
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 30
 theme_override_fonts/font = ExtResource("4_451og")
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 100
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Weight" type="Label" parent="Border Up" groups=["Weight"]]
+visible = false
 z_index = -6
 z_as_relative = false
 anchors_preset = 8
@@ -443,11 +449,11 @@ offset_bottom = -47.3176
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_outline_size = 5
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 30
 theme_override_fonts/font = ExtResource("4_451og")
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 100
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -468,10 +474,11 @@ offset_bottom = -491.624
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 15
 theme_override_fonts/font = ExtResource("4_451og")
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 75
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1

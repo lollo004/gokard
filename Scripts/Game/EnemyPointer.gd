@@ -29,5 +29,8 @@ func _on_input_event(_viewport, event, _shape_idx):
 					get_tree().call_group("Card", "isMagicOk", GameController.started_choosing_magic, false)
 			
 			get_tree().call_group("Deactivable", "Enable", true)
+			
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			
 			queue_free() # Delete the object at the end of selection or deselection
 

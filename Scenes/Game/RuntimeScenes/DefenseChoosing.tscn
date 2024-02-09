@@ -1,7 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://c2cunjvpu6uoa"]
+[gd_scene load_steps=8 format=3 uid="uid://c2cunjvpu6uoa"]
 
 [ext_resource type="Script" path="res://Scripts/Game/ChooseDefense.gd" id="1_6nsuf"]
-[ext_resource type="Texture2D" uid="uid://8ifvl8oyqb3u" path="res://Resources/TurnSelector.png" id="1_hl62r"]
+[ext_resource type="Texture2D" uid="uid://42eu08t2kd6k" path="res://Resources/Menu/EffectFrame.png" id="2_ymcj3"]
+[ext_resource type="FontFile" uid="uid://b4cn53nlm347x" path="res://MoriaCitadel.TTF" id="3_43vm4"]
+[ext_resource type="Texture2D" uid="uid://66tmoe5st8ab" path="res://Resources/CardCreation/Defense.png" id="4_qidq1"]
+[ext_resource type="Texture2D" uid="uid://hnosx70fjwbx" path="res://Resources/MainScene/Close.png" id="5_i4bex"]
+[ext_resource type="Texture2D" uid="uid://dgnk36tkmgoyk" path="res://Resources/MainScene/Special.png" id="6_6yp8w"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_umrwd"]
 size = Vector2(204, 102)
@@ -14,32 +18,83 @@ script = ExtResource("1_6nsuf")
 shape = SubResource("RectangleShape2D_umrwd")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("1_hl62r")
+scale = Vector2(2, 2)
+texture = ExtResource("2_ymcj3")
 
 [node name="Defende Button" type="Button" parent="Sprite2D"]
-offset_left = -900.0
-offset_top = -250.0
-offset_right = -400.0
-offset_bottom = 250.0
+anchors_preset = -1
+anchor_left = 0.237
+anchor_top = 0.287
+anchor_right = 0.237
+anchor_bottom = 0.287
+offset_left = -692.688
+offset_top = -346.944
+offset_right = 339.312
+offset_bottom = 173.056
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.35, 0.35)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_43vm4")
 theme_override_font_sizes/font_size = 50
-text = "DEFENDE"
+icon = ExtResource("2_ymcj3")
+icon_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D/Defende Button"]
+z_index = 1
+position = Vector2(515, 250)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("4_qidq1")
 
 [node name="Cancel Button" type="Button" parent="Sprite2D"]
-offset_left = -250.0
-offset_top = -250.0
-offset_right = 250.0
-offset_bottom = 250.0
+anchors_preset = -1
+anchor_left = 0.501
+anchor_top = 0.717
+anchor_right = 0.501
+anchor_bottom = 0.717
+offset_left = -693.024
+offset_top = -347.104
+offset_right = 338.976
+offset_bottom = 172.896
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.35, 0.35)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_43vm4")
 theme_override_font_sizes/font_size = 50
-text = "DO NOTHING"
+icon = ExtResource("2_ymcj3")
+icon_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D/Cancel Button"]
+z_index = 1
+position = Vector2(515, 250)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("5_i4bex")
 
 [node name="Special Button" type="Button" parent="Sprite2D"]
-offset_left = 400.0
-offset_top = -250.0
-offset_right = 900.0
-offset_bottom = 250.0
+anchors_preset = -1
+anchor_left = 0.75
+anchor_top = 0.287
+anchor_right = 0.75
+anchor_bottom = 0.287
+offset_left = -693.0
+offset_top = -346.944
+offset_right = 339.0
+offset_bottom = 173.056
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.35, 0.35)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_43vm4")
 theme_override_font_sizes/font_size = 50
-text = "USE SPECIAL"
+icon = ExtResource("2_ymcj3")
+icon_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="Sprite2D/Special Button"]
+z_index = 1
+position = Vector2(515, 250)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("6_6yp8w")
 
 [connection signal="pressed" from="Sprite2D/Defende Button" to="." method="_on_defende_button_pressed"]
 [connection signal="pressed" from="Sprite2D/Cancel Button" to="." method="_on_cancel_button_pressed"]

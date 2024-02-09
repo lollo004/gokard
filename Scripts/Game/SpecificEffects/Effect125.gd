@@ -16,10 +16,16 @@ func Effect(team): # When some other defense card uses the special give +1 attac
 				i.BoostByPos(i.Position, "attack", 1, "player") # Boost attack
 				i.BoostByPos(i.Position, "health", 1, "player") # Boost health
 			
-			var rnd = randi_range(0, len(GameController.player_hand) - 1)
-			
-			GameController.player_hand[rnd].BoostByPos(GameController.player_hand[rnd].Position, "cost", -1, "player") # Reduce cost
+		if len(GameController.player_hand) != 0:
+			if len(GameController.player_hand) > 1:
+				var rnd = Data.RANDOM.randi_range(0, len(GameController.player_hand) - 1)
+				GameController.player_hand[rnd].BoostByPos(GameController.player_hand[rnd].Position, "cost", -1, "player") # Reduce cost
+			else:
+				GameController.player_hand[0].BoostByPos(GameController.player_hand[0].Position, "cost", -1, "player") # Reduce cost
 		else:
 			for i in GameController.enemy_field_cards:
 				i.BoostByPos(i.Position, "attack", 1, "enemy") # Boost attack
 				i.BoostByPos(i.Position, "health", 1, "enemy") # Boost health
+			
+			if len(GameController.enemy_hand) != 1:
+				Data.RANDOM.randi_range(0,1) # Sync clients seed

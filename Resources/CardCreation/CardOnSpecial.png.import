@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dq2meekxxy31m"
-path="res://.godot/imported/CardOnSpecial.png-2bf854682e56303abdb925dac47bc39f.ctex"
+uid="uid://b6j03sfrv0hfj"
+path="res://.godot/imported/CardOnSpecial.png-6c4ec9368cca784f33882e374ab00d91.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/CardOnSpecial.png"
-dest_files=["res://.godot/imported/CardOnSpecial.png-2bf854682e56303abdb925dac47bc39f.ctex"]
+source_file="res://Resources/CardCreation/CardOnSpecial.png"
+dest_files=["res://.godot/imported/CardOnSpecial.png-6c4ec9368cca784f33882e374ab00d91.ctex"]
 
 [params]
 

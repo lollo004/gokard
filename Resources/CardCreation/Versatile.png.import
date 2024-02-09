@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bgoym8w1kibym"
-path="res://.godot/imported/TurnSelector.png-001229e249428a19f4941608e941ee3e.ctex"
+uid="uid://c181aqdh62aff"
+path="res://.godot/imported/Versatile.png-27b6606692df19994e4e253389776306.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/TurnSelector.png"
-dest_files=["res://.godot/imported/TurnSelector.png-001229e249428a19f4941608e941ee3e.ctex"]
+source_file="res://Resources/CardCreation/Versatile.png"
+dest_files=["res://.godot/imported/Versatile.png-27b6606692df19994e4e253389776306.ctex"]
 
 [params]
 

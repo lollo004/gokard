@@ -132,15 +132,15 @@ func _process(delta): # Function called every frame
 func _on_mouse_entered(): # Start override with mouse
 	if Team == "player":
 		if isTargetSelected:
-			shadow.set_texture(load("res://Resources/CardOnAttack.png"))
+			shadow.set_texture(load("res://Resources/CardCreation/CardOnAttack.png"))
 		elif isChooseDone:
 			match actionDuringDefense:
 				"defende":
-					shadow.set_texture(load("res://Resources/CardOnDefende.png"))
+					shadow.set_texture(load("res://Resources/CardCreation/CardOnDefende.png"))
 				"special":
-					shadow.set_texture(load("res://Resources/CardOnSpecial.png"))
+					shadow.set_texture(load("res://Resources/CardCreation/CardOnSpecial.png"))
 		else:
-			shadow.set_texture(load("res://Resources/CardGlow.png"))
+			shadow.set_texture(load("res://Resources/CardCreation/CardGlow.png"))
 		shadow.show()
 		shadow.process_mode = Node.PROCESS_MODE_INHERIT
 	
@@ -149,6 +149,7 @@ func _on_mouse_entered(): # Start override with mouse
 	shadow.z_index = 1
 	for u in UI_Objects_OnTop: # always zoom on upper parts of the cards
 		u.z_index = 5
+	
 	match Location:
 		"hand":
 			sprite[0].offset.y = -700 # move up the entire card
@@ -163,7 +164,7 @@ func _on_mouse_entered(): # Start override with mouse
 			sprite[0].scale = maxScale
 		"field":
 			SetOnMax()
-			
+			ShiftForward()
 			sprite[0].scale = maxScale
 		"lobby":
 			sprite[0].scale *= 1.4
@@ -201,7 +202,7 @@ func _on_mouse_exited(): # Stop override with mouse
 			sprite[0].scale = minScale
 		"field":
 			SetOnMini()
-			
+			ShiftBack()
 			sprite[0].scale = minScale
 		"lobby":
 			sprite[0].scale /= 1.4
@@ -224,7 +225,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 						shadow.hide()
 						if not isMagic: # It's not a magic
 							if len(currentPos) > 0: # Right position
-								if GameController.turnType == "play": # Right turn type
+								if GameController.turnType == "play" or GameController.turnType == "lymph": # Right turn type
 									if GameController.lymph >= Cost: # Enough lymph
 										if Type == "Versatile" or Type == currentLoc[-1]: # Right type
 											if not is_returned_to_hand: # Right position
@@ -302,12 +303,12 @@ func _on_input_event(_viewport, event, _shape_idx):
 										UserError("Not enough lymph")
 										global_position = old_position
 								else:
-									UserError("Can play card only if you choose to play")
+									UserError("Can play card only if you choose to play or to raise lymph")
 									global_position = old_position
 							else:
 								global_position = old_position
 						else: # It's a magic
-							if GameController.turnType == "play": # Right turn type
+							if GameController.turnType == "play" or GameController.turnType == "lymph": # Right turn type
 								if Type == "Versatile" or GameController.phase == Type: # Right phase
 									if GameController.lymph >= Cost: # Enough lymph 
 										if not is_returned_to_hand: # Right position
@@ -348,7 +349,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 									UserError("Can't play a "+Type.to_lower()+" magic during "+GameController.phase+" phase")
 									global_position = old_position
 							else:
-								UserError("Can play card only if you choose to play")
+								UserError("Can play card only if you choose to play or to raise lymph")
 								global_position = old_position
 					isCardSelected = false
 				elif GameController.card_counter == 1:
@@ -369,6 +370,8 @@ func _on_input_event(_viewport, event, _shape_idx):
 										var instance = scene.instantiate()
 										add_child(instance)
 										
+										Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+										
 										get_tree().call_group("Deactivable", "Enable", false)
 									else:
 										UserError("Not enough stress")
@@ -382,7 +385,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 							
 							GameController.player_current_stress -= 1
 							
-							shadow.set_texture(load("res://Resources/CardGlow.png"))
+							shadow.set_texture(load("res://Resources/CardCreation/CardGlow.png"))
 						if not isChooseDone and not isChoosingToDefend  and currentLoc[-1] == "Defense": # Choosing what to do with the card
 							if GameController.phase == "Defense":
 								if turnInGame >= turnBlockedOnPlay:
@@ -406,7 +409,7 @@ func _on_input_event(_viewport, event, _shape_idx):
 							GameController.CancelDefense(self)
 							isChooseDone = false
 							
-							shadow.set_texture(load("res://Resources/CardGlow.png"))
+							shadow.set_texture(load("res://Resources/CardCreation/CardGlow.png"))
 		if event.is_pressed() and event.button_index == MOUSE_BUTTON_RIGHT and isMouseOver and isEnabled: # Click over a card with right mouse button
 			if Team == "player" and GameController.turn == "player":
 				if Location == "field":
@@ -416,32 +419,28 @@ func _on_input_event(_viewport, event, _shape_idx):
 							if isMoving:
 								shadow.scale *= 2.8
 								if len(currentPos) > 0:
-									if GameController.turnType == "play" or GameController.turnType == "draw": # Right turn type
-										if GameController.positionStatus[currentPos[-1]] == null:
-											global_position = glowing_positioner[-1].global_position - Vector2(0,20)
-											var oldPos = Position
-											GameController.positionStatus[oldPos] = null
-											Position = currentPos[-1]
-											GameController.positionStatus[Position] = self
-											
-											alreadyMoved = true
-											turnInGame = turnBlockedOnPlay - 1
-											
-											glowing_positioner[-1].hide()
-											shadow.offset.y = 0
-											shadow.scale.x = maxScale.x * 9
-											shadow.scale.y = maxScale.y * 11
-											ShiftBack()
-											SetOnMini()
-											
-											get_tree().call_group("OnMove", "Effect", self) # Call 'OnMove' functions
-											
-											get_tree().call_group("ClientInstance", "send_move_card", oldPos, Position) # Send old and new position to opponent
-										else:
-											UserError("Can't position card here")
-											global_position = old_position
+									if GameController.positionStatus[currentPos[-1]] == null:
+										global_position = glowing_positioner[-1].global_position - Vector2(0,20)
+										var oldPos = Position
+										GameController.positionStatus[oldPos] = null
+										Position = currentPos[-1]
+										GameController.positionStatus[Position] = self
+										
+										alreadyMoved = true
+										turnInGame = turnBlockedOnPlay - 1
+										
+										glowing_positioner[-1].hide()
+										shadow.offset.y = 0
+										shadow.scale.x = maxScale.x * 9
+										shadow.scale.y = maxScale.y * 11
+										ShiftBack()
+										SetOnMini()
+										
+										get_tree().call_group("OnMove", "Effect", self) # Call 'OnMove' functions
+										
+										get_tree().call_group("ClientInstance", "send_move_card", oldPos, Position) # Send old and new position to opponent
 									else:
-										UserError("Can move card only if you choose to play or draw")
+										UserError("Can't position card here")
 										global_position = old_position
 								else:
 									global_position = old_position
@@ -554,19 +553,23 @@ func SetOnMax(): # Function to maximize the card
 		sprite[2].hide()
 
 
-#func ShiftForward(): # Function called to change z_index of all part of the card (forward)
-#	sprite[1].z_index = 4 # top part of the border
-#	sprite[2].z_index = 0 # bottom part of the border
-#	sprite[4].z_index = 3 # image of the card
-#	for u in UI_Objects_OnDown:
-#		u.z_index = 1 # bottom parts of the card
-#	for u in UI_Objects_OnTop:
-#		u.z_index = 5 # upper parts of the card
+func ShiftForward(): # Function called to change z_index of all part of the card (forward)
+	sprite[0].z_index = 4 # top part of the border
+	sprite[1].z_index = 4 # top part of the border
+	sprite[2].z_index = 0 # bottom part of the border
+	sprite[3].z_index = 3 # top part of the border
+	sprite[4].z_index = 3 # image of the card
+	for u in UI_Objects_OnDown:
+		u.z_index = 1 # bottom parts of the card
+	for u in UI_Objects_OnTop:
+		u.z_index = 5 # upper parts of the card
 
 
 func ShiftBack(): # Function called to change z_index of all part of the card (back)
+	sprite[0].z_index = -3 # top part of the border
 	sprite[1].z_index = -3 # top part of the border
 	sprite[2].z_index = -7 # bottom part of the border
+	sprite[3].z_index = -4 # top part of the border
 	sprite[4].z_index = -4 # image of the card
 	for u in UI_Objects_OnDown:
 		u.z_index = -6 # bottom parts of the card
@@ -624,7 +627,7 @@ func isDefenseOk(who, what : String): # Fuction called when you choose what to d
 
 
 func isItYou(team : String, pos : String, target = null, atf : String = ""): # Function called to format attack and defense array (atf = array_to_fill)
-	if Team == team and Position == pos:
+	if Team == team and Position == pos and Location == "field":
 		if not target:
 			GameController.current_array_filler = self
 		else:
@@ -836,7 +839,7 @@ func CreateCard(values, card_id): # Function only when the card is going to be c
 				elif y.z_index == -2:
 					UI_Objects_OnTop.append(y)
 				if "Type" in y.get_groups():
-					y.set_texture(load("res://Resources/"+Type+".png"))
+					y.set_texture(load("res://Resources/CardCreation/"+Type+".png"))
 		if "Border" in x.get_groups() and "Up" in x.get_groups():
 			sprite[1] = x
 			for y in x.get_children():

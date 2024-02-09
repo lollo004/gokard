@@ -31,6 +31,7 @@ func _on_Update():
 
 func _on_turn_button_pressed():
 	if not GameController.isScreenTaken and GameController.turn == "player":
-		GameController.TurnButtonPressed()
 		get_tree().call_group("ClientInstance", "send_pass") # Tell you passed phase to opponent
+		
+		GameController.TurnButtonPressed()
 

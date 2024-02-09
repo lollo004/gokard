@@ -69,7 +69,7 @@ var enemy_attacks = {} # Dict with who is attacing who (attacker_pos : defender_
 var raw_player_attacks = {} # Dict with who is attacing who (attacker_pos : defender_pos)
 var raw_enemy_attacks = {} # Dict with who is attacing who (attacker_pos : defender_pos)
 
-var current_array_filler = null # Variable used to format the attack and defense array / dict
+var current_array_filler = null # Variable remember who attack who and comunicate between Card.gd and GameController.gd
 
 ## Defende Variables ##
 
@@ -178,9 +178,12 @@ func TurnButtonPressed():
 	get_tree().call_group("GUI_Manager", "_on_Update")
 
 
-func InitialSetupForGameStart(nickname, canStart):
+func InitialSetupForGameStart(nickname, canStart, rnd_seed):
 	enemy_name = nickname
 	# set skin and leader ability
+	
+	Data.RANDOM.set_seed(hash(rnd_seed)) # randomize seed according to other client
+	#print("\n"+str(rnd_seed)+" "+str(hash(rnd_seed))+"\n")
 	
 	if canStart == "true":
 		turn = "player"
@@ -516,7 +519,7 @@ func ManageEnemyDefense(): # Function that contains enemy defense system
 
 func FormatOnDefende(): # Function called to make previous function work properly
 	for c in enemy_attacks:
-		if enemy_attacks[c] == "10":
+		if enemy_attacks[c] == "10":#leader
 			get_tree().call_group("Card", "isItYou", "enemy", c)
 			raw_enemy_attacks[current_array_filler] = player_leader_ref
 			current_array_filler = null
@@ -639,14 +642,14 @@ func PlayEnemyCard(id, pos, stats):
 	
 	lymph -= enemy_cards[pos].Cost # Update lymph used by enemy
 	
-	enemy_field_cards.append(enemy_cards[pos]) # Add card to the array to simplify the founding of it
-	
 	UpdateEnemyHand()
 	
 	if enemy_cards[pos].get_node_or_null("Common Effects/Rise").get_script():
 		enemy_cards[pos].get_node("Common Effects/Rise").Effect("enemy", enemy_cards[pos].Position) # Call 'Rise' function of the played card
 	get_tree().call_group("OnDeploy", "Effect", "enemy", pos, enemy_cards[pos]) # Call 'On Deploy' functions
-
+	
+	enemy_field_cards.append(enemy_cards[pos]) # Add card to the array to simplify the founding of it
+	
 	get_tree().call_group("GUI_Manager", "_on_Update")
 
 func MoveEnemyCard(old_pos, new_pos):
@@ -688,7 +691,7 @@ func PlayEnemyMagic(id):
 	
 	timer.append(Timer.new())
 	timer[-1].connect("timeout" , ShowCard)
-	timer[-1].wait_time = 1.5
+	timer[-1].wait_time = 3.5
 	timer[-1].one_shot = true
 	add_child(timer[-1])
 	timer[-1].start()
@@ -719,7 +722,7 @@ func ShowOneCard(id): # Function called when played "Light on the dark" card
 	
 	timer.append(Timer.new())
 	timer[-1].connect("timeout" , ShowCard)
-	timer[-1].wait_time = 3.5
+	timer[-1].set_wait_time(3.5)
 	timer[-1].one_shot = true
 	add_child(timer[-1])
 	timer[-1].start()

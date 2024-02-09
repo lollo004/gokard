@@ -9,7 +9,7 @@ func _ready():
 	card = get_parent().get_parent()
 
 
-func Effect(who, _death, _n): # When he attack he dies
-	if card == who:
+func Effect(attacker, _death, _n): # When he attack he dies
+	if card == attacker:
 		card.Health -= card.Health # Kill himself
 		card.UpdateStats(card) # Tell him to update his stats

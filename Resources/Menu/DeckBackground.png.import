@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dqjidekkni7ro"
-path="res://.godot/imported/Attack.png-87c60eb253601b461567220f373f25fd.ctex"
+uid="uid://b1ufwobl8yevq"
+path="res://.godot/imported/DeckBackground.png-24086002c3fd9b00c79862fbfc290e1d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/Attack.png"
-dest_files=["res://.godot/imported/Attack.png-87c60eb253601b461567220f373f25fd.ctex"]
+source_file="res://Resources/Menu/DeckBackground.png"
+dest_files=["res://.godot/imported/DeckBackground.png-24086002c3fd9b00c79862fbfc290e1d.ctex"]
 
 [params]
 

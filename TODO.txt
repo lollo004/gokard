@@ -2,8 +2,11 @@ Animations and feedbacks
 
 (131) add hyena !!
 
+
 OPTIMIZE LOADING SCREENS
+graphic upgrade. (switch mouse icon with marker when attacking)
 
-check connection messages...
 
-(make more order on resources sub-folder)
+ADD:
+	- wake up all the cards on your field
+

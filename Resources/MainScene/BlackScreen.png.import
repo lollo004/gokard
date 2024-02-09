@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://lde7gxlulrlo"
-path="res://.godot/imported/CardOnAttack.png-7124956f5e3b372309dc9360d74b2db3.ctex"
+uid="uid://seqe0ubh8l02"
+path="res://.godot/imported/BlackScreen.png-2251742346c0ed245615f19613e83cff.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resources/CardOnAttack.png"
-dest_files=["res://.godot/imported/CardOnAttack.png-7124956f5e3b372309dc9360d74b2db3.ctex"]
+source_file="res://Resources/MainScene/BlackScreen.png"
+dest_files=["res://.godot/imported/BlackScreen.png-2251742346c0ed245615f19613e83cff.ctex"]
 
 [params]
 

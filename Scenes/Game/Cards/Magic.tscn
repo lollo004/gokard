@@ -1,12 +1,12 @@
 [gd_scene load_steps=10 format=3 uid="uid://bcmlon3r0nwd2"]
 
 [ext_resource type="Script" path="res://Scripts/Game/Card.gd" id="1_ynf8k"]
-[ext_resource type="Texture2D" uid="uid://di3yqxlhkmhtb" path="res://Resources/Card.png" id="2_bjo51"]
 [ext_resource type="Shader" path="res://Resources/Shaders/Card.gdshader" id="2_u24so"]
-[ext_resource type="Texture2D" uid="uid://bwoo5mfx3pr61" path="res://Resources/CardGlow.png" id="3_kdmwl"]
+[ext_resource type="Texture2D" uid="uid://ci7df55rv1i7o" path="res://Resources/CardCreation/CardGlow.png" id="3_cx8e6"]
 [ext_resource type="Texture2D" uid="uid://brpi8icm35mnd" path="res://Resources/Images/Card0.png" id="3_lrrds"]
 [ext_resource type="FontFile" uid="uid://b4cn53nlm347x" path="res://MoriaCitadel.TTF" id="4_cnn61"]
-[ext_resource type="Texture2D" uid="uid://blcge2560xji5" path="res://Resources/Versatile.png" id="5_fulkb"]
+[ext_resource type="Texture2D" uid="uid://cb283xrwlkwgt" path="res://Resources/CardCreation/Card.png" id="4_hyye3"]
+[ext_resource type="Texture2D" uid="uid://c181aqdh62aff" path="res://Resources/CardCreation/Versatile.png" id="7_mvjra"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qakxp"]
 size = Vector2(600, 1000)
@@ -35,14 +35,14 @@ z_index = -4
 z_as_relative = false
 material = SubResource("ShaderMaterial_nw844")
 scale = Vector2(4.5, 5.45)
-texture = ExtResource("3_kdmwl")
+texture = ExtResource("3_cx8e6")
 
 [node name="Border" type="Sprite2D" parent="." groups=["Border", "Total"]]
 z_index = -3
 z_as_relative = false
 position = Vector2(1.24176e-07, 0)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_bjo51")
+texture = ExtResource("4_hyye3")
 
 [node name="Sprite" type="Sprite2D" parent="Border" groups=["Sprite"]]
 visibility_layer = 3
@@ -67,11 +67,11 @@ offset_bottom = -1830.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_outline_size = 5
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 30
 theme_override_fonts/font = ExtResource("4_cnn61")
-theme_override_font_sizes/font_size = 85
+theme_override_font_sizes/font_size = 175
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -213,10 +213,11 @@ offset_bottom = -979.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_outline_size = 15
 theme_override_fonts/font = ExtResource("4_cnn61")
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 75
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -226,8 +227,8 @@ metadata/_edit_use_anchors_ = true
 z_index = -2
 z_as_relative = false
 position = Vector2(460, -885)
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("5_fulkb")
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_mvjra")
 
 [node name="MagicEffect" type="Node" parent="." groups=["MagicEffect"]]
 

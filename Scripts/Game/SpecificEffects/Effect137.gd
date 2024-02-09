@@ -10,10 +10,8 @@ func _ready():
 func Effect(team): # Draw a random dwarf that cost 2 lymph, but he’s cost is 0  and has +1 attack and +1 health
 	if team == "player":
 		var two_lymph_dwarfs = [104,105,106,107]
-		var random = RandomNumberGenerator.new()
 		
-		random.randomize()
-		var rnd = random.randi_range(0, len(two_lymph_dwarfs) - 1)
+		var rnd = Data.RANDOM.randi_range(0, len(two_lymph_dwarfs) - 1)
 		
 		var scene = load("res://Scenes/Game/Cards/Card.tscn") # Load card resources
 		var instance = scene.instantiate() # Instantiate card resources
@@ -36,4 +34,6 @@ func Effect(team): # Draw a random dwarf that cost 2 lymph, but he’s cost is 0
 		get_tree().call_group("ClientInstance", "send_draw") # Send to opponent you drawed
 		
 		get_tree().call_group("OnDraw", "Effect", "player") # Call 'OnDraw' functions
+	else:
+		Data.RANDOM.randi_range(0,1) # Sync clients seed
 

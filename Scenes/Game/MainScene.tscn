@@ -1,13 +1,14 @@
-[gd_scene load_steps=11 format=3 uid="uid://cn7qq6h6vk6m1"]
+[gd_scene load_steps=12 format=3 uid="uid://cn7qq6h6vk6m1"]
 
 [ext_resource type="PackedScene" uid="uid://haworbi8gah1" path="res://Scenes/Game/Positioner.tscn" id="1_kj4pf"]
 [ext_resource type="Script" path="res://Scripts/Game/GUIManagement.gd" id="2_1wmxs"]
 [ext_resource type="Script" path="res://Scripts/Game/GameController.gd" id="3_ovi4y"]
-[ext_resource type="Texture2D" uid="uid://fvqxycbydvr2" path="res://Resources/Background.png" id="4_7teis"]
 [ext_resource type="PackedScene" uid="uid://c3ccrckpghnpv" path="res://Scenes/Game/TurnSelecter.tscn" id="4_fkvir"]
-[ext_resource type="Texture2D" uid="uid://bml2v6ykeg5i2" path="res://Resources/BlackScreen.png" id="5_8ofge"]
+[ext_resource type="Texture2D" uid="uid://bxcde6no6bk57" path="res://Resources/MainScene/Background.png" id="4_wt3op"]
+[ext_resource type="Texture2D" uid="uid://seqe0ubh8l02" path="res://Resources/MainScene/BlackScreen.png" id="5_3da1f"]
 [ext_resource type="PackedScene" uid="uid://bc04oldvebs2w" path="res://Scenes/Game/Leader.tscn" id="5_cjfwb"]
 [ext_resource type="FontFile" uid="uid://b4cn53nlm347x" path="res://MoriaCitadel.TTF" id="6_8scj8"]
+[ext_resource type="Texture2D" uid="uid://brpi8icm35mnd" path="res://Resources/Images/Card0.png" id="9_xshva"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fyicb"]
 size = Vector2(958.5, 58)
@@ -23,18 +24,18 @@ script = ExtResource("2_1wmxs")
 
 [node name="Lymph Text" type="Label" parent="GUI/Management" groups=["Lymph"]]
 offset_left = 30.0
-offset_top = 220.0
+offset_top = 408.0
 offset_right = 110.0
-offset_bottom = 250.0
+offset_bottom = 438.0
 text = "Lymph: 0"
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Stress Text" type="Label" parent="GUI/Management" groups=["Stress"]]
 offset_left = 30.0
-offset_top = 280.0
+offset_top = 451.0
 offset_right = 110.0
-offset_bottom = 310.0
+offset_bottom = 481.0
 text = "Stress: 0
 "
 vertical_alignment = 1
@@ -63,7 +64,7 @@ error_label = NodePath("../User Error")
 
 [node name="TurnSelector" parent="GUI/Management" instance=ExtResource("4_fkvir")]
 visibility_layer = 7
-z_index = 10
+z_index = 0
 position = Vector2(500, 280)
 
 [node name="Player Hand Trigger" type="Area2D" parent="GUI/Management" groups=["Player Hand"]]
@@ -76,13 +77,13 @@ shape = SubResource("RectangleShape2D_fyicb")
 z_index = -5
 position = Vector2(508, 271)
 scale = Vector2(1.1657, 1.0253)
-texture = ExtResource("4_7teis")
+texture = ExtResource("4_wt3op")
 
 [node name="Black Screen" type="Sprite2D" parent="GUI/Management"]
 z_index = -10
 position = Vector2(508, 271)
 scale = Vector2(1.35885, 1.05125)
-texture = ExtResource("5_8ofge")
+texture = ExtResource("5_3da1f")
 
 [node name="User Error" type="Label" parent="GUI/Management"]
 material = SubResource("CanvasItemMaterial_dp5o3")
@@ -103,13 +104,15 @@ uppercase = true
 [node name="Player" type="Node" parent="GUI"]
 
 [node name="Player" parent="GUI/Player" groups=["PLAYER"] instance=ExtResource("5_cjfwb")]
-position = Vector2(76, 447)
+position = Vector2(910, 449)
 id = 1
 
 [node name="Player Name" type="Label" parent="GUI/Player" groups=["Player_Name"]]
-offset_top = 352.0
-offset_right = 150.0
-offset_bottom = 407.0
+visible = false
+offset_left = 709.0
+offset_top = 447.0
+offset_right = 859.0
+offset_bottom = 502.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -119,10 +122,10 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Player Life" type="Label" parent="GUI/Player" groups=["Player_Life"]]
-offset_left = 55.0
-offset_top = 475.0
-offset_right = 95.0
-offset_bottom = 505.0
+offset_left = 889.0
+offset_top = 435.0
+offset_right = 929.0
+offset_bottom = 465.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -172,14 +175,15 @@ position = Vector2(804, 388)
 [node name="Enemy" type="Node" parent="GUI"]
 
 [node name="Enemy" parent="GUI/Enemy" groups=["ENEMY"] instance=ExtResource("5_cjfwb")]
-position = Vector2(75, 50)
+position = Vector2(910, 52)
 Team = "enemy"
 id = 1
 
 [node name="Enemy Name" type="Label" parent="GUI/Enemy" groups=["Enemy_Name"]]
-offset_top = 100.0
-offset_right = 150.0
-offset_bottom = 155.0
+offset_left = 710.0
+offset_top = 2.0
+offset_right = 860.0
+offset_bottom = 57.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -189,10 +193,10 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Enemy Life" type="Label" parent="GUI/Enemy" groups=["Enemy_Life"]]
-offset_left = 55.0
-offset_top = 35.0
-offset_right = 95.0
-offset_bottom = 65.0
+offset_left = 890.0
+offset_top = 38.0
+offset_right = 930.0
+offset_bottom = 68.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -238,5 +242,20 @@ position = Vector2(736, 180)
 [node name="Enemy Positioner 9" parent="GUI/Enemy/Card Position" groups=["9", "Attack", "EP9", "Enemy"] instance=ExtResource("1_kj4pf")]
 z_index = -3
 position = Vector2(812, 226)
+
+[node name="white" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(78.5, 98.4)
+scale = Vector2(0.184375, 0.208203)
+texture = ExtResource("9_xshva")
+
+[node name="label" type="RichTextLabel" parent="." groups=["output"]]
+visible = false
+offset_left = 6.0
+offset_top = 4.0
+offset_right = 154.0
+offset_bottom = 197.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 10
 
 [connection signal="pressed" from="GUI/Management/Turn Button" to="GUI/Management" method="_on_turn_button_pressed"]

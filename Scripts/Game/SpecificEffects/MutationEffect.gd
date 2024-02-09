@@ -30,6 +30,10 @@ func Effect(): # Phase / Turn Mutation
 			instance.Location = "field" # Set location for new card
 			instance.turnBlockedOnPlay = 0
 			instance.position = card.position # Set real position for new card
+			if int(instance.Position) % 2 == 0:
+				instance.currentLoc.append("Defense")
+			else:
+				instance.currentLoc.append("Attack")
 			
 			if card.Team == "player":
 				instance.Team = "player" # Set team for new card

@@ -4,6 +4,8 @@ extends Node
 
 var nickname = "SimoMine"
 
+var RANDOM = RandomNumberGenerator.new()
+
 var card_recurrences = {} # cards owned by the player
 
 var total_number_of_cards = 300 # total number of cards in all the game
