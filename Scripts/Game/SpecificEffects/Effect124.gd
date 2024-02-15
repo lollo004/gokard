@@ -11,8 +11,8 @@ func _ready():
 	card = get_parent().get_parent()
 
 
-func Effect(team, _position, _who): # When enemy spends all the lymph draw a card and if it's a dwarf give it +1 attack, +1 health and reduce the cost by 1
-	if card.Location == "field" and team == "enemy" and GameController.lymph == 0:
+func Effect(team, _position, who): # When enemy spends all the lymph draw a card and if it's a dwarf give it +1 attack, +1 health and reduce the cost by 1
+	if card.Location == "field" and card != who and team == "enemy" and GameController.lymph == 0:
 			var ret = GameController.DrawOneCard()
 			
 			if ret != null:

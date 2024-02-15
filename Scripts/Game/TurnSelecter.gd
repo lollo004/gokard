@@ -49,3 +49,7 @@ func _on_show_pressed():
 		get_tree().get_first_node_in_group("TurnManager").visible = true
 		get_tree().get_first_node_in_group("ShowButton").visible = false
 
+
+func _on_info_pressed():
+	get_tree().get_first_node_in_group("Infos").visible = not get_tree().get_first_node_in_group("Infos").visible
+

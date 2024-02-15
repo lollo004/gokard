@@ -6,16 +6,20 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bncrx"]
 size = Vector2(970, 1023)
 
-[node name="Hero" type="Area2D" groups=["Leader"]]
+[node name="Leader" type="Area2D" groups=["Leader"]]
+z_index = 2
+z_as_relative = false
 scale = Vector2(0.1, 0.1)
 script = ExtResource("1_lpvsh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 2
+z_as_relative = false
 position = Vector2(1.52588e-05, 0)
 texture = ExtResource("1_dp78f")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2(1, 1)
+z_as_relative = false
 shape = SubResource("RectangleShape2D_bncrx")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

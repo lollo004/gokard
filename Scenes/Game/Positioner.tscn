@@ -1,8 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://haworbi8gah1"]
+[gd_scene load_steps=14 format=3 uid="uid://haworbi8gah1"]
 
 [ext_resource type="Texture2D" uid="uid://05g30jsudqqg" path="res://icon.svg" id="1_wgvnm"]
 [ext_resource type="Texture2D" uid="uid://brpi8icm35mnd" path="res://Resources/Images/Card0.png" id="2_x1yh4"]
 [ext_resource type="Shader" path="res://Resources/Shaders/Positioner.gdshader" id="2_xlvyk"]
+[ext_resource type="Shader" path="res://Resources/Shaders/Attack.gdshader" id="4_asipb"]
+[ext_resource type="Shader" path="res://Resources/Shaders/Defense.gdshader" id="5_n1bcd"]
+[ext_resource type="Shader" path="res://Resources/Shaders/Special.gdshader" id="6_713pt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ctkg5"]
 size = Vector2(27.6, 12.8)
@@ -18,6 +21,15 @@ noise = SubResource("FastNoiseLite_2csup")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_r2eqx"]
 shader = ExtResource("2_xlvyk")
 shader_parameter/n = SubResource("NoiseTexture2D_ykq78")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w68ju"]
+shader = ExtResource("4_asipb")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_to3el"]
+shader = ExtResource("5_n1bcd")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jvcrk"]
+shader = ExtResource("6_713pt")
 
 [node name="Positioner" type="Area2D" groups=["Positioner"]]
 visible = false
@@ -41,5 +53,29 @@ shape = SubResource("RectangleShape2D_ctkg5")
 z_index = -9
 z_as_relative = false
 material = SubResource("ShaderMaterial_r2eqx")
+scale = Vector2(1.2, 0.5)
+texture = ExtResource("2_x1yh4")
+
+[node name="Attack Shadow" type="Sprite2D" parent="."]
+visible = false
+z_index = -9
+z_as_relative = false
+material = SubResource("ShaderMaterial_w68ju")
+scale = Vector2(1.2, 0.5)
+texture = ExtResource("2_x1yh4")
+
+[node name="Defense Shadow" type="Sprite2D" parent="."]
+visible = false
+z_index = -9
+z_as_relative = false
+material = SubResource("ShaderMaterial_to3el")
+scale = Vector2(1.2, 0.5)
+texture = ExtResource("2_x1yh4")
+
+[node name="Special Shadow" type="Sprite2D" parent="."]
+visible = false
+z_index = -9
+z_as_relative = false
+material = SubResource("ShaderMaterial_jvcrk")
 scale = Vector2(1.2, 0.5)
 texture = ExtResource("2_x1yh4")

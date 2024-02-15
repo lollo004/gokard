@@ -9,7 +9,9 @@ func _ready():
 	card = get_parent().get_parent()
 
 
-func Effect(attacker, target, _n): # When attacked he dies and kill who attacked him
+func Effect(attacker, target, _n): # When attacked he dies and kill who attacked him (can't be applied for the leader)
 	if card == target:
-		attacker.BoostByPos(attacker.Position, "health", -attacker.Health, attacker.Team) # kill the enemy
+		if not attacker.isLeader:
+			attacker.BoostByPos(attacker.Position, "health", -attacker.Health, attacker.Team) # kill the enemy
 		card.BoostByPos(card.Position, "health", -card.Health, card.Team) # kill yourself
+

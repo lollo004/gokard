@@ -3,8 +3,8 @@ extends Node
 
 var Card_Asset_Basic_Stats = { # all card divided by id
 	0: {
-		"health" : 1,
 		"attack" : 0,
+		"health" : 1,
 		"speed" : 0,
 		"weight" : 0,
 		"cost" : 0,
@@ -31,8 +31,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 3
 		},
 	101: {
-		"health" : 1,
 		"attack" : 1,
+		"health" : 1,
 		"speed" : 7,
 		"weight" : 60,
 		"cost" : 1,
@@ -59,8 +59,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 3
 		},
 	102: {
-		"health" : 2,
 		"attack" : 2,
+		"health" : 2,
 		"speed" : 7,
 		"weight" : 59,
 		"cost" : 1,
@@ -87,8 +87,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 3
 		},
 	103: {
-		"health" : 2,
 		"attack" : 1,
+		"health" : 2,
 		"speed" : 6,
 		"weight" : 62,
 		"cost" : 1,
@@ -115,8 +115,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 3
 		},
 	104: {
-		"health" : 1,
 		"attack" : 4,
+		"health" : 1,
 		"speed" : 6,
 		"weight" : 39,
 		"cost" : 2,
@@ -143,8 +143,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 3
 		},
 	105: {
-		"health" : 2,
 		"attack" : 3,
+		"health" : 2,
 		"speed" : 8,
 		"weight" : 71,
 		"cost" : 2,
@@ -171,8 +171,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 3
 		},
 	106: {
-		"health" : 4,
 		"attack" : 1,
+		"health" : 4,
 		"speed" : 5,
 		"weight" : 71,
 		"cost" : 2,
@@ -199,8 +199,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 2
 		},
 	107: {
-		"health" : 3,
 		"attack" : 2,
+		"health" : 3,
 		"speed" : 2,
 		"weight" : 80,
 		"cost" : 2,
@@ -227,8 +227,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 3
 		},
 	108: {
-		"health" : 2,
 		"attack" : 2,
+		"health" : 2,
 		"speed" : 6,
 		"weight" : 71,
 		"cost" : 3,
@@ -255,8 +255,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 3
 		},
 	109: {
-		"health" : 2,
 		"attack" : 6,
+		"health" : 2,
 		"speed" : 8,
 		"weight" : 39,
 		"cost" : 3,
@@ -283,8 +283,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 2
 		},
 	110: {
-		"health" : 4,
 		"attack" : 3,
+		"health" : 4,
 		"speed" : 6,
 		"weight" : 48,
 		"cost" : 3,
@@ -311,8 +311,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 3
 		},
 	111: {
-		"health" : 2,
 		"attack" : 5,
+		"health" : 2,
 		"speed" : 9,
 		"weight" : 70,
 		"cost" : 3,
@@ -339,8 +339,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 2
 		},
 	112: {
-		"health" : 4,
 		"attack" : 3,
+		"health" : 4,
 		"speed" : 6,
 		"weight" : 45,
 		"cost" : 3,
@@ -367,8 +367,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 3
 		},
 	113: {
-		"health" : 4,
 		"attack" : 5,
+		"health" : 4,
 		"speed" : 7,
 		"weight" : 47,
 		"cost" : 3,
@@ -378,7 +378,7 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"type" : "Versatile",
 		"effect" : "He can't attack enemy leader",
 		"effect_type" : "",
-		"base" : "Base",
+		"base" : "Mutation",
 		"baseid" : [],
 		"cae" : true,
 		"cal" : false,
@@ -395,8 +395,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 3
 		},
 	114: {
-		"health" : 3,
 		"attack" : 4,
+		"health" : 3,
 		"speed" : 6,
 		"weight" : 84,
 		"cost" : 3,
@@ -423,8 +423,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 2
 		},
 	115: {
-		"health" : 6,
 		"attack" : 1,
+		"health" : 6,
 		"speed" : 7,
 		"weight" : 89,
 		"cost" : 5,
@@ -451,8 +451,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 2
 		},
 	116: {
-		"health" : 5,
 		"attack" : 0,
+		"health" : 5,
 		"speed" : 5,
 		"weight" : 72,
 		"cost" : 4,
@@ -479,8 +479,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 1
 		},
 	117: {
-		"health" : 4,
 		"attack" : 4,
+		"health" : 4,
 		"speed" : 5,
 		"weight" : 76,
 		"cost" : 4,
@@ -507,8 +507,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 2
 		},
 	118: {
-		"health" : 5,
 		"attack" : 3,
+		"health" : 5,
 		"speed" : 6,
 		"weight" : 76,
 		"cost" : 4,
@@ -518,7 +518,7 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"type" : "Attack",
 		"effect" : "When enemy turn starts gain +1 attack",
 		"effect_type" : "onTurnBegin",
-		"base" : "Base",
+		"base" : "Mutation",
 		"baseid" : [],
 		"cae" : true,
 		"cal" : true,
@@ -535,8 +535,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 2
 		},
 	119: {
-		"health" : 4,
 		"attack" : 4,
+		"health" : 4,
 		"speed" : 4,
 		"weight" : 80,
 		"cost" : 5,
@@ -563,8 +563,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 2
 		},
 	120: {
-		"health" : 6,
 		"attack" : 3,
+		"health" : 6,
 		"speed" : 5,
 		"weight" : 46,
 		"cost" : 5,
@@ -591,8 +591,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 3
 		},
 	121: {
-		"health" : 3,
 		"attack" : 6,
+		"health" : 3,
 		"speed" : 5,
 		"weight" : 47,
 		"cost" : 5,
@@ -619,8 +619,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 3
 		},
 	122: {
-		"health" : 6,
 		"attack" : 5,
+		"health" : 6,
 		"speed" : 6,
 		"weight" : 71,
 		"cost" : 6,
@@ -647,8 +647,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 2
 		},
 	123: {
-		"health" : 5,
 		"attack" : 6,
+		"health" : 5,
 		"speed" : 6,
 		"weight" : 83,
 		"cost" : 6,
@@ -675,8 +675,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 3
 		},
 	124: {
-		"health" : 7,
 		"attack" : 2,
+		"health" : 7,
 		"speed" : 1,
 		"weight" : 82,
 		"cost" : 6,
@@ -703,8 +703,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 2
 		},
 	125: {
-		"health" : 5,
 		"attack" : 2,
+		"health" : 5,
 		"speed" : 2,
 		"weight" : 76,
 		"cost" : 7,
@@ -731,8 +731,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 1
 		},
 	126: {
-		"health" : 7,
 		"attack" : 8,
+		"health" : 7,
 		"speed" : 5,
 		"weight" : 91,
 		"cost" : 7,
@@ -740,7 +740,7 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"gene" : "Dwarf",
 		"deviation" : "Standard",
 		"type" : "Versatile",
-		"effect" : "When attacked he dies and kill who attacked him",
+		"effect" : "When attacked he dies and kill who attacked him (can't be applied for the leader)",
 		"effect_type" : "Rage",
 		"base" : "Base",
 		"baseid" : [],
@@ -759,8 +759,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 2
 		},
 	127: {
-		"health" : 6,
 		"attack" : 6,
+		"health" : 6,
 		"speed" : 3,
 		"weight" : 105,
 		"cost" : 7,
@@ -787,8 +787,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 1
 		},
 	128: {
-		"health" : 10,
 		"attack" : 10,
+		"health" : 10,
 		"speed" : 5,
 		"weight" : 88,
 		"cost" : 8,
@@ -815,8 +815,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 2
 		},
 	129: {
-		"health" : 7,
 		"attack" : 6,
+		"health" : 7,
 		"speed" : 4,
 		"weight" : 89,
 		"cost" : 8,
@@ -843,8 +843,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 2
 		},
 	130: {
-		"health" : 8,
 		"attack" : 8,
+		"health" : 8,
 		"speed" : 6,
 		"weight" : 90,
 		"cost" : 9,
@@ -871,8 +871,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 2
 		},
 	131: {
-		"health" : 5,
 		"attack" : 6,
+		"health" : 5,
 		"speed" : 10,
 		"weight" : 128,
 		"cost" : 9,
@@ -899,8 +899,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 2
 		},
 	132: {
-		"health" : 6,
 		"attack" : 4,
+		"health" : 6,
 		"speed" : 1,
 		"weight" : 100,
 		"cost" : 10,
@@ -927,8 +927,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 1
 		},
 	133: {
-		"health" : 10,
 		"attack" : 6,
+		"health" : 10,
 		"speed" : 5,
 		"weight" : 2,
 		"cost" : 10,
@@ -938,7 +938,7 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"type" : "Defense",
 		"effect" : "When an ally dwarf dies give one of your card +3 attack and +1 health",
 		"effect_type" : "Revenge",
-		"base" : "Base",
+		"base" : "Mutation",
 		"baseid" : [],
 		"cae" : true,
 		"cal" : true,
@@ -955,8 +955,8 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 1
 		},
 	134: {
-		"health" : 2,
 		"attack" : 1,
+		"health" : 2,
 		"speed" : 5,
 		"weight" : 36,
 		"cost" : 4,
@@ -1015,12 +1015,12 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"canBePlayed" : true,"tier" : 2
 		},
 	138: {
-		"cost" : 6,
+		"cost" : 7,
 		"name" : "Landslide",
 		"gene" : "Dwarf",
 		"deviation" : "Miner",
 		"type" : "Attack",
-		"effect" : "Destroy all enemies that has less then 10 attack",
+		"effect" : "Destroy all enemies that has less then 5 attack (can't be applied for the leader)",
 		"magic" : true, "random" : true,
 		"canBePlayed" : true,"tier" : 1
 		},
@@ -1040,7 +1040,7 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"gene" : "Dwarf",
 		"deviation" : "Standard",
 		"type" : "Attack",
-		"effect" : "Increment stress by 1",
+		"effect" : "Increment stress by 1 for one phase",
 		"magic" : true, "random" : true,
 		"canBePlayed" : true,"tier" : 1
 		},
@@ -1067,7 +1067,7 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"tier" : 2
 		},
 	143: {
-		"cost" : 7,
+		"cost" : 8,
 		"name" : "Rise Of The Servants",
 		"gene" : "Dwarf",
 		"deviation" : "Sage",
@@ -1083,14 +1083,77 @@ var Card_Asset_Basic_Stats = { # all card divided by id
 		"gene" : "Dwarf",
 		"deviation" : "Warrior",
 		"type" : "Versatile",
-		"effect" : "Give +5 attack and +2 health to all the dwarfs in your field",
+		"effect" : "Give +3 attack and +1 health to all the dwarfs in your field",
 		"magic" : true, "random" : true,
 		"canBePlayed" : true,
 		"tier" : 1
+		},
+	145: {
+		"cost" : 4,
+		"name" : "Early Bird",
+		"gene" : "Dwarf",
+		"deviation" : "Sage",
+		"type" : "Versatile",
+		"effect" : "Wake up all the dwarfs in your field",
+		"magic" : true, "random" : true,
+		"canBePlayed" : true,
+		"tier" : 2
 		}
 }
 
 
-func getCardInfo(id):
-	return Card_Asset_Basic_Stats[id]
+var Leader_Asset_Basic_Stats = { # all card divided by id
+	0: {
+		"attack" : 0,
+		"health" : 1,
+		"speed" : 0,
+		"weight" : 0,
+		"gene" : "",
+		"deviation" : "",
+		"type" : "",
+		"effect" : "",
+		"cae" : true,
+		"cal" : true,
+		"can_move": true,
+		"can_ability": true,
+		"can_buf": true,
+		},
+	11: {
+		"attack" : 0,
+		"health" : 30,
+		"speed" : 6,
+		"weight" : 81,
+		"gene" : "Dwarf",
+		"deviation" : "Sage",
+		"type" : "Attack",
+		"effect" : "Give +1 health to all your defense dwarfs",
+		"cae" : true,
+		"cal" : true,
+		"can_move": true,
+		"can_ability": true,
+		"can_buf": true,
+		},
+	12: {
+		"attack" : 0,
+		"health" : 30,
+		"speed" : 7,
+		"weight" : 72,
+		"gene" : "Dwarf",
+		"deviation" : "Warrior",
+		"type" : "Defense",
+		"effect" : "The dwarf that invoke the special gain +2/+1",
+		"cae" : true,
+		"cal" : true,
+		"can_move": true,
+		"can_ability": true,
+		"can_buf": true,
+		}
+}
+
+
+func getCardInfo(id, is_leader = false):
+	if not is_leader:
+		return Card_Asset_Basic_Stats[id]
+	else:
+		return Leader_Asset_Basic_Stats[id]
 

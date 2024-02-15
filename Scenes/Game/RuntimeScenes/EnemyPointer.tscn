@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://428x1x6n3rvw" path="res://Resources/MainScene/EnemyPointer.png" id="2_15i1k"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hhn6w"]
-radius = 348.036
+radius = 15.0
 
 [node name="Enemy Pointer" type="Area2D" groups=["Pointer"]]
 z_index = 6

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://crx0u55uof2gq"]
 
 [ext_resource type="Script" path="res://Scripts/Lobby/BackButton.gd" id="1_bsowg"]
-[ext_resource type="Texture2D" uid="uid://8ifvl8oyqb3u" path="res://Resources/TurnSelector.png" id="1_wahxv"]
+[ext_resource type="Texture2D" uid="uid://42eu08t2kd6k" path="res://Resources/Menu/EffectFrame.png" id="2_h8him"]
 
 [node name="Shop" type="Node"]
 script = ExtResource("1_bsowg")
@@ -9,7 +9,7 @@ script = ExtResource("1_bsowg")
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(475, 275)
 scale = Vector2(0.5, 0.588)
-texture = ExtResource("1_wahxv")
+texture = ExtResource("2_h8him")
 
 [node name="Button" type="Button" parent="."]
 offset_left = 874.0

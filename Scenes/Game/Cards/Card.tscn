@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bux42wt5sjjk2" path="res://Resources/CardCreation/GameCard_Down.png" id="9_aly8h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yvtci"]
-size = Vector2(600, 820.001)
+size = Vector2(606, 1020)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xxu44"]
 shader = ExtResource("8_06pnw")
@@ -26,8 +26,9 @@ metadata/_edit_vertical_guides_ = [-222.0]
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-z_index = -7
-position = Vector2(-2.29478e-05, 2.38419e-05)
+z_index = -5
+z_as_relative = false
+position = Vector2(-0.000160277, 1.43051e-05)
 scale = Vector2(0.999999, 0.999999)
 shape = SubResource("RectangleShape2D_yvtci")
 

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://072ykbcnp406"]
+
+[ext_resource type="Texture2D" uid="uid://428x1x6n3rvw" path="res://Resources/MainScene/EnemyPointer.png" id="1_qm8d8"]
+[ext_resource type="Script" path="res://Scripts/Game/TargetAnimation.gd" id="2_2hx1x"]
+
+[node name="Sprite2D" type="Sprite2D"]
+z_index = 4
+z_as_relative = false
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_qm8d8")
+script = ExtResource("2_2hx1x")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 1.25
+one_shot = true

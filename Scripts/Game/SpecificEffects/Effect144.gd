@@ -7,7 +7,7 @@ func _ready():
 	GameController = get_tree().get_first_node_in_group("GameController")
 
 
-func Effect(team): #Give +5 attack and +2 health to all the dwarfs in your field
+func Effect(team): # Give +5 attack and +2 health to all the dwarfs in your field
 	if team == "player":
 		for i in GameController.player_field_cards:
 			i.BoostByPos(i.Position, "attack", 5, "player") # Gain attack

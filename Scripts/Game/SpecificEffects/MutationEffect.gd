@@ -46,6 +46,10 @@ func Effect(): # Phase / Turn Mutation
 			
 			instance.ShiftBack()
 			instance.SetOnMini()
+			instance.shadow.offset.y = -100
+			instance.shadow.scale = Vector2(4.1,2.15)
+			instance.shadow.show()
+			instance.shadow.process_mode = Node.PROCESS_MODE_INHERIT
 			
 			GameController.add_child(instance) # Create card
 			

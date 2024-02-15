@@ -1,163 +1,257 @@
-[gd_scene load_steps=8 format=3 uid="uid://c3ccrckpghnpv"]
+[gd_scene load_steps=9 format=3 uid="uid://c3ccrckpghnpv"]
 
 [ext_resource type="Script" path="res://Scripts/Game/TurnSelecter.gd" id="1_ogkea"]
-[ext_resource type="Texture2D" uid="uid://42eu08t2kd6k" path="res://Resources/Menu/EffectFrame.png" id="2_suyck"]
+[ext_resource type="Texture2D" uid="uid://hs8ko23fd78f" path="res://Resources/Menu/test_sign.png" id="2_xbbfl"]
 [ext_resource type="Script" path="res://Scripts/Game/TurnButtonGUIManager.gd" id="3_ssey4"]
 [ext_resource type="FontFile" uid="uid://b4cn53nlm347x" path="res://MoriaCitadel.TTF" id="4_vsovd"]
 [ext_resource type="Texture2D" uid="uid://dhik5j6wvdxno" path="res://Resources/MainScene/Hide.png" id="5_vx6f7"]
 [ext_resource type="Texture2D" uid="uid://bu3hdjdwnyns4" path="res://Resources/MainScene/Show.png" id="6_stm6h"]
+[ext_resource type="Texture2D" uid="uid://diuhpwju11bt" path="res://Resources/CardCreation/Info.png" id="7_q5rro"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1xhgl"]
 size = Vector2(613, 307)
 
 [node name="Turn Manager" type="Area2D"]
 z_index = 2
+z_as_relative = false
 script = ExtResource("1_ogkea")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+z_as_relative = false
 position = Vector2(0.5, 0.5)
 shape = SubResource("RectangleShape2D_1xhgl")
 
 [node name="Background" type="Sprite2D" parent="." groups=["GUI_Manager", "TurnManager"]]
 visible = false
-scale = Vector2(0.6, 0.6)
-texture = ExtResource("2_suyck")
+z_index = 10
+z_as_relative = false
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("2_xbbfl")
 script = ExtResource("3_ssey4")
 
 [node name="Play" type="Button" parent="Background" groups=["PlayButton"]]
+z_index = 10
+z_as_relative = false
 anchors_preset = -1
-anchor_left = 0.262
-anchor_top = 0.262
-anchor_right = 0.262
-anchor_bottom = 0.262
-offset_left = -668.288
-offset_top = -334.144
-offset_right = 371.712
-offset_bottom = 185.856
+anchor_left = 0.33
+anchor_top = 0.379
+anchor_right = 0.33
+anchor_bottom = 0.379
+offset_left = -667.92
+offset_top = -334.048
+offset_right = 372.08
+offset_bottom = 185.952
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.3, 0.3)
+focus_mode = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_vsovd")
-theme_override_font_sizes/font_size = 150
+theme_override_font_sizes/font_size = 125
+button_mask = 7
 text = "PLAY"
-icon = ExtResource("2_suyck")
+icon = ExtResource("2_xbbfl")
+flat = true
 icon_alignment = 1
 
 [node name="Draw" type="Button" parent="Background" groups=["DrawButton"]]
+z_index = 10
+z_as_relative = false
 anchors_preset = -1
-anchor_left = 0.262
-anchor_top = 0.73
-anchor_right = 0.262
-anchor_bottom = 0.73
-offset_left = -668.288
-offset_top = -333.76
-offset_right = 371.712
-offset_bottom = 186.24
+anchor_left = 0.33
+anchor_top = 0.652
+anchor_right = 0.33
+anchor_bottom = 0.652
+offset_left = -667.92
+offset_top = -333.824
+offset_right = 372.08
+offset_bottom = 186.176
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.3, 0.3)
+focus_mode = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_vsovd")
-theme_override_font_sizes/font_size = 150
+theme_override_font_sizes/font_size = 125
+button_mask = 7
 text = "DRAW"
-icon = ExtResource("2_suyck")
+icon = ExtResource("2_xbbfl")
+flat = true
 icon_alignment = 1
 
 [node name="Lymph" type="Button" parent="Background" groups=["LymphButton"]]
+z_index = 10
+z_as_relative = false
 anchors_preset = -1
-anchor_left = 0.735
-anchor_top = 0.262
-anchor_right = 0.735
-anchor_bottom = 0.262
-offset_left = -667.64
-offset_top = -334.144
-offset_right = 372.36
-offset_bottom = 185.856
+anchor_left = 0.672
+anchor_top = 0.379
+anchor_right = 0.672
+anchor_bottom = 0.379
+offset_left = -668.128
+offset_top = -334.048
+offset_right = 371.872
+offset_bottom = 185.952
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.3, 0.3)
+focus_mode = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_vsovd")
-theme_override_font_sizes/font_size = 150
+theme_override_font_sizes/font_size = 125
+button_mask = 7
 text = "LYMPH"
-icon = ExtResource("2_suyck")
+icon = ExtResource("2_xbbfl")
+flat = true
 icon_alignment = 1
 
 [node name="Stress" type="Button" parent="Background" groups=["StressButton"]]
+z_index = 10
+z_as_relative = false
 anchors_preset = -1
-anchor_left = 0.735
-anchor_top = 0.73
-anchor_right = 0.735
-anchor_bottom = 0.73
-offset_left = -667.64
-offset_top = -333.76
-offset_right = 372.36
-offset_bottom = 186.24
+anchor_left = 0.672
+anchor_top = 0.652
+anchor_right = 0.672
+anchor_bottom = 0.652
+offset_left = -668.128
+offset_top = -333.824
+offset_right = 371.872
+offset_bottom = 186.176
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.3, 0.3)
+focus_mode = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_vsovd")
-theme_override_font_sizes/font_size = 150
+theme_override_font_sizes/font_size = 125
+button_mask = 7
 text = "STRESS"
-icon = ExtResource("2_suyck")
+icon = ExtResource("2_xbbfl")
+flat = true
 icon_alignment = 1
 
-[node name="Hide" type="Button" parent="Background"]
+[node name="Info" type="Button" parent="Background"]
+z_index = -1
+z_as_relative = false
 anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.502
 anchor_right = 0.5
 anchor_bottom = 0.502
-offset_left = -564.5
-offset_top = -307.024
-offset_right = 475.5
-offset_bottom = 212.976
+offset_left = -850.889
+offset_top = -534.802
+offset_right = 189.111
+offset_bottom = -14.8018
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.1, 0.2)
+scale = Vector2(0.1, 0.1)
+focus_mode = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_vsovd")
 theme_override_font_sizes/font_size = 150
-icon = ExtResource("2_suyck")
+icon = ExtResource("2_xbbfl")
+flat = true
 icon_alignment = 1
+metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="Background/Hide"]
-z_index = 1
+[node name="Question Mark" type="Sprite2D" parent="Background/Info"]
+z_as_relative = false
 position = Vector2(525, 250)
-scale = Vector2(1.5, 0.75)
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("7_q5rro")
+
+[node name="Info_BG" type="Sprite2D" parent="Background/Info" groups=["Infos"]]
+visible = false
+z_index = 11
+z_as_relative = false
+position = Vector2(500, 1350)
+scale = Vector2(5, 5)
+texture = ExtResource("2_xbbfl")
+
+[node name="Infos" type="Label" parent="Background/Info/Info_BG"]
+z_index = 12
+z_as_relative = false
+offset_left = -390.0
+offset_top = -146.0
+offset_right = 3610.0
+offset_bottom = 1354.0
+scale = Vector2(0.2, 0.2)
+theme_override_constants/line_spacing = 220
+theme_override_fonts/font = ExtResource("4_vsovd")
+theme_override_font_sizes/font_size = 100
+text = "PLAY ➜ attack / defense / play cards / move cards
+DRAW ➜ attack / defense / move cards
+LYMPH ➜ attack / defense / play cards
+STRESS ➜ attack / defense"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Hide" type="Button" parent="Background"]
+z_index = 10
+z_as_relative = false
+anchors_preset = -1
+anchor_left = 0.014
+anchor_top = 0.006
+anchor_right = 0.014
+anchor_bottom = 0.006
+offset_left = -564.336
+offset_top = -308.072
+offset_right = 475.664
+offset_bottom = 211.928
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.2, 0.2)
+focus_mode = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("4_vsovd")
+theme_override_font_sizes/font_size = 150
+button_mask = 7
+icon = ExtResource("2_xbbfl")
+flat = true
+icon_alignment = 1
+metadata/_edit_group_ = true
+
+[node name="Cancelled Eye" type="Sprite2D" parent="Background/Hide"]
+z_index = 10
+z_as_relative = false
+position = Vector2(525, 250)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("5_vx6f7")
 
 [node name="Show" type="Button" parent="." groups=["ShowButton"]]
 visible = false
+z_index = -1
+z_as_relative = false
 anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 0.502
 anchor_right = 0.5
 anchor_bottom = 0.502
-offset_left = -31.5
-offset_top = -30.0
-offset_right = 1008.5
-offset_bottom = 490.0
+offset_left = -495.0
+offset_top = -275.0
+offset_right = 545.0
+offset_bottom = 245.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.06, 0.12)
+scale = Vector2(0.18, 0.18)
+focus_mode = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_vsovd")
 theme_override_font_sizes/font_size = 150
-icon = ExtResource("2_suyck")
+icon = ExtResource("2_xbbfl")
+flat = true
 icon_alignment = 1
+metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="Show"]
-z_index = 1
+[node name="Eye" type="Sprite2D" parent="Show"]
+z_as_relative = false
 position = Vector2(525, 250)
-scale = Vector2(1.5, 0.75)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_stm6h")
 
 [connection signal="pressed" from="Background/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="Background/Draw" to="." method="_on_draw_pressed"]
 [connection signal="pressed" from="Background/Lymph" to="." method="_on_lymph_pressed"]
 [connection signal="pressed" from="Background/Stress" to="." method="_on_stress_pressed"]
+[connection signal="pressed" from="Background/Info" to="." method="_on_info_pressed"]
 [connection signal="pressed" from="Background/Hide" to="." method="_on_hide_pressed"]
 [connection signal="pressed" from="Show" to="." method="_on_show_pressed"]

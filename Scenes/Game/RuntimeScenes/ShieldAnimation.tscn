@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbnmirinenfy0"]
+
+[ext_resource type="Texture2D" uid="uid://66tmoe5st8ab" path="res://Resources/CardCreation/Defense.png" id="1_a06kt"]
+[ext_resource type="Script" path="res://Scripts/Game/ShieldAnimation.gd" id="1_xjc71"]
+
+[node name="Sprite2D" type="Sprite2D"]
+z_index = 3
+z_as_relative = false
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_a06kt")
+script = ExtResource("1_xjc71")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.75
+one_shot = true

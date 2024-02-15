@@ -19,6 +19,7 @@ var enemy_current_stress : int = 0
 
 var max_lymph : int = 10
 var max_stress : int = 5
+var over_stress : int = 0
 
 var turnType : String = "" # Action to do in current turn (play, draw, lymph, stress)
 
@@ -42,8 +43,6 @@ var initial_number_enemy_cards : int = 0
 var enemy_hand = []
 var enemy_deck = []
 var enemy_cards = {} # Dict of enemy cards on the field
-
-var isScreenTaken = false # Variable to check if you can interact with buttons
 
 ## Management Variables ##
 
@@ -91,6 +90,11 @@ var type_of_pointer = "" # type of action for the pointer (Card / Magic)
 var timer = []
 var current_showed_card_ref = []
 
+## Animation Variables ##
+
+var isScreenTaken = false # Variable to check if you can interact with buttons
+
+
 ### MAIN EVENTS ###
 
 
@@ -109,6 +113,7 @@ func _ready():
 	for i in initial_number_player_cards:
 		add_child(player_deck[i])
 		player_hand.append(player_deck[i])
+		player_hand[-1].Location = "hand"
 		player_deck.remove_at(i)
 	
 	for i in initial_number_enemy_cards:
@@ -122,9 +127,6 @@ func _ready():
 	## SETUP ##
 	
 	current_max_lymph = lymph
-	
-	get_tree().get_first_node_in_group("Player_Name").text = player_name
-	get_tree().get_first_node_in_group("Enemy_Name").text = enemy_name
 
 
 ### PUBLIC FUNCTION ###
@@ -144,6 +146,8 @@ func TurnButtonPressed():
 		
 		lymph = current_max_lymph
 		player_current_stress = 0
+		stress -= over_stress
+		over_stress = 0
 		
 		DrawOneCard()
 	
@@ -154,6 +158,9 @@ func TurnButtonPressed():
 		get_tree().call_group("Phase Mutation", "Effect")
 		
 		get_tree().call_group("ClientInstance", "send_defense", player_defends)
+		
+		for i in player_field_cards:
+			i.shadow.set_texture(load("res://Resources/CardCreation/CardGlow.png"))
 	
 	elif turn == "player" and phase == "Attack":
 		turn = "enemy"
@@ -164,6 +171,8 @@ func TurnButtonPressed():
 		get_tree().call_group("Turn Mutation", "Effect")
 		
 		lymph = current_max_lymph
+		stress -= over_stress
+		over_stress = 0
 		
 		DrawEnemyCard()
 	
@@ -174,39 +183,106 @@ func TurnButtonPressed():
 		get_tree().call_group("Phase Mutation", "Effect")
 		
 		get_tree().call_group("ClientInstance", "send_attack", player_attacks)
+		
+		for i in player_field_cards:
+			i.shadow.set_texture(load("res://Resources/CardCreation/CardGlow.png"))
 	
 	get_tree().call_group("GUI_Manager", "_on_Update")
 
 
-func InitialSetupForGameStart(nickname, canStart, rnd_seed):
+func InitialSetupForGameStart(nickname, canStart, rnd_seed, leader_id, leader_pos):
 	enemy_name = nickname
-	# set skin and leader ability
 	
+	# Set player leader
+	player_leader_special_effect = load("res://Scenes/Game/LeaderSpecials/Special"+ str(Data.leader_id) +".tscn").instantiate()
+	add_child(player_leader_special_effect)
+	
+	var pl = load("res://Scenes/Game/Cards/Card.tscn") # Load card resources
+	player_leader_ref = pl.instantiate() # Instantiate card resources
+	player_leader_ref.global_position = get_tree().get_first_node_in_group("PP"+Data.leader_pos).global_position - Vector2(0,20)
+	player_leader_ref.Location = "field"
+	player_leader_ref.Position = leader_pos
+	positionStatus[Data.leader_pos] = player_leader_ref
+	player_leader_ref.isLeader = true
+	player_leader_ref.Team = "player"
+	player_leader_ref.CreateCard(CardsList.getCardInfo(int(Data.leader_id), true), int(Data.leader_id), true) # Getting starter values
+	player_leader_ref.turnBlockedOnPlay = 0
+	if int(Data.leader_pos) % 2 == 0:
+		player_leader_ref.currentLoc.append("Defense")
+	else:
+		player_leader_ref.currentLoc.append("Attack")
+	player_leader_ref.Name = player_name
+	
+	player_leader_ref.shadow.offset.y = -100
+	player_leader_ref.shadow.scale = Vector2(4.1,2.15)
+	player_leader_ref.shadow.show()
+	player_leader_ref.shadow.process_mode = Node.PROCESS_MODE_INHERIT
+	player_leader_ref.ShiftBack()
+	player_leader_ref.SetOnMini()
+	
+	add_child(player_leader_ref) # Create card
+	player_leader_ref.UpdateStats(player_leader_ref)
+	
+	player_field_cards.append(player_leader_ref)
+	
+	# Set enemy leader
+	enemy_leader_special_effect = load("res://Scenes/Game/LeaderSpecials/Special"+ str(leader_id) +".tscn").instantiate()
+	add_child(enemy_leader_special_effect)
+	
+	var el = load("res://Scenes/Game/Cards/Card.tscn") # Load card resources
+	enemy_leader_ref = el.instantiate() # Instantiate card resources
+	enemy_leader_ref.global_position = get_tree().get_first_node_in_group("EP"+leader_pos).global_position - Vector2(0,20)
+	enemy_leader_ref.Location = "field"
+	enemy_leader_ref.Position = leader_pos
+	enemy_leader_ref.isLeader = true
+	enemy_leader_ref.Team = "enemy"
+	enemy_leader_ref.CreateCard(CardsList.getCardInfo(int(leader_id), true), int(leader_id), true) # Getting starter values
+	enemy_leader_ref.turnBlockedOnPlay = 0
+	if int(leader_pos) % 2 == 0:
+		enemy_leader_ref.currentLoc.append("Defense")
+	else:
+		enemy_leader_ref.currentLoc.append("Attack")
+	enemy_leader_ref.Name = enemy_name
+	
+	enemy_leader_ref.ShiftBack()
+	enemy_leader_ref.SetOnMini()
+	
+	add_child(enemy_leader_ref) # Create card
+	enemy_leader_ref.UpdateStats(enemy_leader_ref)
+	
+	enemy_field_cards.append(enemy_leader_ref)
+	enemy_cards[leader_pos] = enemy_leader_ref
+	
+	get_tree().call_group("GUI_Manager", "_on_Update")
+	
+	# Seed setup and start game
 	Data.RANDOM.set_seed(hash(rnd_seed)) # randomize seed according to other client
 	#print("\n"+str(rnd_seed)+" "+str(hash(rnd_seed))+"\n")
 	
 	if canStart == "true":
 		turn = "player"
+		isScreenTaken = true
 		get_tree().get_first_node_in_group("TurnManager").visible = true
 	else:
 		turn = "enemy"
-	
-	get_tree().call_group("Leader", "setGlobalId")
+		get_tree().get_first_node_in_group("Turn").text = "Opponent \n Turn"
 	
 	print("Setup Finished !!")
 
 
 func SetLeaders(team, leader_id, ref): # Save leader special powers
 	if team == "player":
-		var scene1 = load("res://Scenes/Game/LeaderSpecials/Special"+ str(leader_id) +".tscn")
-		player_leader_special_effect = scene1.instantiate()
+		player_leader_special_effect = load("res://Scenes/Game/LeaderSpecials/Special"+ str(leader_id) +".tscn").instantiate()
 		add_child(player_leader_special_effect)
 		player_leader_ref = ref
+		
+		player_leader_ref.get_child(0).set_texture(load("res://Resources/Leaders/Leader"+ str(leader_id) +".png"))
 	else:
-		var scene2 = load("res://Scenes/Game/LeaderSpecials/Special"+ str(leader_id) +".tscn")
-		enemy_leader_special_effect = scene2.instantiate()
+		enemy_leader_special_effect = load("res://Scenes/Game/LeaderSpecials/Special"+ str(leader_id) +".tscn").instantiate()
 		add_child(enemy_leader_special_effect)
 		enemy_leader_ref = ref
+		
+		enemy_leader_ref.get_child(0).set_texture(load("res://Resources/Leaders/Leader"+ str(leader_id) +".png"))
 
 
 ### TURN MANAGEMEN FUNCTIONS ###
@@ -308,11 +384,11 @@ func CancelDefense(who): # Function called when a defense is cancelled
 	player_defends.erase(who.Position)
 	started_defende_card = null
 
-func UsePlayerSpecial(): #Function called when player use a special
-	player_leader_special_effect.UsePlayerEffect()
+func UsePlayerSpecial(pos): #Function called when player use a special
+	player_leader_special_effect.UsePlayerEffect(pos)
 
-func UseEnemySpecial(): #Function called when enemy use a special
-	enemy_leader_special_effect.UseEnemyEffect()
+func UseEnemySpecial(pos): #Function called when enemy use a special
+	enemy_leader_special_effect.UseEnemyEffect(pos)
 
 func ManagePlayerDefense(): # Function that contains player defense system
 	if raw_enemy_attacks.size() > 0:
@@ -382,7 +458,7 @@ func ManagePlayerDefense(): # Function that contains player defense system
 			var x = 0
 			
 			while attackers.size() > defenders.size(): #attackers attack the desired target
-				Fight(attackers[a], targets[a], false, x, null)
+				await Fight(attackers[a], targets[a], false, x, null)
 				
 				attackers.remove_at(0)
 				targets.remove_at(0)
@@ -390,7 +466,7 @@ func ManagePlayerDefense(): # Function that contains player defense system
 				x += 1
 			
 			while a < len(attackers): # remove all extra attacker
-				Fight(attackers[a], defenders[a], true, x, targets[a])
+				await Fight(attackers[a], defenders[a], true, x, targets[a])
 				a += 1
 				x += 1
 		elif attackers.size() < defenders.size(): # if there are less attackers than defenders
@@ -401,7 +477,7 @@ func ManagePlayerDefense(): # Function that contains player defense system
 				defenders.remove_at(defenders.size() - 1)
 			
 			while b < len(attackers): #attackers attack the desired target
-				Fight(attackers[b], defenders[b], true, x, targets[b])
+				await Fight(attackers[b], defenders[b], true, x, targets[b])
 				b += 1
 				
 				x += 1
@@ -410,7 +486,7 @@ func ManagePlayerDefense(): # Function that contains player defense system
 			var x = 0
 			
 			while c < len(attackers): #attackers attack the desired target
-				Fight(attackers[c], defenders[c], true, x, targets[c])
+				await Fight(attackers[c], defenders[c], true, x, targets[c])
 				c += 1
 				
 				x += 1
@@ -483,7 +559,7 @@ func ManageEnemyDefense(): # Function that contains enemy defense system
 			var x = 0
 			
 			while attackers.size() > defenders.size(): #attackers attack the desired target
-				Fight(attackers[a], targets[a], false, x, null)
+				await Fight(attackers[a], targets[a], false, x, null)
 				
 				attackers.remove_at(0)
 				targets.remove_at(0)
@@ -491,7 +567,7 @@ func ManageEnemyDefense(): # Function that contains enemy defense system
 				x += 1
 			
 			while a < len(attackers): # remove all extra attacker
-				Fight(attackers[a], defenders[a], true, x, targets[a])
+				await Fight(attackers[a], defenders[a], true, x, targets[a])
 				a += 1
 				
 				x += 1
@@ -503,7 +579,7 @@ func ManageEnemyDefense(): # Function that contains enemy defense system
 				defenders.remove_at(defenders.size() - 1)
 			
 			while b < len(attackers): #attackers attack the defenders
-				Fight(attackers[b], defenders[b], true, x, targets[b])
+				await Fight(attackers[b], defenders[b], true, x, targets[b])
 				b += 1
 				
 				x += 1
@@ -512,12 +588,12 @@ func ManageEnemyDefense(): # Function that contains enemy defense system
 			var x = 0
 			
 			while c < len(attackers): #attackers attack the desired target
-				Fight(attackers[c], defenders[c], true, x, targets[c])
+				await Fight(attackers[c], defenders[c], true, x, targets[c])
 				c += 1
 				
 				x += 1
 
-func FormatOnDefende(): # Function called to make previous function work properly
+func FormatOnDefende(): # Function called to make previous functions work properly
 	for c in enemy_attacks:
 		if enemy_attacks[c] == "10":#leader
 			get_tree().call_group("Card", "isItYou", "enemy", c)
@@ -532,8 +608,28 @@ func FormatOnDefende(): # Function called to make previous function work properl
 		get_tree().call_group("Card", "isItYou", "player", b)
 		raw_player_defends.append(current_array_filler)
 		current_array_filler = null
+	
+	for i in player_defends:
+		get_tree().get_first_node_in_group("PP"+i).show()
+		get_tree().get_first_node_in_group("PP"+i).get_child(2).hide()
+		get_tree().get_first_node_in_group("PP"+i).get_child(4).show()
+	for i in enemy_attacks:
+		get_tree().get_first_node_in_group("EP"+i).show()
+		get_tree().get_first_node_in_group("EP"+i).get_child(2).hide()
+		get_tree().get_first_node_in_group("EP"+i).get_child(3).show()
+	
+	await get_tree().create_timer(1.5).timeout
+	
+	for i in player_defends:
+		get_tree().get_first_node_in_group("PP"+i).hide()
+		get_tree().get_first_node_in_group("PP"+i).get_child(2).show()
+		get_tree().get_first_node_in_group("PP"+i).get_child(4).hide()
+	for i in enemy_attacks:
+		get_tree().get_first_node_in_group("EP"+i).hide()
+		get_tree().get_first_node_in_group("EP"+i).get_child(2).show()
+		get_tree().get_first_node_in_group("EP"+i).get_child(3).hide()
 
-func FormatOnAttack(): # Function called to make previous function work properly
+func FormatOnAttack(): # Function called to make previous functions work properly
 	for d in enemy_defends:
 		get_tree().call_group("Card", "isItYou", "enemy", d)
 		raw_enemy_defends.append(current_array_filler)
@@ -548,20 +644,62 @@ func FormatOnAttack(): # Function called to make previous function work properly
 			get_tree().call_group("Card", "isItYou", "enemy", player_attacks[a])
 			get_tree().call_group("Card", "isItYou", "player", a, current_array_filler, "pa")
 			current_array_filler = null
+	
+	for i in player_attacks:
+		get_tree().get_first_node_in_group("PP"+i).show()
+		get_tree().get_first_node_in_group("PP"+i).get_child(2).hide()
+		get_tree().get_first_node_in_group("PP"+i).get_child(3).show()
+	for i in enemy_defends:
+		get_tree().get_first_node_in_group("EP"+i).show()
+		get_tree().get_first_node_in_group("EP"+i).get_child(2).hide()
+		get_tree().get_first_node_in_group("EP"+i).get_child(4).show()
+	
+	await get_tree().create_timer(1.5).timeout
+	
+	for i in player_attacks:
+		get_tree().get_first_node_in_group("PP"+i).hide()
+		get_tree().get_first_node_in_group("PP"+i).get_child(2).show()
+		get_tree().get_first_node_in_group("PP"+i).get_child(3).hide()
+	for i in enemy_defends:
+		get_tree().get_first_node_in_group("EP"+i).hide()
+		get_tree().get_first_node_in_group("EP"+i).get_child(2).show()
+		get_tree().get_first_node_in_group("EP"+i).get_child(4).hide()
 
 func Fight(attacker, defender, canDefend : bool, n, target):
-	if attacker and defender:
-		attacker.AttackEnemy(defender, n) #attacker attack the defender
+	if Data.isInstanceValid(attacker) and Data.isInstanceValid(defender):
+		# Target lock animation
+		var T_GUI = load("res://Scenes/Game/RuntimeScenes/TargetAnimation.tscn").instantiate()
+		add_child(T_GUI)
+		T_GUI.a = attacker
+		T_GUI.b = defender
+		T_GUI.Start()
 		
 		if canDefend:
 			print("Fight --> " + attacker.Name + "(" + attacker.Team + ") vs " + defender.Name + "(" + defender.Team + ") (protecting himself)")
 			
+			# Card defense animation
+			var S_GUI = load("res://Scenes/Game/RuntimeScenes/ShieldAnimation.tscn").instantiate()
+			add_child(S_GUI)
+			S_GUI.global_position = defender.global_position
+			S_GUI.Start()
+			
+			await get_tree().create_timer(1.5).timeout
+			T_GUI.queue_free()
+			S_GUI.queue_free()
+			
+			attacker.AttackEnemy(defender, n) #attacker attack the defender
+		
 			if defender.Health < 0:
 				attacker.AttackEnemyByExcess(target, defender.Health) #attacker attack his first target
 			
 			defender.ProtectByEnemy(attacker) #defender protect himself only if the proprietary decided to defend
 		else:
 			print("Fight --> " + attacker.Name + "(" + attacker.Team + ") vs " + defender.Name + "(" + defender.Team + ") (without defending himself)")
+			
+			await get_tree().create_timer(1.5).timeout
+			T_GUI.queue_free()
+			
+			attacker.AttackEnemy(defender, n) #attacker attack the defender
 		
 		get_tree().call_group("Leader", "_on_Update")
 		get_tree().call_group("GUI_Manager", "_on_Update")
@@ -571,6 +709,14 @@ func Fight(attacker, defender, canDefend : bool, n, target):
 func Enable(flag : bool): # Function called when a menu is appearing or disappearing
 	isScreenTaken = not flag
 
+func UserError(t):
+	error_label.text = t
+	error_label.modulate.a = 0
+	
+	var tween = get_tree().create_tween() # show and then hide the error message
+	tween.tween_property(error_label, "modulate", Color(1,0,0,1), 1.5) # visible red
+	tween.tween_property(error_label, "modulate", Color(1,0,0,0), 2.5) # transparent red
+
 # Game Result #
 
 func GameEnds(looser): # Function called when someone dies (looser = who died)
@@ -578,6 +724,9 @@ func GameEnds(looser): # Function called when someone dies (looser = who died)
 		print(str(player_name) + " died!")
 	if looser == "enemy":
 		print(str(enemy_name) + " died!")
+	
+	await get_tree().create_timer(5.0).timeout
+	get_tree().change_scene_to_file("Scenes/Lobby/MainMenu.tscn")
 
 
 ### OPPONENT FIELD MANAGEMENT FUNCTIONS ###
@@ -652,13 +801,15 @@ func PlayEnemyCard(id, pos, stats):
 	
 	get_tree().call_group("GUI_Manager", "_on_Update")
 
-func MoveEnemyCard(old_pos, new_pos):
+func MoveEnemyCard(old_pos, new_pos, new_loc):
 	var positioner_pos = get_tree().get_first_node_in_group("EP"+str(new_pos))
 	enemy_cards[old_pos].global_position = positioner_pos.global_position - Vector2(0,20) # Swap cards position
 	enemy_cards[new_pos] = enemy_cards[old_pos] # Add new position to card dict
 	enemy_cards.erase(old_pos) # Remove old position from card dict
 	
 	enemy_cards[new_pos].Position = new_pos
+	enemy_cards[new_pos].currentLoc.clear()
+	enemy_cards[new_pos].currentLoc.append(new_loc)
 	
 	enemy_cards[new_pos].SetOnMini()
 	enemy_cards[new_pos].ShiftBack()
@@ -682,8 +833,8 @@ func PlayEnemyMagic(id):
 	current_showed_card_ref.append(instance)
 	current_showed_card_ref[-1].CreateCard(CardsList.getCardInfo(int(id)), int(id)) # Getting starter values
 	current_showed_card_ref[-1].Team = "no" # avoid any type of interaction with the card
-	current_showed_card_ref[-1].position = Vector2(175,270)
-	current_showed_card_ref[-1].scale *= 2
+	current_showed_card_ref[-1].position = Vector2(65,110)
+	current_showed_card_ref[-1].scale *= 2.2
 	
 	lymph -= instance.Cost # Update lymph used by enemy
 	
@@ -715,8 +866,8 @@ func ShowOneCard(id): # Function called when played "Light on the dark" card
 	
 	current_showed_card_ref[-1].CreateCard(CardsList.getCardInfo(int(id)), int(id)) # Getting starter values
 	current_showed_card_ref[-1].Team = "no" # avoid any type of interaction with the card
-	current_showed_card_ref[-1].position = Vector2(70,110)
-	current_showed_card_ref[-1].scale *= 2
+	current_showed_card_ref[-1].position = Vector2(65,110)
+	current_showed_card_ref[-1].scale *= 2.2
 	
 	add_child(current_showed_card_ref[-1]) # Create card
 	

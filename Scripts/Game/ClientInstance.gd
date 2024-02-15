@@ -91,7 +91,7 @@ func handle_new_message(message): # Check message type and choose what to do
 			GUI_Manager = get_tree().get_first_node_in_group("GUI_Manager")
 			
 			# Preparing game scene
-			GameController.InitialSetupForGameStart(message["name"], message["start"], message["rnd_seed"])
+			GameController.InitialSetupForGameStart(message["name"], message["start"], message["rnd_seed"], 11, "5")
 			return
 	
 	if message["type"] == "turn": # Opponent chose turn type
@@ -125,25 +125,31 @@ func handle_new_message(message): # Check message type and choose what to do
 		return
 	
 	elif message["type"] == "move": # Opponent moved a card into the field
-		GameController.MoveEnemyCard(message["old_pos"], message["new_pos"])
+		GameController.MoveEnemyCard(message["old_pos"], message["new_pos"], message["new_loc"])
 		return
 	
 	elif message["type"] == "attack": # Opponent choose attackers and targets
+		get_tree().call_group("Deactivable", "Enable", false)
 		GameController.enemy_attacks = message["attacker_list"]
-		GameController.FormatOnDefende()
-		GameController.ManagePlayerDefense()
-		GameController.player_attacks.clear()
+		if len(GameController.enemy_attacks) > 0 or len(GameController.player_defends) > 0:
+			await GameController.FormatOnDefende()
+			await GameController.ManagePlayerDefense()
+			GameController.player_defends.clear()
+		get_tree().call_group("Deactivable", "Enable", true)
 		return
 	
 	elif message["type"] == "defende": # Opponent choose defenders
+		get_tree().call_group("Deactivable", "Enable", false)
 		GameController.enemy_defends = message["defender_list"]
-		GameController.FormatOnAttack()
-		GameController.ManageEnemyDefense()
-		GameController.player_defends.clear()
+		if len(GameController.enemy_defends) > 0 or len(GameController.player_attacks) > 0:
+			await GameController.FormatOnAttack()
+			await GameController.ManageEnemyDefense()
+			GameController.player_attacks.clear()
+		get_tree().call_group("Deactivable", "Enable", true)
 		return
 	
 	elif message["type"] == "special": # Opponent choose defenders
-		GameController.UseEnemySpecial()
+		GameController.UseEnemySpecial(message["card_pos"])
 		return
 	
 	elif message["type"] == "pass": # Opponent passed phase or turn
@@ -153,7 +159,6 @@ func handle_new_message(message): # Check message type and choose what to do
 	
 	elif message["type"] == "OPPONENT_DISCONNECTED": # Opponent left the game
 		GameController.GameEnds("enemy") # You win!
-		get_tree().change_scene_to_file("Scenes/Lobby/MainMenu.tscn")
 		return
 	
 	elif message["type"] == "game_effect": # Opponent do something specific
@@ -181,9 +186,9 @@ func handle_new_message(message): # Check message type and choose what to do
 #			for pos in message["cards"]:
 #				get_tree().call_group("Card", "BoostByPos", pos, "health", -1, "player")
 #			return
-#		if message["action"] == "124": # Opponent tell you that he drawed
-#			GameController.DrawEnemyCard()
-#			return
+		if message["action"] == "124": # Opponent tell you that he drawed
+			GameController.DrawEnemyCard()
+			return
 #		if message["action"] == "133": # Opponent tell you who he boosted
 #			get_tree().call_group("Card", "BoostByPos", message["card"], "attack", 3, "enemy")
 #			get_tree().call_group("Card", "BoostByPos", message["card"], "health", 1, "enemy")
@@ -250,12 +255,13 @@ func handle_new_message(message): # Check message type and choose what to do
 				GameController.enemy_cards[i].ShiftBack()
 				GameController.enemy_cards[i].SetOnMini()
 				
+				GameController.enemy_cards[i].shadow.offset.y = -100
+				GameController.enemy_cards[i].shadow.scale = Vector2(4.1,2.15)
+				
 				GameController.add_child(GameController.enemy_cards[i]) # Create card
 				
 				var positioner_pos = get_tree().get_first_node_in_group("EP"+str(i)) # Get the right position
 				GameController.enemy_cards[i].global_position = positioner_pos.global_position # Move card to the right position
-				
-				GameController.positionStatus[i] = GameController.enemy_cards[i]
 				
 				GameController.enemy_field_cards.append(GameController.enemy_cards[i]) # Add card to the array to simplify the founding of it
 #		if message["action"] == "144": # Opponent tell you who he boosted
@@ -311,12 +317,13 @@ func send_draw(): # Function called when drawed a card not regularly
 	socket.send_text(JSON.stringify(join_message))
 
 
-func send_move_card(old_pos, new_pos): # Function called when player move a card
+func send_move_card(old_pos, new_pos, new_loc): # Function called when player move a card
 	var join_message = {
 		"type": "move",
 		"id": client_id,
 		"old_pos": old_pos,
-		"new_pos": new_pos
+		"new_pos": new_pos,
+		"new_loc" : new_loc
 	}
 	
 	socket.send_text(JSON.stringify(join_message))
@@ -342,10 +349,11 @@ func send_defense(defender_list): # Function called when player decide to defend
 	socket.send_text(JSON.stringify(join_message))
 
 
-func send_special(): # Function called when player decide to use special
+func send_special(pos): # Function called when player decide to use special
 	var join_message = {
 		"type": "special",
 		"id": client_id,
+		"card_pos" : pos
 	}
 	
 	socket.send_text(JSON.stringify(join_message))

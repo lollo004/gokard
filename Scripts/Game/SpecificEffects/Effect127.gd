@@ -14,3 +14,4 @@ func Effect(stats, value, who): # When one of your cards increment the attack st
 		card.BoostByPos(card.Position, "attack", 1, card.Team) # Gain +1 attack
 		if who.Gene == "Dwarf":
 			card.BoostByPos(card.Position, "health", 1, card.Team) # Gain +1 health
+

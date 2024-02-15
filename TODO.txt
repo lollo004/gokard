@@ -1,12 +1,13 @@
-Animations and feedbacks
+Animations and audio feedbacks (new turn selecter)
+Better graphics on background and glowing shadows
+
+
+<< OPTIMIZE LOADING SCREENS >>
+
+
+Filter on deck - border by cards
 
 (131) add hyena !!
 
-
-OPTIMIZE LOADING SCREENS
-graphic upgrade. (switch mouse icon with marker when attacking)
-
-
-ADD:
-	- wake up all the cards on your field
-
+Possible changes:
+	The most rapid defender will defende the first attacker with less speed than him (but defend at least one attacker)

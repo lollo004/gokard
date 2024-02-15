@@ -9,7 +9,7 @@ var Gene : String = ""
 
 var GameController # Game controller reference
 
-
+#ok
 func _ready(): #Setup first datas
 	GameController = get_tree().get_first_node_in_group("GameController")
 	
@@ -20,7 +20,7 @@ func _ready(): #Setup first datas
 		Name = GameController.enemy_name
 		Health = GameController.enemy_health
 
-
+#ok
 func _on_Update():
 	if Team == "player": # Update Stats
 		GameController.player_health = Health
@@ -30,13 +30,13 @@ func _on_Update():
 	if Health <= 0: # Check if is still alive
 		GameController.GameEnds(Team)
 
-
+#ok
 func _on_area_entered(area):
 	if area.get_groups()[0] == "Pointer": # Getting selected by the pointer
 		if Team == "enemy":
 			GameController.selected_card_to_attack = self
 
-
+#ok
 func _on_area_exited(area):
 	if area.get_groups()[0] == "Pointer": # Getting deselected by the pointer
 		if Team == "enemy":
@@ -46,7 +46,7 @@ func _on_area_exited(area):
 func setGlobalId(): # Function called to get leader id for each team
 	GameController.SetLeaders(Team, id, self)
 
-
+#ok
 func BoostByPos(_pos, _stat, value, _team): # Function called when a card must change one of his main values
 	Health += value
 	

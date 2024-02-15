@@ -26,6 +26,14 @@ func Effect(team): # Fill your attack field with Loyal Drudges
 				GameController.player_field_cards[-1].ShiftBack()
 				GameController.player_field_cards[-1].SetOnMini()
 				
+				GameController.player_field_cards[-1].currentPos.append(String(i))
+				GameController.player_field_cards[-1].currentLoc.append("Attack")
+				
+				GameController.player_field_cards[-1].isEnabled = true
+				
+				GameController.player_field_cards[-1].shadow.offset.y = -100
+				GameController.player_field_cards[-1].shadow.scale = Vector2(4.1,2.15)
+				
 				GameController.add_child(GameController.player_field_cards[-1]) # Create card
 				
 				var positioner_pos = get_tree().get_first_node_in_group("PP"+str(i)) # Get the right position

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1e5srcqeucbd"]
+
+[ext_resource type="Script" path="res://Scripts/Game/LeaderSpecials/Special12.gd" id="1_i1ifj"]
+
+[node name="Special" type="Node"]
+script = ExtResource("1_i1ifj")

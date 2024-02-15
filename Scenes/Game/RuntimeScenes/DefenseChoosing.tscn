@@ -11,7 +11,8 @@
 size = Vector2(204, 102)
 
 [node name="Area2D" type="Area2D"]
-z_index = 5
+z_index = 10
+z_as_relative = false
 script = ExtResource("1_6nsuf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -39,6 +40,7 @@ theme_override_fonts/font = ExtResource("3_43vm4")
 theme_override_font_sizes/font_size = 50
 icon = ExtResource("2_ymcj3")
 icon_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Sprite2D/Defende Button"]
 z_index = 1
@@ -64,6 +66,7 @@ theme_override_fonts/font = ExtResource("3_43vm4")
 theme_override_font_sizes/font_size = 50
 icon = ExtResource("2_ymcj3")
 icon_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Sprite2D/Cancel Button"]
 z_index = 1
@@ -89,6 +92,7 @@ theme_override_fonts/font = ExtResource("3_43vm4")
 theme_override_font_sizes/font_size = 50
 icon = ExtResource("2_ymcj3")
 icon_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Sprite2D/Special Button"]
 z_index = 1
